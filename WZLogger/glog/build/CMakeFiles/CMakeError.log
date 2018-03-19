@@ -1,0 +1,412 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ccccc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ccccc.dir/build.make CMakeFiles/cmTC_ccccc.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ccccc.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_ccccc.dir/CheckSymbolExists.c.o   -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_ccccc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ccccc.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_ccccc.dir/CheckSymbolExists.c.o  -o cmTC_ccccc -rdynamic 
+CMakeFiles/cmTC_ccccc.dir/CheckSymbolExists.c.o：在函数‘main’中：
+CheckSymbolExists.c:(.text+0x16)：对‘pthread_create’未定义的引用
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ccccc.dir/build.make:97: recipe for target 'cmTC_ccccc' failed
+make[1]: *** [cmTC_ccccc] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ccccc/fast' failed
+make: *** [cmTC_ccccc/fast] Error 2
+
+File /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_44c13/fast"
+/usr/bin/make -f CMakeFiles/cmTC_44c13.dir/build.make CMakeFiles/cmTC_44c13.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_44c13.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_44c13.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_44c13
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_44c13.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_44c13.dir/CheckFunctionExists.c.o  -o cmTC_44c13 -rdynamic -lpthreads 
+/usr/bin/ld: 找不到 -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_44c13.dir/build.make:97: recipe for target 'cmTC_44c13' failed
+make[1]: *** [cmTC_44c13] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_44c13/fast' failed
+make: *** [cmTC_44c13/fast] Error 2
+
+
+Determining if the include file libunwind.h exists failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_013ba/fast"
+/usr/bin/make -f CMakeFiles/cmTC_013ba.dir/build.make CMakeFiles/cmTC_013ba.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_013ba.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_013ba.dir/CheckIncludeFile.c.o   -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:23: fatal error: libunwind.h: 没有那个文件或目录
+compilation terminated.
+CMakeFiles/cmTC_013ba.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_013ba.dir/CheckIncludeFile.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_013ba.dir/CheckIncludeFile.c.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_013ba/fast' failed
+make: *** [cmTC_013ba/fast] Error 2
+
+
+Determining if the include file unordered_map exists failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b06a6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b06a6.dir/build.make CMakeFiles/cmTC_b06a6.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_b06a6.dir/CheckIncludeFile.cxx.o
+/usr/bin/c++     -fPIC     -o CMakeFiles/cmTC_b06a6.dir/CheckIncludeFile.cxx.o -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
+In file included from /usr/include/c++/5/unordered_map:35:0,
+                 from /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx:1:
+/usr/include/c++/5/bits/c++0x_warning.h:32:2: error: #error This file requires compiler and library support for the ISO C++ 2011 standard. This support must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+ #error This file requires compiler and library support \
+  ^
+CMakeFiles/cmTC_b06a6.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_b06a6.dir/CheckIncludeFile.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_b06a6.dir/CheckIncludeFile.cxx.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b06a6/fast' failed
+make: *** [cmTC_b06a6/fast] Error 2
+
+
+Determining if the include file unordered_set exists failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_38050/fast"
+/usr/bin/make -f CMakeFiles/cmTC_38050.dir/build.make CMakeFiles/cmTC_38050.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_38050.dir/CheckIncludeFile.cxx.o
+/usr/bin/c++     -fPIC     -o CMakeFiles/cmTC_38050.dir/CheckIncludeFile.cxx.o -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx
+In file included from /usr/include/c++/5/unordered_set:35:0,
+                 from /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/CheckIncludeFile.cxx:1:
+/usr/include/c++/5/bits/c++0x_warning.h:32:2: error: #error This file requires compiler and library support for the ISO C++ 2011 standard. This support must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+ #error This file requires compiler and library support \
+  ^
+CMakeFiles/cmTC_38050.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_38050.dir/CheckIncludeFile.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_38050.dir/CheckIncludeFile.cxx.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_38050/fast' failed
+make: *** [cmTC_38050/fast] Error 2
+
+
+Determining size of unsigned __int16 failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f006b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f006b.dir/build.make CMakeFiles/cmTC_f006b.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f006b.dir/HAVE___UINT16.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_f006b.dir/HAVE___UINT16.c.o   -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:17:31: error: expected ‘)’ before ‘__int16’
+ #define SIZE (sizeof(unsigned __int16))
+                               ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:19:12: note: in expansion of macro ‘SIZE’
+   ('0' + ((SIZE / 10000)%10)),
+            ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:17:31: error: expected ‘)’ before ‘__int16’
+ #define SIZE (sizeof(unsigned __int16))
+                               ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:20:12: note: in expansion of macro ‘SIZE’
+   ('0' + ((SIZE / 1000)%10)),
+            ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:17:31: error: expected ‘)’ before ‘__int16’
+ #define SIZE (sizeof(unsigned __int16))
+                               ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:21:12: note: in expansion of macro ‘SIZE’
+   ('0' + ((SIZE / 100)%10)),
+            ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:17:31: error: expected ‘)’ before ‘__int16’
+ #define SIZE (sizeof(unsigned __int16))
+                               ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:22:12: note: in expansion of macro ‘SIZE’
+   ('0' + ((SIZE / 10)%10)),
+            ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:17:31: error: expected ‘)’ before ‘__int16’
+ #define SIZE (sizeof(unsigned __int16))
+                               ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:23:12: note: in expansion of macro ‘SIZE’
+   ('0' +  (SIZE    % 10)),
+            ^
+CMakeFiles/cmTC_f006b.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_f006b.dir/HAVE___UINT16.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_f006b.dir/HAVE___UINT16.c.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_f006b/fast' failed
+make: *** [cmTC_f006b/fast] Error 2
+
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CheckTypeSize/HAVE___UINT16.c:
+#include <sys/types.h>
+#include <stdint.h>
+#include <stddef.h>
+
+
+#undef KEY
+#if defined(__i386)
+# define KEY '_','_','i','3','8','6'
+#elif defined(__x86_64)
+# define KEY '_','_','x','8','6','_','6','4'
+#elif defined(__ppc__)
+# define KEY '_','_','p','p','c','_','_'
+#elif defined(__ppc64__)
+# define KEY '_','_','p','p','c','6','4','_','_'
+#endif
+
+#define SIZE (sizeof(unsigned __int16))
+char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
+  ('0' + ((SIZE / 10000)%10)),
+  ('0' + ((SIZE / 1000)%10)),
+  ('0' + ((SIZE / 100)%10)),
+  ('0' + ((SIZE / 10)%10)),
+  ('0' +  (SIZE    % 10)),
+  ']',
+#ifdef KEY
+  ' ','k','e','y','[', KEY, ']',
+#endif
+  '\0'};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_size[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining if the function dladdr exists failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_45537/fast"
+/usr/bin/make -f CMakeFiles/cmTC_45537.dir/build.make CMakeFiles/cmTC_45537.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_45537.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=dladdr   -o CMakeFiles/cmTC_45537.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_45537
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45537.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=dladdr    CMakeFiles/cmTC_45537.dir/CheckFunctionExists.c.o  -o cmTC_45537 -rdynamic 
+CMakeFiles/cmTC_45537.dir/CheckFunctionExists.c.o：在函数‘main’中：
+CheckFunctionExists.c:(.text+0x15)：对‘dladdr’未定义的引用
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_45537.dir/build.make:97: recipe for target 'cmTC_45537' failed
+make[1]: *** [cmTC_45537] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_45537/fast' failed
+make: *** [cmTC_45537/fast] Error 2
+
+
+Performing C++ SOURCE FILE Test HAVE_NO_UNNAMED_TYPE_TEMPLATE_ARGS failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3ffa7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3ffa7.dir/build.make CMakeFiles/cmTC_3ffa7.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3ffa7.dir/src.cxx.o
+/usr/bin/c++     -fPIC  -DHAVE_NO_UNNAMED_TYPE_TEMPLATE_ARGS   -Wunnamed-type-template-args -o CMakeFiles/cmTC_3ffa7.dir/src.cxx.o -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wunnamed-type-template-args'
+CMakeFiles/cmTC_3ffa7.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_3ffa7.dir/src.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_3ffa7.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_3ffa7/fast' failed
+make: *** [cmTC_3ffa7/fast] Error 2
+
+Source file was:
+int main() { return 0; }
+Determining if the function get_static_proc_name exists in the unwind failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5e2fe/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5e2fe.dir/build.make CMakeFiles/cmTC_5e2fe.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5e2fe.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=get_static_proc_name   -o CMakeFiles/cmTC_5e2fe.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5e2fe
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5e2fe.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=get_static_proc_name    CMakeFiles/cmTC_5e2fe.dir/CheckFunctionExists.c.o  -o cmTC_5e2fe -rdynamic -lunwind 
+/usr/bin/ld: 找不到 -lunwind
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_5e2fe.dir/build.make:97: recipe for target 'cmTC_5e2fe' failed
+make[1]: *** [cmTC_5e2fe] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_5e2fe/fast' failed
+make: *** [cmTC_5e2fe/fast] Error 2
+
+
+Determining if the function UnDecorateSymbolName exists in the DbgHelp failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5ee2a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5ee2a.dir/build.make CMakeFiles/cmTC_5ee2a.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5ee2a.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=UnDecorateSymbolName   -o CMakeFiles/cmTC_5ee2a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_5ee2a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5ee2a.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=UnDecorateSymbolName    CMakeFiles/cmTC_5ee2a.dir/CheckFunctionExists.c.o  -o cmTC_5ee2a -rdynamic -lDbgHelp 
+/usr/bin/ld: 找不到 -lDbgHelp
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_5ee2a.dir/build.make:97: recipe for target 'cmTC_5ee2a' failed
+make[1]: *** [cmTC_5ee2a] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_5ee2a/fast' failed
+make: *** [cmTC_5ee2a/fast] Error 2
+
+
+Performing C SOURCE FILE Test HAVE_RWLOCK failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a4cba/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a4cba.dir/build.make CMakeFiles/cmTC_a4cba.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a4cba.dir/src.c.o
+/usr/bin/cc    -DHAVE_RWLOCK   -o CMakeFiles/cmTC_a4cba.dir/src.c.o   -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_a4cba
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a4cba.dir/link.txt --verbose=1
+/usr/bin/cc   -DHAVE_RWLOCK    CMakeFiles/cmTC_a4cba.dir/src.c.o  -o cmTC_a4cba -rdynamic 
+CMakeFiles/cmTC_a4cba.dir/src.c.o：在函数‘main’中：
+src.c:(.text+0x24)：对‘pthread_rwlock_init’未定义的引用
+src.c:(.text+0x30)：对‘pthread_rwlock_rdlock’未定义的引用
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_a4cba.dir/build.make:97: recipe for target 'cmTC_a4cba' failed
+make[1]: *** [cmTC_a4cba] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_a4cba/fast' failed
+make: *** [cmTC_a4cba/fast] Error 2
+
+Source file was:
+
+#define _XOPEN_SOURCE 500
+#include <pthread.h>
+int main(void)
+{
+  pthread_rwlock_t l;
+  pthread_rwlock_init(&l, NULL);
+  pthread_rwlock_rdlock(&l);
+  return 0;
+}
+
+Performing C SOURCE FILE Test HAVE___DECLSPEC failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2457d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2457d.dir/build.make CMakeFiles/cmTC_2457d.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2457d.dir/src.c.o
+/usr/bin/cc    -DHAVE___DECLSPEC   -o CMakeFiles/cmTC_2457d.dir/src.c.o   -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c:2:1: warning: return type defaults to ‘int’ [-Wimplicit-int]
+ __declspec(selectany) int a;
+ ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c: In function ‘__declspec’:
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c:3:16: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+ int main(void) { return 0; }
+                ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c:2:1: warning: type of ‘selectany’ defaults to ‘int’ [-Wimplicit-int]
+ __declspec(selectany) int a;
+ ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c:2:27: error: declaration for parameter ‘a’ but no such parameter
+ __declspec(selectany) int a;
+                           ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.c:3:16: error: expected ‘{’ at end of input
+ int main(void) { return 0; }
+                ^
+CMakeFiles/cmTC_2457d.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_2457d.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_2457d.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_2457d/fast' failed
+make: *** [cmTC_2457d/fast] Error 2
+
+Source file was:
+
+__declspec(selectany) int a;
+int main(void) { return 0; }
+
+Performing C++ SOURCE FILE Test STL_NO_NAMESPACE failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_57c43/fast"
+/usr/bin/make -f CMakeFiles/cmTC_57c43.dir/build.make CMakeFiles/cmTC_57c43.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_57c43.dir/src.cxx.o
+/usr/bin/c++     -fPIC  -DSTL_NO_NAMESPACE   -o CMakeFiles/cmTC_57c43.dir/src.cxx.o -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx:3:1: error: ‘vector’ does not name a type
+ vector<int> t; int main() { }
+ ^
+CMakeFiles/cmTC_57c43.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_57c43.dir/src.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_57c43.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_57c43/fast' failed
+make: *** [cmTC_57c43/fast] Error 2
+
+Source file was:
+
+#include <vector>
+vector<int> t; int main() { }
+
+Performing C++ SOURCE FILE Test HAVE_MSVC_TLS failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_3ccf7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3ccf7.dir/build.make CMakeFiles/cmTC_3ccf7.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_3ccf7.dir/src.cxx.o
+/usr/bin/c++     -fPIC  -DHAVE_MSVC_TLS   -o CMakeFiles/cmTC_3ccf7.dir/src.cxx.o -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx:2:11: error: expected constructor, destructor, or type conversion before ‘(’ token
+ __declspec(thread) int tls;
+           ^
+CMakeFiles/cmTC_3ccf7.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_3ccf7.dir/src.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_3ccf7.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_3ccf7/fast' failed
+make: *** [cmTC_3ccf7/fast] Error 2
+
+Source file was:
+
+__declspec(thread) int tls;
+int main() { }
+
+Performing C++ SOURCE FILE Test HAVE_CXX11_TLS failed with the following output:
+Change Dir: /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_87e14/fast"
+/usr/bin/make -f CMakeFiles/cmTC_87e14.dir/build.make CMakeFiles/cmTC_87e14.dir/build
+make[1]: Entering directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_87e14.dir/src.cxx.o
+/usr/bin/c++     -fPIC  -DHAVE_CXX11_TLS   -o CMakeFiles/cmTC_87e14.dir/src.cxx.o -c /home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx:2:1: error: ‘thread_local’ does not name a type
+ thread_local int tls;
+ ^
+/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp/src.cxx:2:1: note: C++11 ‘thread_local’ only available with -std=c++11 or -std=gnu++11
+CMakeFiles/cmTC_87e14.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_87e14.dir/src.cxx.o' failed
+make[1]: *** [CMakeFiles/cmTC_87e14.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/huangxiaolin/Desktop/Log/glog/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_87e14/fast' failed
+make: *** [cmTC_87e14/fast] Error 2
+
+Source file was:
+
+thread_local int tls;
+int main() { }
+
