@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/luojunbin/project/WQ_project/WZUtils/WZPiper/src/Ini.cpp" "/home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/src/CMakeFiles/Ini.dir/Ini.cpp.o"
+  "/home/luoqingming/coding/WZUtils/WZPiper/src/Ini.cpp" "/home/luoqingming/coding/WZUtils/WZPiper/build/src/CMakeFiles/Ini.dir/Ini.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

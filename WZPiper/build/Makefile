@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper
+CMAKE_SOURCE_DIR = /home/luoqingming/coding/WZUtils/WZPiper
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build
+CMAKE_BINARY_DIR = /home/luoqingming/coding/WZUtils/WZPiper/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named TcpPiper
+# Target rules for targets named UDPPiper
 
 # Build rule for target.
-TcpPiper: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 TcpPiper
-.PHONY : TcpPiper
+UDPPiper: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 UDPPiper
+.PHONY : UDPPiper
 
 # fast build rule for target.
-TcpPiper/fast:
-	$(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/build
-.PHONY : TcpPiper/fast
+UDPPiper/fast:
+	$(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/build
+.PHONY : UDPPiper/fast
 
 #=============================================================================
 # Target rules for targets named Ini
@@ -137,17 +137,17 @@ Ini/fast:
 .PHONY : Ini/fast
 
 #=============================================================================
-# Target rules for targets named client
+# Target rules for targets named testServer
 
 # Build rule for target.
-client: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 client
-.PHONY : client
+testServer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testServer
+.PHONY : testServer
 
 # fast build rule for target.
-client/fast:
-	$(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
-.PHONY : client/fast
+testServer/fast:
+	$(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/build
+.PHONY : testServer/fast
 
 # Help Target
 help:
@@ -157,9 +157,9 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... TcpPiper"
+	@echo "... UDPPiper"
 	@echo "... Ini"
-	@echo "... client"
+	@echo "... testServer"
 .PHONY : help
 
 

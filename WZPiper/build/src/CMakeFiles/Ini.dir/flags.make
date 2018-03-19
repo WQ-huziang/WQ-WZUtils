@@ -6,5 +6,5 @@ CXX_FLAGS =  -std=c++11 -g -std=c++11 -g -fPIC
 
 CXX_DEFINES = -DIni_EXPORTS
 
-CXX_INCLUDES = -I/home/luojunbin/project/WQ_project/WZUtils/WZPiper/inc 
+CXX_INCLUDES = -I/home/luoqingming/coding/WZUtils/WZPiper/inc 
 

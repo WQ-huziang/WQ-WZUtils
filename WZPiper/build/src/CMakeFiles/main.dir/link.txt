@@ -1,1 +1,0 @@
-/usr/bin/c++    -std=c++11 -g -std=c++11 -g   CMakeFiles/main.dir/main.cpp.o  -o ../../bin/main  -L/home/luojunbin/project/WQ_project/WZUtils/WZPiper/lib ../../lib/libTcpPiper.so ../../lib/libIni.so -Wl,-rpath,/home/luojunbin/project/WQ_project/WZUtils/WZPiper/lib 

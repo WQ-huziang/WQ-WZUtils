@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -g -std=c++11 -g   CMakeFiles/testClient.dir/testClient.cpp.o  -o ../../bin/testClient  -L/home/luoqingming/coding/WZUtils/WZPiper/lib ../../lib/libUDPPiper.so ../../lib/libIni.so -Wl,-rpath,/home/luoqingming/coding/WZUtils/WZPiper/lib 

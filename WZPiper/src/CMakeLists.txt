@@ -1,6 +1,6 @@
-SET(CLASS_FILE TcpPiper Ini)
-SET(MAIN_FILE client)
-
+SET(CLASS_FILE UDPPiper Ini)
+#SET(MAIN_FILE testClient)
+SET(MAIN_FILE testServer)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  
 
 FOREACH(f ${CLASS_FILE})
