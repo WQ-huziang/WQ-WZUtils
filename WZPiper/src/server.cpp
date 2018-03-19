@@ -23,14 +23,22 @@ int main(int argc, char *argv[])
 
 	for(;;) {
 		int num_of_events = pip->wait_event();
-		for(int i=0; i<num_of_events; i++) {
-			pip->set_event_fd(i);
-			if (pip->handle_accept()) 
-				continue;
-			Frame myframe = pip->do_read();
+		if (num_of_events) {
+			// recieve request here
+			printf("num_of_events: %d\n", num_of_events);
+			for(int i=0; i<num_of_events; i++) {
+				int confd = pip->get_event_fd(i);
+				pip->set_event_fd(confd);
+				if (pip->handle_accept()) 
+					continue;
+				pip->do_read();
+			}
+		} else {
+			// send receipt here
+			
 		}
 	}
 
-	pip->close_server();
+	pip->close_link();
 	return 0;
 }
