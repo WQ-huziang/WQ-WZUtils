@@ -5,6 +5,9 @@
 #include <stdio.h>
 using namespace std;
 
+#ifndef INI_H_
+#define INI_H_
+
 #define CONFIGLEN 256
 
 enum INI_RES
@@ -42,3 +45,5 @@ protected:
     char  m_szKey[ CONFIGLEN ];  
     MAINKEYMAP m_Map; 
 };
+
+#endif //ini.h
