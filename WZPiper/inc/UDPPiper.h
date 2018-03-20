@@ -16,7 +16,7 @@ class UDPPiper : public WZPiper {
    // link to the 
    virtual void init_as_client();
    // read data from the pipe
-   virtual bool do_read(Frame& mail);
+   virtual int do_read(Frame& mail);
    // write data to the pipe
    virtual void do_write(Frame mail);
 
