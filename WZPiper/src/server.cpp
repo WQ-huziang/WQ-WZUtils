@@ -21,24 +21,17 @@ int main(int argc, char *argv[])
 	pip->set_config_info(config_file_path);
 	pip->init_as_server();
 
+	Frame my_frame;
 	for(;;) {
-		int num_of_events = pip->wait_event();
-		if (num_of_events) {
-			// recieve request here
-			printf("num_of_events: %d\n", num_of_events);
-			for(int i=0; i<num_of_events; i++) {
-				int confd = pip->get_event_fd(i);
-				pip->set_event_fd(confd);
-				if (pip->handle_accept()) 
-					continue;
-				pip->do_read();
-			}
-		} else {
-			// send receipt here
-			
+		if (pip->do_read(my_frame)) {
+			printf("%d\n",my_frame.source);
+			printf("%d\n",my_frame.msg_type);
+			// spi take advantage of my_frame
+		}
+		else {
+
 		}
 	}
-
-	pip->close_link();
+	
 	return 0;
 }

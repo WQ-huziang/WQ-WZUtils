@@ -45,5 +45,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/TcpPiper.dir/DependInfo.cmake"
   "src/CMakeFiles/Ini.dir/DependInfo.cmake"
-  "src/CMakeFiles/client.dir/DependInfo.cmake"
+  "src/CMakeFiles/server.dir/DependInfo.cmake"
   )
