@@ -16,14 +16,14 @@ class UDPPiper : public WZPiper {
    // link to the 
    virtual void init_as_client();
    // read data from the pipe
-   virtual Frame do_read();
+   virtual bool do_read(Frame& mail);
    // write data to the pipe
    virtual void do_write(Frame mail);
 
 
  private:
    // sokect ip address
- 	char UDP_ip [128];
+   char UDP_ip [128];
    // sokect conect port 
    int UDP_port;
    // sokect id

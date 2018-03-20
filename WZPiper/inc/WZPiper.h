@@ -12,17 +12,9 @@ class WZPiper {
    virtual void set_config_info(char file_path[256]) {}
    virtual void init_as_client() {}
    
-   virtual Frame do_read() {}
+   virtual bool do_read(Frame& mail) {}
    virtual void do_write(Frame mail) {}
 
-   virtual int wait_event() {}
-   virtual bool handle_accept() {}
-
-   virtual void close_link() {}
-
-   virtual void set_event_fd(int sockfd) {} 
-   virtual int get_event_fd(int pos) {}
-   virtual int get_listen_fd() {}
 
  private:
    
