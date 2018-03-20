@@ -11,12 +11,15 @@ port=22520
 
 ### Include .h file in folder inc, remember to copy them to your include folder
 ```
-
+WZPiper.h
+TcpPiper.h
+UDPPiper.h
 ```
 
 ### .so file is in folder lib, remember to copy them to your lib folder add them to CMakeLists
 ```
-
+libTcpPiper.so
+libUDPPiper.so
 ```
 
 ### For UDPPiper user:
