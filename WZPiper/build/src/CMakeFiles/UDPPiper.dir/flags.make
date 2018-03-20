@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS =  -std=c++11 -g -std=c++11 -g -fPIC  
 
-CXX_DEFINES = -DTcpPiper_EXPORTS
+CXX_DEFINES = -DUDPPiper_EXPORTS
 
 CXX_INCLUDES = -I/home/luoqingming/coding/WZUtils/WZPiper/inc 
 

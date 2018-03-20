@@ -54,25 +54,25 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper
+CMAKE_SOURCE_DIR = /home/luoqingming/coding/WZUtils/WZPiper
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build
+CMAKE_BINARY_DIR = /home/luoqingming/coding/WZUtils/WZPiper/build
 
 #=============================================================================
 # Directory level rules for directory src
 
 # Convenience name for "all" pass in the directory.
-src/all: src/CMakeFiles/TcpPiper.dir/all
+src/all: src/CMakeFiles/UDPPiper.dir/all
 src/all: src/CMakeFiles/Ini.dir/all
-src/all: src/CMakeFiles/client.dir/all
+src/all: src/CMakeFiles/testServer.dir/all
 
 .PHONY : src/all
 
 # Convenience name for "clean" pass in the directory.
-src/clean: src/CMakeFiles/TcpPiper.dir/clean
+src/clean: src/CMakeFiles/UDPPiper.dir/clean
 src/clean: src/CMakeFiles/Ini.dir/clean
-src/clean: src/CMakeFiles/client.dir/clean
+src/clean: src/CMakeFiles/testServer.dir/clean
 
 .PHONY : src/clean
 
@@ -82,39 +82,39 @@ src/preinstall:
 .PHONY : src/preinstall
 
 #=============================================================================
-# Target rules for target src/CMakeFiles/TcpPiper.dir
+# Target rules for target src/CMakeFiles/UDPPiper.dir
 
 # All Build rule for target.
-src/CMakeFiles/TcpPiper.dir/all:
-	$(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/depend
-	$(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles --progress-num=3,4 "Built target TcpPiper"
-.PHONY : src/CMakeFiles/TcpPiper.dir/all
+src/CMakeFiles/UDPPiper.dir/all:
+	$(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/depend
+	$(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles --progress-num=3,4 "Built target UDPPiper"
+.PHONY : src/CMakeFiles/UDPPiper.dir/all
 
 # Include target in all.
-all: src/CMakeFiles/TcpPiper.dir/all
+all: src/CMakeFiles/UDPPiper.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-src/CMakeFiles/TcpPiper.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/TcpPiper.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 0
-.PHONY : src/CMakeFiles/TcpPiper.dir/rule
+src/CMakeFiles/UDPPiper.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/UDPPiper.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/UDPPiper.dir/rule
 
 # Convenience name for target.
-TcpPiper: src/CMakeFiles/TcpPiper.dir/rule
+UDPPiper: src/CMakeFiles/UDPPiper.dir/rule
 
-.PHONY : TcpPiper
-
-# clean rule for target.
-src/CMakeFiles/TcpPiper.dir/clean:
-	$(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/clean
-.PHONY : src/CMakeFiles/TcpPiper.dir/clean
+.PHONY : UDPPiper
 
 # clean rule for target.
-clean: src/CMakeFiles/TcpPiper.dir/clean
+src/CMakeFiles/UDPPiper.dir/clean:
+	$(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/clean
+.PHONY : src/CMakeFiles/UDPPiper.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/UDPPiper.dir/clean
 
 .PHONY : clean
 
@@ -125,7 +125,7 @@ clean: src/CMakeFiles/TcpPiper.dir/clean
 src/CMakeFiles/Ini.dir/all:
 	$(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/depend
 	$(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles --progress-num=1,2 "Built target Ini"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles --progress-num=1,2 "Built target Ini"
 .PHONY : src/CMakeFiles/Ini.dir/all
 
 # Include target in all.
@@ -135,9 +135,9 @@ all: src/CMakeFiles/Ini.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/Ini.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/Ini.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/Ini.dir/rule
 
 # Convenience name for target.
@@ -156,40 +156,40 @@ clean: src/CMakeFiles/Ini.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target src/CMakeFiles/client.dir
+# Target rules for target src/CMakeFiles/testServer.dir
 
 # All Build rule for target.
-src/CMakeFiles/client.dir/all: src/CMakeFiles/TcpPiper.dir/all
-src/CMakeFiles/client.dir/all: src/CMakeFiles/Ini.dir/all
-	$(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/depend
-	$(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles --progress-num=5,6 "Built target client"
-.PHONY : src/CMakeFiles/client.dir/all
+src/CMakeFiles/testServer.dir/all: src/CMakeFiles/UDPPiper.dir/all
+src/CMakeFiles/testServer.dir/all: src/CMakeFiles/Ini.dir/all
+	$(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/depend
+	$(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles --progress-num=5,6 "Built target testServer"
+.PHONY : src/CMakeFiles/testServer.dir/all
 
 # Include target in all.
-all: src/CMakeFiles/client.dir/all
+all: src/CMakeFiles/testServer.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-src/CMakeFiles/client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 6
-	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 0
-.PHONY : src/CMakeFiles/client.dir/rule
+src/CMakeFiles/testServer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testServer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 0
+.PHONY : src/CMakeFiles/testServer.dir/rule
 
 # Convenience name for target.
-client: src/CMakeFiles/client.dir/rule
+testServer: src/CMakeFiles/testServer.dir/rule
 
-.PHONY : client
-
-# clean rule for target.
-src/CMakeFiles/client.dir/clean:
-	$(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/clean
-.PHONY : src/CMakeFiles/client.dir/clean
+.PHONY : testServer
 
 # clean rule for target.
-clean: src/CMakeFiles/client.dir/clean
+src/CMakeFiles/testServer.dir/clean:
+	$(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/clean
+.PHONY : src/CMakeFiles/testServer.dir/clean
+
+# clean rule for target.
+clean: src/CMakeFiles/testServer.dir/clean
 
 .PHONY : clean
 

@@ -54,27 +54,30 @@ int main(int argc,char* argv[])
    piper2 -> set_config_info(filePathIn);
    piper2 -> init_as_server();
 
-   Frame recvFrame = piper2 -> do_read();
+   Frame recvFrame;
 
-   PRINTSTR("recv source = ");
-   PRINTINT(recvFrame.source);
+   for (int i = 0; i < 10; i++) {
+      piper2 -> do_read(recvFrame);
 
-   PRINTSTR("recv msg_type = ");
-   PRINTINT(recvFrame.msg_type);
+      PRINTSTR("recv source = ");
+      PRINTINT(recvFrame.source);
 
-   PRINTSTR("recv error_id = ");
-   PRINTINT(recvFrame.error_id);
+      PRINTSTR("recv msg_type = ");
+      PRINTINT(recvFrame.msg_type);
 
-   PRINTSTR("recv rtn_type = ");
-   PRINTINT(recvFrame.rtn_type);
+      PRINTSTR("recv error_id = ");
+      PRINTINT(recvFrame.error_id);
 
-   PRINTSTR("recv length = ");
-   PRINTINT(recvFrame.length);
+      PRINTSTR("recv rtn_type = ");
+      PRINTINT(recvFrame.rtn_type);
 
-   PRINTSTR("recv data = ");
-   PRINTSTR(recvFrame.data);
+      PRINTSTR("recv length = ");
+      PRINTINT(recvFrame.length);
 
-   usleep(1000);
+      PRINTSTR("recv data = ");
+      PRINTSTR(recvFrame.data);
+   }
+
 
    WZPiper * piper1 = new UDPPiper();
    piper1 -> set_config_info(filePathOut);

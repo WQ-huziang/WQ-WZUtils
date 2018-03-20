@@ -43,7 +43,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "src/CMakeFiles/TcpPiper.dir/DependInfo.cmake"
+  "src/CMakeFiles/UDPPiper.dir/DependInfo.cmake"
   "src/CMakeFiles/Ini.dir/DependInfo.cmake"
-  "src/CMakeFiles/client.dir/DependInfo.cmake"
+  "src/CMakeFiles/testServer.dir/DependInfo.cmake"
   )

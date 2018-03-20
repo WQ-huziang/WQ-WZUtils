@@ -1,4 +1,4 @@
-# Install script for directory: /home/luojunbin/project/WQ_project/WZUtils/WZPiper/src
+# Install script for directory: /home/luoqingming/coding/WZUtils/WZPiper/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

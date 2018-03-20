@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper
+CMAKE_SOURCE_DIR = /home/luoqingming/coding/WZUtils/WZPiper
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build
+CMAKE_BINARY_DIR = /home/luoqingming/coding/WZUtils/WZPiper/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/src/CMakeFiles/progress.marks
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build/CMakeFiles 0
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles /home/luoqingming/coding/WZUtils/WZPiper/build/src/CMakeFiles/progress.marks
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luoqingming/coding/WZUtils/WZPiper/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,37 +97,37 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/TcpPiper.dir/rule:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/TcpPiper.dir/rule
-.PHONY : src/CMakeFiles/TcpPiper.dir/rule
+src/CMakeFiles/UDPPiper.dir/rule:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/UDPPiper.dir/rule
+.PHONY : src/CMakeFiles/UDPPiper.dir/rule
 
 # Convenience name for target.
-TcpPiper: src/CMakeFiles/TcpPiper.dir/rule
+UDPPiper: src/CMakeFiles/UDPPiper.dir/rule
 
-.PHONY : TcpPiper
+.PHONY : UDPPiper
 
 # fast build rule for target.
-TcpPiper/fast:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/build
-.PHONY : TcpPiper/fast
+UDPPiper/fast:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/build
+.PHONY : UDPPiper/fast
 
 # Convenience name for target.
 src/CMakeFiles/Ini.dir/rule:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/Ini.dir/rule
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/Ini.dir/rule
 .PHONY : src/CMakeFiles/Ini.dir/rule
 
 # Convenience name for target.
@@ -137,23 +137,23 @@ Ini: src/CMakeFiles/Ini.dir/rule
 
 # fast build rule for target.
 Ini/fast:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/build
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/build
 .PHONY : Ini/fast
 
 # Convenience name for target.
-src/CMakeFiles/client.dir/rule:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/rule
-.PHONY : src/CMakeFiles/client.dir/rule
+src/CMakeFiles/testServer.dir/rule:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testServer.dir/rule
+.PHONY : src/CMakeFiles/testServer.dir/rule
 
 # Convenience name for target.
-client: src/CMakeFiles/client.dir/rule
+testServer: src/CMakeFiles/testServer.dir/rule
 
-.PHONY : client
+.PHONY : testServer
 
 # fast build rule for target.
-client/fast:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
-.PHONY : client/fast
+testServer/fast:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/build
+.PHONY : testServer/fast
 
 Ini.o: Ini.cpp.o
 
@@ -161,7 +161,7 @@ Ini.o: Ini.cpp.o
 
 # target to build an object file
 Ini.cpp.o:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/Ini.cpp.o
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/Ini.cpp.o
 .PHONY : Ini.cpp.o
 
 Ini.i: Ini.cpp.i
@@ -170,7 +170,7 @@ Ini.i: Ini.cpp.i
 
 # target to preprocess a source file
 Ini.cpp.i:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/Ini.cpp.i
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/Ini.cpp.i
 .PHONY : Ini.cpp.i
 
 Ini.s: Ini.cpp.s
@@ -179,62 +179,62 @@ Ini.s: Ini.cpp.s
 
 # target to generate assembly for a file
 Ini.cpp.s:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/Ini.cpp.s
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/Ini.dir/build.make src/CMakeFiles/Ini.dir/Ini.cpp.s
 .PHONY : Ini.cpp.s
 
-TcpPiper.o: TcpPiper.cpp.o
+UDPPiper.o: UDPPiper.cpp.o
 
-.PHONY : TcpPiper.o
-
-# target to build an object file
-TcpPiper.cpp.o:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/TcpPiper.cpp.o
-.PHONY : TcpPiper.cpp.o
-
-TcpPiper.i: TcpPiper.cpp.i
-
-.PHONY : TcpPiper.i
-
-# target to preprocess a source file
-TcpPiper.cpp.i:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/TcpPiper.cpp.i
-.PHONY : TcpPiper.cpp.i
-
-TcpPiper.s: TcpPiper.cpp.s
-
-.PHONY : TcpPiper.s
-
-# target to generate assembly for a file
-TcpPiper.cpp.s:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/TcpPiper.cpp.s
-.PHONY : TcpPiper.cpp.s
-
-client.o: client.cpp.o
-
-.PHONY : client.o
+.PHONY : UDPPiper.o
 
 # target to build an object file
-client.cpp.o:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.cpp.o
-.PHONY : client.cpp.o
+UDPPiper.cpp.o:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/UDPPiper.cpp.o
+.PHONY : UDPPiper.cpp.o
 
-client.i: client.cpp.i
+UDPPiper.i: UDPPiper.cpp.i
 
-.PHONY : client.i
+.PHONY : UDPPiper.i
 
 # target to preprocess a source file
-client.cpp.i:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.cpp.i
-.PHONY : client.cpp.i
+UDPPiper.cpp.i:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/UDPPiper.cpp.i
+.PHONY : UDPPiper.cpp.i
 
-client.s: client.cpp.s
+UDPPiper.s: UDPPiper.cpp.s
 
-.PHONY : client.s
+.PHONY : UDPPiper.s
 
 # target to generate assembly for a file
-client.cpp.s:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.cpp.s
-.PHONY : client.cpp.s
+UDPPiper.cpp.s:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/UDPPiper.cpp.s
+.PHONY : UDPPiper.cpp.s
+
+testServer.o: testServer.cpp.o
+
+.PHONY : testServer.o
+
+# target to build an object file
+testServer.cpp.o:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/testServer.cpp.o
+.PHONY : testServer.cpp.o
+
+testServer.i: testServer.cpp.i
+
+.PHONY : testServer.i
+
+# target to preprocess a source file
+testServer.cpp.i:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/testServer.cpp.i
+.PHONY : testServer.cpp.i
+
+testServer.s: testServer.cpp.s
+
+.PHONY : testServer.s
+
+# target to generate assembly for a file
+testServer.cpp.s:
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/testServer.cpp.s
+.PHONY : testServer.cpp.s
 
 # Help Target
 help:
@@ -242,20 +242,20 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
-	@echo "... TcpPiper"
+	@echo "... UDPPiper"
 	@echo "... Ini"
-	@echo "... client"
+	@echo "... edit_cache"
+	@echo "... testServer"
 	@echo "... rebuild_cache"
 	@echo "... Ini.o"
 	@echo "... Ini.i"
 	@echo "... Ini.s"
-	@echo "... TcpPiper.o"
-	@echo "... TcpPiper.i"
-	@echo "... TcpPiper.s"
-	@echo "... client.o"
-	@echo "... client.i"
-	@echo "... client.s"
+	@echo "... UDPPiper.o"
+	@echo "... UDPPiper.i"
+	@echo "... UDPPiper.s"
+	@echo "... testServer.o"
+	@echo "... testServer.i"
+	@echo "... testServer.s"
 .PHONY : help
 
 
@@ -267,6 +267,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
