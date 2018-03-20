@@ -9,12 +9,12 @@ port=22520
 
 ```
 
-### Include .h file in folder inc
+### Include .h file in folder inc, remember to copy them to your include folder
 ```
 
 ```
 
-### .so file is in folder lib, remember add them to CMakeLists
+### .so file is in folder lib, remember to copy them to your lib folder add them to CMakeLists
 ```
 
 ```
