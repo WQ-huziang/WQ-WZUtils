@@ -84,9 +84,9 @@ int TcpPiper::do_read(Frame &mail)
       continue;
     memset(&mail, 0, sizeof(Frame));
     read(event_fd, &mail, sizeof(mail));
-    return 1;
+    return event_fd;
   }
-  return 0;
+  return -1;
 }
 
 void TcpPiper::do_write(Frame mail) 
