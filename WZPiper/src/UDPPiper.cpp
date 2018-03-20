@@ -99,7 +99,7 @@ void UDPPiper::init_as_client(){
 }
 
 // read data from the pipe
-bool UDPPiper::do_read(Frame& mail){
+int UDPPiper::do_read(Frame& mail){
 
     int length;
 
