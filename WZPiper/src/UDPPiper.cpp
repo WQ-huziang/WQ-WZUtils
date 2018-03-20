@@ -5,8 +5,11 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-#define PRINTSTR(str) printf("%s\n", str);
-#define PRINTINT(num) printf("%d\n", num);
+// #define PRINTSTR(str) printf("%s\n", str);
+// #define PRINTINT(num) printf("%d\n", num);
+
+#define PRINTSTR(str) 
+#define PRINTINT(num) 
 
 // initialize some private variable
 UDPPiper::UDPPiper(){
@@ -57,7 +60,7 @@ void UDPPiper::set_config_info(char file_path[256]){
     CIni ini;
     ini.OpenFile(file_path,"r");
 
-    char* ini_ip = ini.GetStr("Socket","ip");
+    char* ini_ip = ini.GetStr("NetInfo","ip");
     PRINTSTR("config ip = ");
     PRINTSTR(ini_ip);
     strcpy(this->UDP_ip,ini_ip);
@@ -65,7 +68,7 @@ void UDPPiper::set_config_info(char file_path[256]){
     PRINTSTR("read ip = ");
     PRINTSTR(this->UDP_ip);
 
-    this->UDP_port = ini.GetInt("Socket","port");
+    this->UDP_port = ini.GetInt("NetInfo","port");
     PRINTSTR("config port = ");
     PRINTINT(this->UDP_port);
 

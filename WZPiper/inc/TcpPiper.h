@@ -14,8 +14,11 @@
 #define MAXEPOLLSIZE 10000
 #define MAXLISTENQUEUR 1024
 
-#define PRINTF(msg){printf("%s\n",msg);}
-#define PRINTINT(msg){printf("%d\n", msg);}
+// #define PRINTF(msg){printf("%s\n",msg);}
+// #define PRINTINT(msg){printf("%d\n", msg);}
+
+#define PRINTF(msg)
+#define PRINTINT(msg)
 
 class TcpPiper : public WZPiper {
  public:
