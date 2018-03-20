@@ -45,5 +45,9 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/UDPPiper.dir/DependInfo.cmake"
   "src/CMakeFiles/Ini.dir/DependInfo.cmake"
+<<<<<<< HEAD
   "src/CMakeFiles/testServer.dir/DependInfo.cmake"
+=======
+  "src/CMakeFiles/server.dir/DependInfo.cmake"
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
   )

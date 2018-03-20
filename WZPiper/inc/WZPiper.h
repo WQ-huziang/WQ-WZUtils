@@ -8,13 +8,16 @@ class WZPiper {
 
  public:
 
+   /*init as server or client to build connect*/
    virtual void init_as_server() {}
-   virtual void set_config_info(char file_path[256]) {}
    virtual void init_as_client() {}
-   
-   virtual bool do_read(Frame& mail) {}
-   virtual void do_write(Frame mail) {}
 
+   /*set ip and port*/
+   virtual void set_config_info(char file_path[256]) {}
+   
+   /*recieve and send request*/
+   virtual bool do_read(Frame &mail) {}
+   virtual void do_write(Frame mail) {}
 
  private:
    

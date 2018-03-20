@@ -141,6 +141,7 @@ Ini/fast:
 .PHONY : Ini/fast
 
 # Convenience name for target.
+<<<<<<< HEAD
 src/CMakeFiles/testServer.dir/rule:
 	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testServer.dir/rule
 .PHONY : src/CMakeFiles/testServer.dir/rule
@@ -154,6 +155,21 @@ testServer: src/CMakeFiles/testServer.dir/rule
 testServer/fast:
 	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/build
 .PHONY : testServer/fast
+=======
+src/CMakeFiles/server.dir/rule:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/server.dir/rule
+.PHONY : src/CMakeFiles/server.dir/rule
+
+# Convenience name for target.
+server: src/CMakeFiles/server.dir/rule
+
+.PHONY : server
+
+# fast build rule for target.
+server/fast:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
+.PHONY : server/fast
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
 
 Ini.o: Ini.cpp.o
 
@@ -209,6 +225,7 @@ UDPPiper.cpp.s:
 	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/UDPPiper.dir/build.make src/CMakeFiles/UDPPiper.dir/UDPPiper.cpp.s
 .PHONY : UDPPiper.cpp.s
 
+<<<<<<< HEAD
 testServer.o: testServer.cpp.o
 
 .PHONY : testServer.o
@@ -235,6 +252,34 @@ testServer.s: testServer.cpp.s
 testServer.cpp.s:
 	cd /home/luoqingming/coding/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/testServer.cpp.s
 .PHONY : testServer.cpp.s
+=======
+server.o: server.cpp.o
+
+.PHONY : server.o
+
+# target to build an object file
+server.cpp.o:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.cpp.o
+.PHONY : server.cpp.o
+
+server.i: server.cpp.i
+
+.PHONY : server.i
+
+# target to preprocess a source file
+server.cpp.i:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.cpp.i
+.PHONY : server.cpp.i
+
+server.s: server.cpp.s
+
+.PHONY : server.s
+
+# target to generate assembly for a file
+server.cpp.s:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.cpp.s
+.PHONY : server.cpp.s
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
 
 # Help Target
 help:
@@ -244,18 +289,31 @@ help:
 	@echo "... depend"
 	@echo "... UDPPiper"
 	@echo "... Ini"
+<<<<<<< HEAD
 	@echo "... edit_cache"
 	@echo "... testServer"
+=======
+	@echo "... server"
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
 	@echo "... rebuild_cache"
 	@echo "... Ini.o"
 	@echo "... Ini.i"
 	@echo "... Ini.s"
+<<<<<<< HEAD
 	@echo "... UDPPiper.o"
 	@echo "... UDPPiper.i"
 	@echo "... UDPPiper.s"
 	@echo "... testServer.o"
 	@echo "... testServer.i"
 	@echo "... testServer.s"
+=======
+	@echo "... TcpPiper.o"
+	@echo "... TcpPiper.i"
+	@echo "... TcpPiper.s"
+	@echo "... server.o"
+	@echo "... server.i"
+	@echo "... server.s"
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
 .PHONY : help
 
 

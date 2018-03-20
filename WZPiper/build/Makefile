@@ -137,6 +137,7 @@ Ini/fast:
 .PHONY : Ini/fast
 
 #=============================================================================
+<<<<<<< HEAD
 # Target rules for targets named testServer
 
 # Build rule for target.
@@ -148,6 +149,19 @@ testServer: cmake_check_build_system
 testServer/fast:
 	$(MAKE) -f src/CMakeFiles/testServer.dir/build.make src/CMakeFiles/testServer.dir/build
 .PHONY : testServer/fast
+=======
+# Target rules for targets named server
+
+# Build rule for target.
+server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 server
+.PHONY : server
+
+# fast build rule for target.
+server/fast:
+	$(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
+.PHONY : server/fast
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
 
 # Help Target
 help:
@@ -159,7 +173,11 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... UDPPiper"
 	@echo "... Ini"
+<<<<<<< HEAD
 	@echo "... testServer"
+=======
+	@echo "... server"
+>>>>>>> 8706751a19bcf553ce62f5ebbeb81ac859f55203
 .PHONY : help
 
 
