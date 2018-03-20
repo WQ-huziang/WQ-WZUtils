@@ -74,7 +74,7 @@ void TcpPiper::init_as_client()
   add_event(epoll_fd, server_fd, EPOLLIN);
 }
 
-bool TcpPiper::do_read(Frame &mail) 
+int TcpPiper::do_read(Frame &mail) 
 {
   int num_of_events = wait_event();
   for(int i=0; i<num_of_events; i++) 
