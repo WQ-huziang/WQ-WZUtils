@@ -2,7 +2,7 @@
 #define WZPIPER_H_
 
 #include "frame.h"
-#include "Ini.h"
+#include "iniparser.h"
 
 class WZPiper {
 

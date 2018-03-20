@@ -2,7 +2,6 @@
 #define UDPPIPER_H_
 
 #include "frame.h"
-#include "Ini.h"
 #include "WZPiper.h"
 
 class UDPPiper : public WZPiper {
