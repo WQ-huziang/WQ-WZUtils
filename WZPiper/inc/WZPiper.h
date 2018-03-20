@@ -16,7 +16,7 @@ class WZPiper {
    virtual void set_config_info(char file_path[256]) {}
    
    /*recieve and send request*/
-   virtual bool do_read(Frame &mail) {}
+   virtual int do_read(Frame &mail) {}
    virtual void do_write(Frame mail) {}
 
  private:
