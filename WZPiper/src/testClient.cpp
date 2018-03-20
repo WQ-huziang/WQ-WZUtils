@@ -61,14 +61,21 @@ int main(int argc,char* argv[])
    char* data = new char [5];
    strcpy(data, "1234");
    memcpy(frame.data, data, 5);
-   piper1 -> do_write(frame);
+
+   for (int i = 0; i < 10; i++) {
+      piper1 -> do_write(frame);
+      
+   }
+   
    
    // receive message
    WZPiper * piper2 = new UDPPiper();
    piper2 -> set_config_info(filePathIn);
    piper2 -> init_as_server();
 
-   Frame recvFrame = piper2 -> do_read();
+   // declare a frame to receive data;
+   Frame recvFrame;
+   piper2 -> do_read(recvFrame);
 
    PRINTSTR("recv source = ");
    PRINTINT(recvFrame.source);

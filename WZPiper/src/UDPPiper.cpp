@@ -99,11 +99,11 @@ void UDPPiper::init_as_client(){
 }
 
 // read data from the pipe
-Frame UDPPiper::do_read(){
+int UDPPiper::do_read(Frame& mail){
 
     int length;
 
-    Frame read_frame;
+    memset(&mail, 0, sizeof(Frame));
 
     memset(this->buffer, 0, sizeof(this->buffer));
 
@@ -121,11 +121,12 @@ Frame UDPPiper::do_read(){
 
     if (length < 0) {
         PRINTSTR("UDP read error");
-        exit(EXIT_FAILURE);
+        return 0;
     } else if (length > 0) {
-        memcpy(&read_frame, this->buffer, sizeof(this->buffer));
+        memcpy(&mail, this->buffer, sizeof(this->buffer));
+        return 1;
     }
-    return read_frame;
+    return 0;
 
 }
 
