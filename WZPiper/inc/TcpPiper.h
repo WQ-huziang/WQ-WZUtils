@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/epoll.h> /* epoll function */
-#include <fcntl.h>     /* nonblocking */
+#include <sys/epoll.h> 
+#include <fcntl.h>     
 #include <unistd.h>
 
 #define MAXEPOLLSIZE 10000
@@ -20,47 +20,48 @@
 class TcpPiper : public WZPiper {
  public:
 
-   TcpPiper();
-
+   /*
+   from WZPiper
+   */
    virtual void init_as_server();
    virtual void set_config_info(char file_path[256]);
    virtual void init_as_client();
-   
-   virtual Frame do_read();
+   virtual bool do_read(Frame &mail);
    virtual void do_write(Frame mail);
 
-   virtual int wait_event();
-   virtual bool handle_accept();
-
-   virtual void close_link();
-
-   virtual void set_event_fd(int sockfd);
-   virtual int get_event_fd(int pos);
-   virtual int get_listen_fd();
-
  public:
+
+   /*
+   build-in function
+   */
+   TcpPiper();
+   ~TcpPiper();
+
+   /*set socket nonblocking*/
    int set_nonblocking(int sockfd);
 
+   /*action in epoll*/
+   int wait_event();
+   bool handle_accept();
    void add_event(int epollfd, int sockfd, int state);
-
    void delete_event(int epollfd, int sockfd, int state);
-
-   void modify_event(int epollfd, int sockfd, int state);
 
  private:
 
+   /*link information*/
    char ip[256];
    int port;
 
+   /*epoll socket*/
    int listen_fd;
+   int server_fd;
    int epoll_fd;
    int event_fd;
 
    struct sockaddr_in servaddr;
-
    struct epoll_event events[MAXEPOLLSIZE];
 
-   int cur_fd;
+   bool is_server;
 };
 
 #endif

@@ -141,19 +141,19 @@ Ini/fast:
 .PHONY : Ini/fast
 
 # Convenience name for target.
-src/CMakeFiles/client.dir/rule:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/client.dir/rule
-.PHONY : src/CMakeFiles/client.dir/rule
+src/CMakeFiles/server.dir/rule:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/server.dir/rule
+.PHONY : src/CMakeFiles/server.dir/rule
 
 # Convenience name for target.
-client: src/CMakeFiles/client.dir/rule
+server: src/CMakeFiles/server.dir/rule
 
-.PHONY : client
+.PHONY : server
 
 # fast build rule for target.
-client/fast:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/build
-.PHONY : client/fast
+server/fast:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/build
+.PHONY : server/fast
 
 Ini.o: Ini.cpp.o
 
@@ -209,32 +209,32 @@ TcpPiper.cpp.s:
 	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/TcpPiper.dir/build.make src/CMakeFiles/TcpPiper.dir/TcpPiper.cpp.s
 .PHONY : TcpPiper.cpp.s
 
-client.o: client.cpp.o
+server.o: server.cpp.o
 
-.PHONY : client.o
+.PHONY : server.o
 
 # target to build an object file
-client.cpp.o:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.cpp.o
-.PHONY : client.cpp.o
+server.cpp.o:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.cpp.o
+.PHONY : server.cpp.o
 
-client.i: client.cpp.i
+server.i: server.cpp.i
 
-.PHONY : client.i
+.PHONY : server.i
 
 # target to preprocess a source file
-client.cpp.i:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.cpp.i
-.PHONY : client.cpp.i
+server.cpp.i:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.cpp.i
+.PHONY : server.cpp.i
 
-client.s: client.cpp.s
+server.s: server.cpp.s
 
-.PHONY : client.s
+.PHONY : server.s
 
 # target to generate assembly for a file
-client.cpp.s:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/client.dir/build.make src/CMakeFiles/client.dir/client.cpp.s
-.PHONY : client.cpp.s
+server.cpp.s:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f src/CMakeFiles/server.dir/build.make src/CMakeFiles/server.dir/server.cpp.s
+.PHONY : server.cpp.s
 
 # Help Target
 help:
@@ -245,7 +245,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... TcpPiper"
 	@echo "... Ini"
-	@echo "... client"
+	@echo "... server"
 	@echo "... rebuild_cache"
 	@echo "... Ini.o"
 	@echo "... Ini.i"
@@ -253,9 +253,9 @@ help:
 	@echo "... TcpPiper.o"
 	@echo "... TcpPiper.i"
 	@echo "... TcpPiper.s"
-	@echo "... client.o"
-	@echo "... client.i"
-	@echo "... client.s"
+	@echo "... server.o"
+	@echo "... server.i"
+	@echo "... server.s"
 .PHONY : help
 
 

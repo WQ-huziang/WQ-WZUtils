@@ -10,6 +10,7 @@ struct Frame{
     short msg_type;
     short error_id;
     short rtn_type;
+    short dest;
     int length;
     char data[500];
 };
