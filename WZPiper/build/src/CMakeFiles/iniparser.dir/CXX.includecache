@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../inc/iniparser.h
+map
+-
+string
+-
+string.h
+-
+stdlib.h
+-
+stdio.h
+-
+iostream
+-
+
+/home/luojunbin/project/WQ_project/WZUtils/WZPiper/src/iniparser.cpp
+iniparser.h
+/home/luojunbin/project/WQ_project/WZUtils/WZPiper/src/iniparser.h
+

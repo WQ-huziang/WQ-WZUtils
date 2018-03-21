@@ -60,7 +60,7 @@ void UDPPiper::set_config_info(char file_path[256]){
     CIni ini;
     ini.OpenFile(file_path,"r");
 
-    char* ini_ip = ini.GetStr("NetInfo","ip");
+    char* ini_ip = ini.GetStr("UDPNetInfo","ip");
     PRINTSTR("config ip = ");
     PRINTSTR(ini_ip);
     strcpy(this->UDP_ip,ini_ip);
@@ -68,7 +68,7 @@ void UDPPiper::set_config_info(char file_path[256]){
     PRINTSTR("read ip = ");
     PRINTSTR(this->UDP_ip);
 
-    this->UDP_port = ini.GetInt("NetInfo","port");
+    this->UDP_port = ini.GetInt("UDPNetInfo","port");
     PRINTSTR("config port = ");
     PRINTINT(this->UDP_port);
 
