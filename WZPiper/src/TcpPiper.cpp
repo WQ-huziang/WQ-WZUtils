@@ -83,7 +83,11 @@ int TcpPiper::do_read(Frame &mail)
     if (handle_accept()) 
       continue;
     memset(&mail, 0, sizeof(Frame));
-    read(event_fd, &mail, sizeof(mail));
+    int ret = read(event_fd, &mail, sizeof(mail));
+    if (ret == 0)
+    {
+      return 0;
+    }
     return event_fd;
   }
   return -1;
