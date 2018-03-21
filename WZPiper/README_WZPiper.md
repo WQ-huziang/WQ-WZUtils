@@ -94,9 +94,14 @@ Frame rec_frame;
 
 for(;;) {
 	// receive data to rec_frame
-	if (pip->do_read(rec_frame)) {
+	int cur_fd = pip->do_read(rec_frame);
+	if (cur_fd > 0)) {
 		printf("%d\n",rec_frame.source);
 		printf("%d\n",rec_frame.msg_type);
+	}
+	else if (cur_fd == 0)
+	{
+		printf("server close");
 	}
 	else {
 		// run strategy here
@@ -124,10 +129,15 @@ pip->init_as_server();
 Frame my_frame;
 for(;;) {
 	// receive data to rec_frame
-	if (pip->do_read(my_frame)) {
+	int cur_fd = pip->do_read(my_frame);
+	if (cur_fd > 0) {
 		printf("%d\n",my_frame.source);
 		printf("%d\n",my_frame.msg_type);
 		// spi take advantage of my_frame
+	}
+	else if (cur_fd == 0)
+	{
+		printf("client close");
 	}
 	else {
 		
