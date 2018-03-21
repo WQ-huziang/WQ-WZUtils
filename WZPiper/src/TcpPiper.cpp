@@ -54,9 +54,9 @@ void TcpPiper::set_config_info(char file_path[256])
 {
   CIni ini;
   ini.OpenFile(file_path, "r");
-  char *temp = ini.GetStr("NetInfo", "ip");
+  char *temp = ini.GetStr("TCPNetInfo", "ip");
   strcpy(ip, temp);
-  port = ini.GetInt("NetInfo", "port");
+  port = ini.GetInt("TCPNetInfo", "port");
 }
 
 void TcpPiper::init_as_client() 
