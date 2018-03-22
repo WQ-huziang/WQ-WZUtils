@@ -46,11 +46,11 @@ int main(int argc, char *argv[]){
 ```
 extern Logger *logger;
 
-logger->Debug(char *buffer);
-logger->Info(char *buffer);
-logger->Warn(char *buffer);
-logger->Error(char *buffer);
-logger->Fatal(char *buffer);
+logger->Debug(char *buffer);   or   DLOG(DEBUG) << buffer;
+logger->Info(char *buffer);    or   LOG(INFO) << buffer;
+logger->Warn(char *buffer);    or   LOG(WARNING) << buffer;
+logger->Error(char *buffer);   or   LOG(ERROR) << buffer;
+logger->Fatal(char *buffer);   or   LOG(FATAL) << buffer;
 logger->Info(WZMarketDataField md);
 logger->Info(WZInputOrderField inputOrder);             
 logger->Info(WZOrderActionField orderAction);
