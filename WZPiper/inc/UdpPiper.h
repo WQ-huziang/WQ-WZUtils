@@ -8,11 +8,7 @@
 #include "frame.h"
 #include "WZPiper.h"
 
-#define PRINTSTR(str) printf("%s\n", str);
-#define PRINTINT(num) printf("%d\n", num);
 
-// #define PRINTSTR(str) 
-// #define PRINTINT(num) 
 
 class UdpPiper : public WZPiper {
  public:

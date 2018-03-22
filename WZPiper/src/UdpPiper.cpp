@@ -6,7 +6,6 @@
 #include <string.h>
 
 
-
 // initialize some private variable
 UdpPiper::UdpPiper(){
     strcpy(this->UDP_ip,"");

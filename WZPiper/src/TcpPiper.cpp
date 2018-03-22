@@ -40,12 +40,12 @@ void TcpPiper::init_as_server()
 
   if (bind(listen_fd, (struct sockaddr *) &servaddr, sizeof(struct sockaddr)) == -1) 
   {
-  	PRINTF("bind error");
+  	PRINTSTR("bind error");
   	return;
   }
   if (listen(listen_fd, MAXLISTENQUEUR) == -1) 
   {
-  	PRINTF("listen error");
+  	PRINTSTR("listen error");
   	return;
   }
 }
@@ -107,7 +107,7 @@ void TcpPiper::do_write(Frame mail)
   PRINTINT(ret);
   if (ret == -1) 
   {
-  	PRINTF("write error!");
+  	PRINTSTR("write error!");
   	close(event_fd);
   	delete_event(epoll_fd, event_fd, EPOLLOUT);
   }
@@ -117,7 +117,7 @@ int TcpPiper::set_nonblocking(int sockfd)
 {
   if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0)|O_NONBLOCK) == -1) 
   {
-    PRINTF("listen error");
+    PRINTSTR("listen error");
     return -1;
   }
   return 0;
