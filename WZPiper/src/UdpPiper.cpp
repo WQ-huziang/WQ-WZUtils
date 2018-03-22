@@ -109,13 +109,14 @@ int UdpPiper::do_read(Frame& mail){
     struct sockaddr_in in_addr;
     in_addr.sin_family = AF_INET;
     in_addr.sin_port = htons(this->UDP_port);
-    in_addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
+    in_addr.sin_addr.s_addr = htons(INADDR_ANY);
+    // in_addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
 
     socklen_t in_socklen ;
 
     length = recvfrom(this->UDP_sockfd, this->buffer, sizeof(this->buffer), 0, (struct sockaddr* ) &in_addr, &in_socklen);
     
-    usleep(100);
+    // usleep(100);
 
     PRINTSTR("recv from port :");
     PRINTINT(in_addr.sin_port);
@@ -143,7 +144,7 @@ void UdpPiper::do_write(Frame write_frame){
     addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
     length = sendto(this->UDP_sockfd, (char* ) &write_frame, sizeof(write_frame), 0, (struct sockaddr*) &addr, sizeof(addr) );
 
-    usleep(100);
+    // usleep(100);
 
     PRINTSTR("writing to port :");
     PRINTINT(addr.sin_port);
