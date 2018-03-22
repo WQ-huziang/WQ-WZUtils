@@ -2,7 +2,7 @@
 #include <netinet/in.h>  
 #include <string.h> 
 #include <unistd.h>
-#include "UDPPiper.h"
+#include "UdpPiper.h"
 
 #define PRINTSTR(str) printf("%s\n", str);
 #define PRINTINT(num) printf("%d\n", num);
@@ -47,7 +47,7 @@ int main(int argc,char* argv[])
    }
 
    // send message
-   WZPiper * piper1 = new UDPPiper();
+   WZPiper * piper1 = new UdpPiper();
    piper1 -> set_config_info(filePathOut);
    piper1 -> init_as_client();
 
@@ -59,41 +59,41 @@ int main(int argc,char* argv[])
    frame.rtn_type = 3;
    frame.length = 4;
    char* data = new char [5];
-   strcpy(data, "1234");
+   sprintf(data, "%d", 1234);
    memcpy(frame.data, data, 5);
 
-   for (int i = 0; i < 10; i++) {
-      piper1 -> do_write(frame);
+   for (;;) {
       
+      piper1 -> do_write(frame);
    }
    
    
-   // receive message
-   WZPiper * piper2 = new UDPPiper();
-   piper2 -> set_config_info(filePathIn);
-   piper2 -> init_as_server();
+   // // receive message
+   // WZPiper * piper2 = new UdpPiper();
+   // piper2 -> set_config_info(filePathIn);
+   // piper2 -> init_as_server();
 
-   // declare a frame to receive data;
-   Frame recvFrame;
-   piper2 -> do_read(recvFrame);
+   // // declare a frame to receive data;
+   // Frame recvFrame;
+   // piper2 -> do_read(recvFrame);
 
-   PRINTSTR("recv source = ");
-   PRINTINT(recvFrame.source);
+   // PRINTSTR("recv source = ");
+   // PRINTINT(recvFrame.source);
 
-   PRINTSTR("recv msg_type = ");
-   PRINTINT(recvFrame.msg_type);
+   // PRINTSTR("recv msg_type = ");
+   // PRINTINT(recvFrame.msg_type);
 
-   PRINTSTR("recv error_id = ");
-   PRINTINT(recvFrame.error_id);
+   // PRINTSTR("recv error_id = ");
+   // PRINTINT(recvFrame.error_id);
 
-   PRINTSTR("recv rtn_type = ");
-   PRINTINT(recvFrame.rtn_type);
+   // PRINTSTR("recv rtn_type = ");
+   // PRINTINT(recvFrame.rtn_type);
 
-   PRINTSTR("recv length = ");
-   PRINTINT(recvFrame.length);
+   // PRINTSTR("recv length = ");
+   // PRINTINT(recvFrame.length);
 
-   PRINTSTR("recv data = ");
-   PRINTSTR(recvFrame.data);
+   // PRINTSTR("recv data = ");
+   // PRINTSTR(recvFrame.data);
 
    exit(0);  
    return 0;  

@@ -4,10 +4,16 @@
 #include "frame.h"
 #include "WZPiper.h"
 
-class UDPPiper : public WZPiper {
+#define PRINTSTR(str) printf("%s\n", str);
+#define PRINTINT(num) printf("%d\n", num);
+
+// #define PRINTSTR(str) 
+// #define PRINTINT(num) 
+
+class UdpPiper : public WZPiper {
  public:
-   UDPPiper();
-   ~UDPPiper();
+   UdpPiper();
+   ~UdpPiper();
    // initialize the server
    virtual void init_as_server();
    // set the ip and port according to the config file
@@ -31,4 +37,4 @@ class UDPPiper : public WZPiper {
    char buffer[1024];
 };
 
-#endif //UDPPiper
+#endif //UdpPiper

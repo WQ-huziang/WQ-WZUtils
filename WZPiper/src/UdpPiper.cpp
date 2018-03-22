@@ -1,18 +1,14 @@
-#include "UDPPiper.h"
+#include "UdpPiper.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
 
-// #define PRINTSTR(str) printf("%s\n", str);
-// #define PRINTINT(num) printf("%d\n", num);
 
-#define PRINTSTR(str) 
-#define PRINTINT(num) 
 
 // initialize some private variable
-UDPPiper::UDPPiper(){
+UdpPiper::UdpPiper(){
     strcpy(this->UDP_ip,"");
     this->UDP_port = 12345;
     this->UDP_sockfd = 0;
@@ -20,7 +16,7 @@ UDPPiper::UDPPiper(){
 }
 
 // destructor
-UDPPiper::~UDPPiper(){
+UdpPiper::~UdpPiper(){
     strcpy(this->UDP_ip,"");
     this->UDP_port = 12345;
     this->UDP_sockfd = 0;
@@ -29,7 +25,7 @@ UDPPiper::~UDPPiper(){
 }
 
 // initialize the server
-void UDPPiper::init_as_server(){
+void UdpPiper::init_as_server(){
     
     this->UDP_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if(this->UDP_sockfd == -1){
@@ -56,7 +52,7 @@ void UDPPiper::init_as_server(){
 }
 
 // set the ip and port according to the config file
-void UDPPiper::set_config_info(char file_path[256]){
+void UdpPiper::set_config_info(char file_path[256]){
     CIni ini;
     ini.OpenFile(file_path,"r");
 
@@ -75,7 +71,7 @@ void UDPPiper::set_config_info(char file_path[256]){
 }
 
 // client link to the server
-void UDPPiper::init_as_client(){
+void UdpPiper::init_as_client(){
 
     if( (this->UDP_sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         PRINTSTR("UDP client socket init error");
@@ -102,7 +98,7 @@ void UDPPiper::init_as_client(){
 }
 
 // read data from the pipe
-int UDPPiper::do_read(Frame& mail){
+int UdpPiper::do_read(Frame& mail){
 
     int length;
 
@@ -118,6 +114,8 @@ int UDPPiper::do_read(Frame& mail){
     socklen_t in_socklen ;
 
     length = recvfrom(this->UDP_sockfd, this->buffer, sizeof(this->buffer), 0, (struct sockaddr* ) &in_addr, &in_socklen);
+    
+    usleep(100);
 
     PRINTSTR("recv from port :");
     PRINTINT(in_addr.sin_port);
@@ -134,7 +132,7 @@ int UDPPiper::do_read(Frame& mail){
 }
 
 // write data to the pipe
-void UDPPiper::do_write(Frame write_frame){
+void UdpPiper::do_write(Frame write_frame){
     int length;
 
     memset(this->buffer, 0, sizeof(this->buffer));
@@ -144,6 +142,8 @@ void UDPPiper::do_write(Frame write_frame){
     addr.sin_port = htons(this->UDP_port);
     addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
     length = sendto(this->UDP_sockfd, (char* ) &write_frame, sizeof(write_frame), 0, (struct sockaddr*) &addr, sizeof(addr) );
+
+    usleep(100);
 
     PRINTSTR("writing to port :");
     PRINTINT(addr.sin_port);

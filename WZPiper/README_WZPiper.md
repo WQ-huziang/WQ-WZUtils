@@ -18,23 +18,23 @@ port=22550
 ```
 WZPiper.h
 TcpPiper.h
-UDPPiper.h
+UdpPiper.h
 ```
 
 ### .so file is in folder lib, remember to copy them to your lib folder add them to CMakeLists
 ```
 libTcpPiper.so
-libUDPPiper.so
+libUdpPiper.so
 ```
 
-### For UDPPiper user:
+### For UdpPiper user:
 
 - If use as client(such as Md module) to send data, follow the next step:
 
 ```
 // send message
 // declare
-WZPiper * piper = new UDPPiper();
+WZPiper * piper = new UdpPiper();
 
 // read configuer file and set private variable port and ip
 piper -> set_config_info(filePathOut);
@@ -64,7 +64,7 @@ while (1) {
 ```
 // receive message
 // declare
-WZPiper * piper = new UDPPiper();
+WZPiper * piper = new UdpPiper();
 
 // read configuer file and set private variable port and ip
 piper -> set_config_info(filePathIn);

@@ -6,7 +6,7 @@
 #include<netinet/in.h>  
 #include<string.h>  
 #include<iostream>
-#include "UDPPiper.h"
+#include "UdpPiper.h"
 
 #define PRINTSTR(str) printf("%s\n", str);
 #define PRINTINT(num) printf("%d\n", num);
@@ -49,13 +49,13 @@ int main(int argc,char* argv[])
             break;
       }
    }
-   WZPiper * piper2 = new UDPPiper();
+   WZPiper * piper2 = new UdpPiper();
    piper2 -> set_config_info(filePathIn);
    piper2 -> init_as_server();
 
    Frame recvFrame;
 
-   for (int i = 0; i < 10; i++) {
+   for (int i=0;i<10;i++) {
       piper2 -> do_read(recvFrame);
 
       PRINTSTR("recv source = ");
@@ -78,20 +78,21 @@ int main(int argc,char* argv[])
    }
 
 
-   WZPiper * piper1 = new UDPPiper();
-   piper1 -> set_config_info(filePathOut);
-   piper1 -> init_as_client();
+   // WZPiper * piper1 = new UdpPiper();
+   // piper1 -> set_config_info(filePathOut);
+   // piper1 -> init_as_client();
    
-   Frame frame;
-   frame.source = 0;
-   frame.msg_type = 1;
-   frame.error_id = 2;
-   frame.rtn_type = 3;
-   frame.length = 4;
-   char* data = new char [5];
-   strcpy(data, "4321");
-   memcpy(frame.data, data, 5);
-   piper1 -> do_write(frame);
+   // usleep(100);
+   // Frame frame;
+   // frame.source = 0;
+   // frame.msg_type = 1;
+   // frame.error_id = 2;
+   // frame.rtn_type = 3;
+   // frame.length = 4;
+   // char* data = new char [5];
+   // strcpy(data, "4321");
+   // memcpy(frame.data, data, 5);
+   // piper1 -> do_write(frame);
    
 
 
