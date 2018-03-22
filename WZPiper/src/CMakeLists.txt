@@ -1,6 +1,6 @@
 SET(CLASS_FILE UdpPiper iniparser TcpPiper)
-#SET(MAIN_FILE testClient)
-SET(MAIN_FILE testServer)
+SET(MAIN_FILE testClient)
+#SET(MAIN_FILE testServer)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  
 
 

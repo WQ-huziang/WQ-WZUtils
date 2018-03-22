@@ -4,6 +4,12 @@
 #include "frame.h"
 #include "iniparser.h"
 
+#define PRINTSTR(str) printf("%s\n", str);
+#define PRINTINT(num) printf("%d\n", num);
+
+// #define PRINTSTR(str)
+// #define PRINTINT(num)
+
 class WZPiper {
 
  public:
