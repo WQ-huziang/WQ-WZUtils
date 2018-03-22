@@ -3,9 +3,14 @@
 ### Configure file must be included
 
 ```
-[NetInfo]
+[TCPNetInfo]
 ip=192.168.0.6
 port=22520
+
+[UDPNetInfo]
+ip=192.168.0.6
+port=22550
+
 
 ```
 
