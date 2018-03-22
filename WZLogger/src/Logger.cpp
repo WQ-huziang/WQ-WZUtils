@@ -2,19 +2,23 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "iniparser.h"
 using std::string;
-using std::stringstream;
 using std::to_string;
+using std::stringstream;
 
-Logger::Logger(char *programname){
+Logger::Logger(char *programname)
+{
 	google::InitGoogleLogging(programname);
 }
 
-Logger::~Logger(){
+Logger::~Logger()
+{
 	google::ShutdownGoogleLogging();
 }
 
-void Logger::ParseConfigInfo(char *configFilePath){
+void Logger::ParseConfigInfo(char *configFilePath)
+{
 	CIni ini;
 	ini.OpenFile(configFilePath,"r");
 	/* Log */
@@ -24,26 +28,32 @@ void Logger::ParseConfigInfo(char *configFilePath){
 	FLAGS_stderrthreshold = ini.GetInt("Logger","stderrthreshold");
 	FLAGS_colorlogtostderr = ini.GetInt("Logger", "colorlogtostderr");
 	FLAGS_v = ini.GetInt("Logger", "v");
-	FLAGS_log_dir = ini.GetInt("Logger", "log_dir");
+	string buf = ini.GetStr("Logger", "log_dir");
+	FLAGS_log_dir = buf;
 }
 
-void Logger::Debug(char *buffer){
+void Logger::Debug(char *buffer)
+{
 	DLOG(INFO) << buffer;
 }
 
-void Logger::Info(char *buffer){
+void Logger::Info(char *buffer)
+{
 	 LOG(INFO) << buffer;
 }
 
-void Logger::Warn(char *buffer){
+void Logger::Warn(char *buffer)
+{
 	LOG(WARNING) << buffer;
 }
 
-void Logger::Error(char *buffer){
+void Logger::Error(char *buffer)
+{
 	LOG(ERROR) << buffer;
 }
 
-void Logger::Fatal(char *buffer){
+void Logger::Fatal(char *buffer)
+{
 	LOG(FATAL) << buffer;
 }
 
