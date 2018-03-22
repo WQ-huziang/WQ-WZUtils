@@ -8,9 +8,6 @@
 #include<iostream>
 #include "UdpPiper.h"
 
-#define PRINTSTR(str) printf("%s\n", str);
-#define PRINTINT(num) printf("%d\n", num);
-  
   
 int main(int argc,char* argv[])   
 {  
@@ -55,8 +52,10 @@ int main(int argc,char* argv[])
 
    Frame recvFrame;
 
-   for (int i=0;i<10;i++) {
-      piper2 -> do_read(recvFrame);
+   for (;;) {
+
+      PRINTSTR("return value = ");
+      PRINTINT(piper2 -> do_read(recvFrame));
 
       PRINTSTR("recv source = ");
       PRINTINT(recvFrame.source);

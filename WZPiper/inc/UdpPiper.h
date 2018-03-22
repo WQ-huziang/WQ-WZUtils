@@ -1,6 +1,10 @@
 #ifndef UDPPIPER_H_
 #define UDPPIPER_H_
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include "frame.h"
 #include "WZPiper.h"
 
@@ -35,6 +39,8 @@ class UdpPiper : public WZPiper {
    int UDP_sockfd;
    // buffer size
    char buffer[1024];
+
+   struct sockaddr_in addr;
 };
 
 #endif //UdpPiper
