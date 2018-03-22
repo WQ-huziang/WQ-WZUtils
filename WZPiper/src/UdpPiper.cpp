@@ -32,7 +32,7 @@ void UdpPiper::init_as_server(){
         PRINTSTR("server socket create error");
     }
 
-    struct sockaddr_in addr;
+    // struct sockaddr_in addr;
     bzero(&addr,sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(this->UDP_port);
@@ -84,7 +84,7 @@ void UdpPiper::init_as_client(){
     int is_broadcast = 1;
     setsockopt(this->UDP_sockfd, SOL_SOCKET, SO_BROADCAST, &is_broadcast, sizeof(is_broadcast));
 
-    struct  sockaddr_in addr;
+    // struct  sockaddr_in addr;
     bzero(&addr,sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(this->UDP_port);
@@ -106,27 +106,23 @@ int UdpPiper::do_read(Frame& mail){
 
     memset(this->buffer, 0, sizeof(this->buffer));
 
-    struct sockaddr_in in_addr;
-    in_addr.sin_family = AF_INET;
-    in_addr.sin_port = htons(this->UDP_port);
-    in_addr.sin_addr.s_addr = htons(INADDR_ANY);
-    // in_addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
-
     socklen_t in_socklen ;
 
-    length = recvfrom(this->UDP_sockfd, this->buffer, sizeof(this->buffer), 0, (struct sockaddr* ) &in_addr, &in_socklen);
-    
-    // usleep(100);
+    length = recvfrom(this->UDP_sockfd, this->buffer, sizeof(this->buffer), 0, (struct sockaddr* ) &addr, &in_socklen);
 
     PRINTSTR("recv from port :");
-    PRINTINT(in_addr.sin_port);
+    PRINTINT(addr.sin_port);
 
     if (length < 0) {
         PRINTSTR("UDP read error");
         return 0;
-    } else if (length > 0) {
+    } else if (length >= 0) {
         memcpy(&mail, this->buffer, sizeof(this->buffer));
-        return 1;
+        if(mail.error_id == WZ_ERROR_ID_SUCCESS) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
     return 0;
 
@@ -138,13 +134,7 @@ void UdpPiper::do_write(Frame write_frame){
 
     memset(this->buffer, 0, sizeof(this->buffer));
     
-    struct sockaddr_in addr;
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(this->UDP_port);
-    addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
     length = sendto(this->UDP_sockfd, (char* ) &write_frame, sizeof(write_frame), 0, (struct sockaddr*) &addr, sizeof(addr) );
-
-    // usleep(100);
 
     PRINTSTR("writing to port :");
     PRINTINT(addr.sin_port);

@@ -4,8 +4,6 @@
 #include <unistd.h>
 #include "UdpPiper.h"
 
-#define PRINTSTR(str) printf("%s\n", str);
-#define PRINTINT(num) printf("%d\n", num);
   
   
 int main(int argc,char* argv[])   
@@ -55,7 +53,7 @@ int main(int argc,char* argv[])
    Frame frame;
    frame.source = 0;
    frame.msg_type = 1;
-   frame.error_id = 2;
+   frame.error_id = WZ_ERROR_ID_SUCCESS;
    frame.rtn_type = 3;
    frame.length = 4;
    char* data = new char [5];
