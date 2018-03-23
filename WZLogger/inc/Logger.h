@@ -1,6 +1,10 @@
+#ifndef LOGGER_H_
+#define LOGGER_H_
+
 #include <glog/logging.h>
-#include <wzadapter/wzdatastruct.h>
-#include "Ini.h"
+#include <wzdatastruct.h>
+#include "frame.h"
+#include "iniparser.h"
 
 class Logger
 {
@@ -18,5 +22,7 @@ public:
 	void Info(WZOrderActionField orderAction);
 	void Info(WZRtnOrderField rtnOrder);
 	void Info(WZRtnTradeField rtnTrade);
-
+	void Info(Frame f);
 };
+
+#endif
