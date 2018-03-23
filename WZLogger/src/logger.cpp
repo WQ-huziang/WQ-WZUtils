@@ -30,6 +30,31 @@ void Logger::ParseConfigInfo(char *configFilePath)
 	FLAGS_log_dir = buf;
 }
 
+void Logger::Info(string s)
+{
+	LOG(INFO) << s;
+}
+
+void Logger::Debug(string s)
+{
+	DLOG(INFO) << s;
+}
+
+void Logger::Warn(string s)
+{
+	LOG(WARNING) << s;
+}
+
+void Logger::Error(string s)
+{
+	LOG(ERROR) << s;
+}
+
+void Logger::Fatal(string s)
+{
+	LOG(FATAL) << s;
+}
+
 void Logger::Debug(char *buffer)
 {
 	DLOG(INFO) << buffer;
@@ -38,11 +63,6 @@ void Logger::Debug(char *buffer)
 void Logger::Info(char *buffer)
 {
 	 LOG(INFO) << buffer;
-}
-
-void Logger::Info(string s)
-{
-	LOG(INFO) << s;
 }
 
 void Logger::Warn(char *buffer)
@@ -85,7 +105,6 @@ string tostr(short s)
 	sprintf(str, "%d", s);
 	return str;
 }
-
 
 void Logger::Info(WZMarketDataField md){
 	string info = "交易日 : " + tostr(md.TradingDay) + "\n" +
@@ -153,8 +172,7 @@ void Logger::Info(Frame f){
 	string info = "source :" + tostr(f.source) + "\n" +
 				  "msg_type :" + tostr(f.msg_type) + "\n" +
 				  "error_id :" + tostr(f.msg_type) + "\n" + 
-				  "rtn_type :" + to_string(f.length) + "\n" +
-				  "data :" + tostr(f.data);
+				  "rtn_type :" + to_string(f.length) + "\n";
     LOG(INFO) << info;
 }
 
@@ -176,7 +194,7 @@ void Logger::Info(TSMarketDataField md)
 	              "本次结算价 : " + tostr(md.SettlementPrice);
 	LOG(INFO) << info;
 }
-void Info(TSInputOrderField inputOrder)
+void Logger::Info(TSInputOrderField inputOrder)
 {
 	string info = "报单 : " + tostr(inputOrder.OrderType) + "\n"
 				  "合约代码 : " + tostr(inputOrder.InstrumentID) + "\n" + 
@@ -186,7 +204,7 @@ void Info(TSInputOrderField inputOrder)
 	              "开平标志 : " + inputOrder.OffsetFlag;
 	LOG(INFO) << info;
 }
-void Info(TSOrderActionField orderAction)
+void Logger::Info(TSOrderActionField orderAction)
 {
 	string info = "合约代码 : " + tostr(orderAction.InstrumentID) + "\n" +
 	              "报单引用 : " + tostr(orderAction.OrderRef) + "\n" + + "\n" +
@@ -195,7 +213,7 @@ void Info(TSOrderActionField orderAction)
 	              "数量变化 : " + to_string(orderAction.VolumeChange);
 	LOG(INFO) << info;
 }
-void Info(TSRtnOrderField rtnOrder)
+void Logger::Info(TSRtnOrderField rtnOrder)
 {
 	string info = "合约代码 : " + tostr(rtnOrder.InstrumentID ) + "\n" +
 	              "报单引用 : " + tostr(rtnOrder.OrderRef) + "\n" +
@@ -208,7 +226,7 @@ void Info(TSRtnOrderField rtnOrder)
 	              "报单状态 : " + rtnOrder.OrderStatus;
 	LOG(INFO) << info;
 }
-void Info(TSRtnTradeField rtnTrade)
+void Logger::Info(TSRtnTradeField rtnTrade)
 {
 	string info = "合约代码 : " + tostr(rtnTrade.InstrumentID) + "\n" +
 	              "报单引用 : " + tostr(rtnTrade.OrderRef) + "\n" +
