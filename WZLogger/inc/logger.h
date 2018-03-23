@@ -18,6 +18,7 @@ public:
 	void Warn(char *buffer);
 	void Error(char *buffer);
 	void Fatal(char *buffer);
+	void Info(string s);
 	void Info(WZMarketDataField md);
 	void Info(WZInputOrderField inputOrder);             
 	void Info(WZOrderActionField orderAction);
