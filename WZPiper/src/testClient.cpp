@@ -3,8 +3,9 @@
 #include <string.h> 
 #include <unistd.h>
 #include "UdpPiper.h"
+#include "Logger.h"
 
-  
+Logger *logger;
   
 int main(int argc,char* argv[])   
 {  
@@ -43,6 +44,10 @@ int main(int argc,char* argv[])
             break;
       }
    }
+
+   logger = new Logger(argv[0]);
+   logger->ParseConfigInfo(filePathIn);
+   
 
    // send message
    WZPiper * piper1 = new UdpPiper();

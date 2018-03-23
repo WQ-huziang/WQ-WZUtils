@@ -59,6 +59,8 @@ class TcpPiper : public WZPiper {
    struct epoll_event events[MAXEPOLLSIZE];
 
    bool is_server;
+
+   char buffer[256];
 };
 
 #endif

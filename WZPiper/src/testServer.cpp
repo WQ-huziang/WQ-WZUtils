@@ -7,7 +7,9 @@
 #include<string.h>  
 #include<iostream>
 #include "UdpPiper.h"
+#include "Logger.h"
 
+Logger *logger;
   
 int main(int argc,char* argv[])   
 {  
@@ -46,6 +48,10 @@ int main(int argc,char* argv[])
             break;
       }
    }
+
+   logger = new Logger(argv[0]);
+   logger->ParseConfigInfo(filePathIn);
+
    WZPiper * piper2 = new UdpPiper();
    piper2 -> set_config_info(filePathIn);
    piper2 -> init_as_server();
@@ -53,6 +59,8 @@ int main(int argc,char* argv[])
    Frame recvFrame;
 
    for (;;) {
+
+      char * buffer = new char [50];
 
       PRINTSTR("return value = ");
       PRINTINT(piper2 -> do_read(recvFrame));
@@ -74,6 +82,8 @@ int main(int argc,char* argv[])
 
       PRINTSTR("recv data = ");
       PRINTSTR(recvFrame.data);
+
+      logger -> Info("recv length = ");
    }
 
 

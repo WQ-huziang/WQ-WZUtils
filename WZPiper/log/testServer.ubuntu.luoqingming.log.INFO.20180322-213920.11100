@@ -1,0 +1,4 @@
+Log file created at: 2018/03/22 21:39:20
+Running on machine: ubuntu
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0322 21:39:20.975847 11100 Logger.cpp:38] config port = 22520, config ip = 192.168.0.6

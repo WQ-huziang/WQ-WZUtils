@@ -1,0 +1,4 @@
+Log file created at: 2018/03/22 20:38:05
+Running on machine: ubuntu
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E0322 20:38:05.105132 15926 Logger.cpp:48] UDP server bind error

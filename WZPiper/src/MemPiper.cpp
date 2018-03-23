@@ -1,5 +1,7 @@
 #include "MemPiper.h"
 
+extern Logger *logger;
+
 // initialize some private variable
 MemPiper::MemPiper() {
    // init private variable

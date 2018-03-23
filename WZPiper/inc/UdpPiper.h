@@ -34,7 +34,7 @@ class UdpPiper : public WZPiper {
    // sokect id
    int UDP_sockfd;
    // buffer size
-   char buffer[1024];
+   char buffer[256];
 
    struct sockaddr_in addr;
 };

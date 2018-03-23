@@ -1,10 +1,12 @@
-#include "UdpPiper.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include "Logger.h"
+#include "UdpPiper.h"
 
+extern Logger *logger;
 
 // initialize some private variable
 UdpPiper::UdpPiper(){
@@ -28,7 +30,8 @@ void UdpPiper::init_as_server(){
     
     this->UDP_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if(this->UDP_sockfd == -1){
-        PRINTSTR("server socket create error");
+        sprintf(buffer,"server socket create error");
+        logger -> Error(buffer);
     }
 
     // struct sockaddr_in addr;
@@ -37,16 +40,13 @@ void UdpPiper::init_as_server(){
     addr.sin_port = htons(this->UDP_port);
     addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
 
-    PRINTSTR("config port = ");
-    PRINTINT(this->UDP_port);
-    PRINTSTR("sin_port port = ");
-    PRINTINT(addr.sin_port);
-
     if(bind(this->UDP_sockfd, (struct sockaddr *) &addr, sizeof(addr)) < 0 ){
-        PRINTSTR("UDP server bind error");
+        sprintf(buffer,"UDP server bind error");
+        logger -> Error(buffer);
         exit(EXIT_FAILURE);
     } else {
-        PRINTSTR("UDP server bind success");
+        sprintf(buffer,"UDP server bind success");
+        logger -> Info(buffer);
     }
 }
 
@@ -56,16 +56,12 @@ void UdpPiper::set_config_info(char file_path[256]){
     ini.OpenFile(file_path,"r");
 
     char* ini_ip = ini.GetStr("UDPNetInfo","ip");
-    PRINTSTR("config ip = ");
-    PRINTSTR(ini_ip);
     strcpy(this->UDP_ip,ini_ip);
 
-    PRINTSTR("read ip = ");
-    PRINTSTR(this->UDP_ip);
-
     this->UDP_port = ini.GetInt("UDPNetInfo","port");
-    PRINTSTR("config port = ");
-    PRINTINT(this->UDP_port);
+
+    sprintf(buffer, "config port = %d, config ip = %s", this->UDP_port, this->UDP_ip);
+    logger -> Info(buffer);
 
 }
 
@@ -73,10 +69,12 @@ void UdpPiper::set_config_info(char file_path[256]){
 void UdpPiper::init_as_client(){
 
     if( (this->UDP_sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-        PRINTSTR("UDP client socket init error");
+        sprintf(buffer,"UDP client socket init error");
+        logger -> Error(buffer);
         exit(EXIT_FAILURE);
     } else {
-        PRINTSTR("UDP client socket init success");
+        sprintf(buffer,"UDP client socket init success");
+        logger -> Info(buffer);
     }
 
 
@@ -88,11 +86,6 @@ void UdpPiper::init_as_client(){
     addr.sin_family = AF_INET;
     addr.sin_port = htons(this->UDP_port);
     addr.sin_addr.s_addr = inet_addr(this->UDP_ip);
-
-    PRINTSTR("config port = ");
-    PRINTINT(this->UDP_port);
-    PRINTSTR("sin_port port = ");
-    PRINTINT(addr.sin_port);
 
 }
 
@@ -109,17 +102,20 @@ int UdpPiper::do_read(Frame& mail){
 
     length = recvfrom(this->UDP_sockfd, this->buffer, sizeof(this->buffer), 0, (struct sockaddr* ) &addr, &in_socklen);
 
-    PRINTSTR("recv from port :");
-    PRINTINT(addr.sin_port);
+    sprintf(buffer,"recv from port :%d", addr.sin_port);
+    logger -> Info(buffer);
 
     if (length < 0) {
-        PRINTSTR("UDP read error");
+        sprintf(buffer,"UDP read error");
+        logger -> Error(buffer);
         return 0;
     } else if (length >= 0) {
         memcpy(&mail, this->buffer, sizeof(this->buffer));
         if(mail.error_id == WZ_ERROR_ID_SUCCESS) {
             return 1;
         } else {
+            sprintf(buffer,"receive wrong data");
+            logger -> Warn(buffer);
             return 0;
         }
     }
@@ -135,13 +131,16 @@ void UdpPiper::do_write(Frame write_frame){
     
     length = sendto(this->UDP_sockfd, (char* ) &write_frame, sizeof(write_frame), 0, (struct sockaddr*) &addr, sizeof(addr) );
 
-    PRINTSTR("writing to port :");
-    PRINTINT(addr.sin_port);
+    sprintf(buffer,"writing to port :%d", addr.sin_port);
+    logger -> Info(buffer);
 
     if (!length) {
-    	PRINTSTR("writing error");
+
+        sprintf(buffer,"writing error");
+        logger -> Error(buffer);
+
     } else {
-    	PRINTSTR("wrote successfully");
-        PRINTINT(length);
+        sprintf(buffer,"wrote successfully");
+        logger -> Info(buffer);
     }
 }

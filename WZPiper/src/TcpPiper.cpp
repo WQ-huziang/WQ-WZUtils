@@ -1,4 +1,6 @@
 #include "TcpPiper.h"
+#include "Logger.h"
+extern Logger *logger;
 
 TcpPiper::TcpPiper() 
 {
@@ -40,12 +42,14 @@ void TcpPiper::init_as_server()
 
   if (bind(listen_fd, (struct sockaddr *) &servaddr, sizeof(struct sockaddr)) == -1) 
   {
-  	PRINTSTR("bind error");
+    sprintf(buffer, "bind error");
+    logger -> Error(buffer);
   	return;
   }
   if (listen(listen_fd, MAXLISTENQUEUR) == -1) 
   {
-  	PRINTSTR("listen error");
+    sprintf(buffer, "listen error");
+    logger -> Error(buffer);
   	return;
   }
 }
@@ -104,10 +108,10 @@ void TcpPiper::do_write(Frame mail)
   {
     ret = write(mail.dest, (char*)&mail, sizeof(Frame));
   }
-  PRINTINT(ret);
   if (ret == -1) 
   {
-  	PRINTSTR("write error!");
+    sprintf(buffer, "write error");
+    logger -> Error(buffer);
   	close(event_fd);
   	delete_event(epoll_fd, event_fd, EPOLLOUT);
   }
@@ -117,7 +121,8 @@ int TcpPiper::set_nonblocking(int sockfd)
 {
   if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0)|O_NONBLOCK) == -1) 
   {
-    PRINTSTR("listen error");
+    sprintf(buffer, "listen error");
+    logger -> Error(buffer);
     return -1;
   }
   return 0;
@@ -137,7 +142,8 @@ bool TcpPiper::handle_accept()
     int cli_fd = accept(listen_fd, (struct sockaddr *)&cliaddr, &socklen);
     set_nonblocking(cli_fd);
     add_event(epoll_fd, cli_fd, EPOLLIN);
-    printf("build a new link from: %s:%d\n", inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);
+    sprintf(buffer, "build a new link from: %s:%d", inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);
+    logger -> Info(buffer);
     return 1;
   }
   return 0;
