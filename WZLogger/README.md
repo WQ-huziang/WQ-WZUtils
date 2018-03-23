@@ -2,7 +2,7 @@
 - Objective:
 - Member:
 
-### Logger.h
+### logger.h
 ```c++
 Logger() 			/* InitGoogleLogging */
 ~Logger()			/* ShutdownGoogleLogging */
@@ -16,9 +16,10 @@ Info(struct ...)
 
 ### Configure Logger 
 
-#### create a folder to save logging file
+#### step1:
+	先新建log文件夹
 
-#### config.ini
+#### step2:config.ini
 
 ```c++
 [Logger]
@@ -27,30 +28,31 @@ alsologtostderr=1       #1-同时将日志输出到文件和stderr
 minloglevel=0           #限制输出到 stderr 的部分信息，包括此错误级别和更高错误级别的日志信息
 stderrthreshold=2       #除了将日志输出到文件之外，还将此错误级别和更高错误级别的日志同时输出到 stderr
 colorlogtostderr=0      #将输出到 stderr 上的错误日志显示相应的颜色
-log_dir=../log          #log文件夹的路径，需要先新建log文件夹
+log_dir=../log             
 ```
 
-#### inc
+#### step3:inc
 
 ```c++
-/* copy  Logger.h and folder glog to the folder inc */
-Logger.h
-glog
+/* copy  logger.h and logging.h to the folder inc */
+logger.h
+logging.h
+
+/* if you use your own computer, you must copy glog to your inc */
 ```
 
-#### lib
+#### step4:lib
 
 ```c++
-/* copy libLogger.h to the folder lib */
-
-libLogger.h
+/* copy liblogger.h to the folder lib */
+liblogger.so
 ```
 
-#### CmakeList.txt
+#### step5:CmakeList.txt
 
 ```c++
 /* add the following instruction to the CMakeList.txt */
-TARGET_LINK_LIBRARIES(yourexe Logger iniparser glog)
+TARGET_LINK_LIBRARIES(yourexe logger iniparser glog)
 ```
 
 ### Instructions for use
@@ -66,6 +68,9 @@ logger->ParseConfigInfo(ini);
 #### different operations
 
 ```c++
+/* not need newline \n */
+
+logger->Info(string)
 logger->Debug(char *buffer);
 logger->Info(char *buffer);
 logger->Warn(char *buffer);
@@ -76,6 +81,11 @@ logger->Info(WZInputOrderField inputOrder);
 logger->Info(WZOrderActionField orderAction);
 logger->Info(WZRtnOrderField rtnOrder);
 logger->Info(WZRtnTradeField rtnTrade);
+logger->Info(TSMarketDataField md);
+logger->Info(TSInputOrderField inputorder);
+logger->Info(TSOrderActionField orderaction);
+logger->Info(TSRtnOrderField rtnOrder);
+logger->Info(TSRtnTradeField rtnTrade);
 ```
 
 If you have other questions, please click https://www.cnblogs.com/tianyajuanke/archive/2013/02/22/2921850.html

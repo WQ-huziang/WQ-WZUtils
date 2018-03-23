@@ -1,10 +1,11 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
 
-#include <glog/logging.h>
+#include <logging.h>
 #include <wzdatastruct.h>
 #include "frame.h"
 #include "iniparser.h"
+#include "transportstruct.h"
 
 class Logger
 {
@@ -23,6 +24,11 @@ public:
 	void Info(WZRtnOrderField rtnOrder);
 	void Info(WZRtnTradeField rtnTrade);
 	void Info(Frame f);
+	void Info(TSMarketDataField md);
+	void Info(TSInputOrderField inputorder);
+	void Info(TSOrderActionField orderaction);
+	void Info(TSRtnOrderField rtnOrder);
+	void Info(TSRtnTradeField rtnTrade);
 };
 
 #endif
