@@ -2,10 +2,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "iniparser.h"
-using std::string;
-using std::to_string;
-using std::stringstream;
+
+using namespace std;
 
 Logger::Logger(char *programname)
 {
@@ -131,6 +129,14 @@ void Logger::Info(WZRtnTradeField rtnTrade){
 	LOG(INFO) << info;
 }
 
+void Logger::Info(Frame f){
+	string info = "source :" + tostr(f.source) + "\n" +
+				  "msg_type :" + tostr(f.msg_type) + "\n" +
+				  "error_id :" + tostr(f.msg_type) + "\n" + 
+				  "rtn_type :" + tostr(f.length) + "\n" +
+				  "data :" + tostr(f.data);
+    LOG(INFO) << info;
+}
 // static Logger* Logger::Instance()
 // {
 // 	if(m_pInstance == NULL)
