@@ -67,7 +67,7 @@ int TcpPiper::set_config_info(char file_path[256])
 
   port = ini.GetInt("TCPNetInfo", "port");
 
-  sprintf(buffer, "config port = %d, config ip = %s", this->UDP_port, this->UDP_ip);
+  sprintf(buffer, "config port = %d, config ip = %s", this->port, this->ip);
   logger -> Info(buffer);
 
   return 0;
