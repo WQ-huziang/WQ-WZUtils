@@ -38,7 +38,7 @@ class TcpPiper : public WZPiper {
    int set_nonblocking(int sockfd);
 
    /*action in epoll*/
-   bool handle_accept();
+   int handle_accept();
    int add_event(int &sockfd, int state);
    int delete_event(int &sockfd, int state);
 

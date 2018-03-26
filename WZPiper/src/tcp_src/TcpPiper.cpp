@@ -64,7 +64,12 @@ int TcpPiper::set_config_info(char file_path[256])
     return -1;
   char *temp = ini.GetStr("TCPNetInfo", "ip");
   strcpy(ip, temp);
+
   port = ini.GetInt("TCPNetInfo", "port");
+
+  sprintf(buffer, "config port = %d, config ip = %s", this->UDP_port, this->UDP_ip);
+  logger -> Info(buffer);
+
   return 0;
 }
 
@@ -92,7 +97,7 @@ int TcpPiper::do_read(Frame &mail)
   for(int i=0; i<num_of_events; i++) 
   {
     event_fd = events[i].data.fd;
-    if (handle_accept()) 
+    if (handle_accept() == 0) 
       continue;
     memset(&mail, 0, sizeof(Frame));
     int ret = read(event_fd, &mail, sizeof(mail));
@@ -139,7 +144,7 @@ int TcpPiper::set_nonblocking(int sockfd)
   return 0;
 }
 
-bool TcpPiper::handle_accept() 
+int TcpPiper::handle_accept() 
 {
   if (event_fd == listen_fd) 
   {
@@ -150,9 +155,9 @@ bool TcpPiper::handle_accept()
     add_event(cli_fd, EPOLLIN);
     sprintf(buffer, "build a new link from: %s:%d", inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);
     logger -> Info(buffer);
-    return 1;
+    return 0;
   }
-  return 0;
+  return -1;
 }
 
 int TcpPiper::add_event(int& sockfd, int state) 

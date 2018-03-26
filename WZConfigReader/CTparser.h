@@ -8,7 +8,7 @@
 #include "wzadapter/transportstruct.h"
 #include "CTP/ThostFtdcUserApiStruct.h"
 
-inline struct CThostFtdcInputOrderField parserFrom (const TSInputOrderField req){
+inline struct CThostFtdcInputOrderField parserFrom (const TSInputOrderField& req){
 	CThostFtdcInputOrderField rtn;
 	switch (req.OrderType){
 		case WZ_ORDER_MARKET_ORDER:
@@ -50,7 +50,7 @@ inline struct CThostFtdcInputOrderField parserFrom (const TSInputOrderField req)
 	return rtn;
 }
 
-inline struct CThostFtdcInputOrderActionField parserFrom (const TSOrderActionField req){
+inline struct CThostFtdcInputOrderActionField parserFrom (const TSOrderActionField& req){
 	CThostFtdcInputOrderActionField rtn;
 	strcpy(rtn.InstrumentID, req.InstrumentID);
 	strcpy(rtn.OrderRef, req.OrderRef);
@@ -60,7 +60,7 @@ inline struct CThostFtdcInputOrderActionField parserFrom (const TSOrderActionFie
 	return rtn;
 }
 
-inline struct CThostFtdcOrderField parserFrom(const TSRtnOrderField req){
+inline struct CThostFtdcOrderField parserFrom(const TSRtnOrderField& req){
 	CThostFtdcOrderField rtn;
 	strcpy(rtn.InstrumentID, req.InstrumentID);
 	strcpy(rtn.OrderRef, req.OrderRef);
