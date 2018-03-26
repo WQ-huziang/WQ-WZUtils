@@ -5,6 +5,8 @@
 #ifndef STRATEGY_FRAME_H
 #define STRATEGY_FRAME_H
 
+#include "wzadapter/transportstruct.h"
+
 struct Frame{
     short source;
     short msg_type;
@@ -12,9 +14,64 @@ struct Frame{
     short rtn_type;
     short dest;
     int length;
-    char data[500];
+    union Data{
+        TSInputOrderField insert;
+        TSOrderActionField action;
+        TSRtnOrderField order;
+        TSRtnTradeField trade;
+        TSMarketDataField market;
+    } data;
 };
 
+struct ReqFrame{
+    char source;
+    char msg_type;
+    char error_id;
+    char rtn_type;
+    int length;
+    union ReqData{
+        TSInputOrderField insert;
+        TSOrderActionField action;
+    } req_data;
+};
+
+/* 用的比较少，所以还没用简化的TS的形式 */
+struct RspFrame{
+    char source;
+    char msg_type;
+    char error_id;
+    char rtn_type;
+    int length;
+    union RspData{
+        WZRspAccountField account;
+        WZRspPositionField position;
+    } rsp_data;
+};
+
+struct RtnFrame{
+    char source;
+    char msg_type;
+    char error_id;
+    char rtn_type;
+    int length;
+    union RtnData{
+        TSRtnOrderField order;
+        TSRtnTradeField trade;
+    } rtn_data;
+};
+
+struct MarketDataFrame{
+    char source;
+    char msg_type;
+    char error_id;
+    char rtn_type;
+    int length;
+    TSMarketDataField market_data;
+//    union MarketData{
+//        TSMarketDataField
+//    } market_data;
+};
+//
 ///////////////////////////////////
 // source: 数据来源
 ///////////////////////////////////
@@ -38,7 +95,8 @@ typedef short WZSourceType;
 #define WZ_MSG_TYPE_ON_ORDER             3
 //订单成交数据
 #define WZ_MSG_TYPE_ON_TRADE             4
-
+//错误信息
+#define WZ_MSG_ERROR                     404
 typedef short WZMsgType;
 
 ///////////////////////////////////
@@ -67,8 +125,5 @@ typedef short WZSourceType;
 ///////////////////////////////////
 // 统一
 #define WZ_RTN_TYPE 0
-
-typedef short WZRtnType;
-
 
 #endif //STRATEGY_FRAME_H
