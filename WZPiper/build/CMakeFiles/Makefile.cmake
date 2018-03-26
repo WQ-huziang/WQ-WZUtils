@@ -43,6 +43,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "tcp_src/CMakeFiles/server.dir/DependInfo.cmake"
+  "tcp_src/CMakeFiles/client.dir/DependInfo.cmake"
   "tcp_src/CMakeFiles/TcpPiper.dir/DependInfo.cmake"
   )

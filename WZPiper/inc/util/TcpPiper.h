@@ -20,11 +20,11 @@ class TcpPiper : public WZPiper {
    /*
    from WZPiper
    */
-   virtual void init_as_server();
-   virtual void set_config_info(char file_path[256]);
-   virtual void init_as_client();
+   virtual int init_as_server();
+   virtual int set_config_info(char file_path[256]);
+   virtual int init_as_client();
    virtual int do_read(Frame &mail);
-   virtual bool do_write(Frame &mail);
+   virtual int do_write(Frame &mail);
 
  public:
 
@@ -38,10 +38,9 @@ class TcpPiper : public WZPiper {
    int set_nonblocking(int sockfd);
 
    /*action in epoll*/
-   int wait_event();
    bool handle_accept();
-   void add_event(int &sockfd, int state);
-   void delete_event(int &sockfd, int state);
+   int add_event(int &sockfd, int state);
+   int delete_event(int &sockfd, int state);
 
  private:
 

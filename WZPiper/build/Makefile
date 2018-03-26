@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named server
+# Target rules for targets named client
 
 # Build rule for target.
-server: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 server
-.PHONY : server
+client: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 client
+.PHONY : client
 
 # fast build rule for target.
-server/fast:
-	$(MAKE) -f tcp_src/CMakeFiles/server.dir/build.make tcp_src/CMakeFiles/server.dir/build
-.PHONY : server/fast
+client/fast:
+	$(MAKE) -f tcp_src/CMakeFiles/client.dir/build.make tcp_src/CMakeFiles/client.dir/build
+.PHONY : client/fast
 
 #=============================================================================
 # Target rules for targets named TcpPiper
@@ -144,7 +144,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... server"
+	@echo "... client"
 	@echo "... TcpPiper"
 .PHONY : help
 

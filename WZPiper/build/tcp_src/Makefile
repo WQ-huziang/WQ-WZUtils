@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -77,6 +66,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,19 +111,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-tcp_src/CMakeFiles/server.dir/rule:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 tcp_src/CMakeFiles/server.dir/rule
-.PHONY : tcp_src/CMakeFiles/server.dir/rule
+tcp_src/CMakeFiles/client.dir/rule:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f CMakeFiles/Makefile2 tcp_src/CMakeFiles/client.dir/rule
+.PHONY : tcp_src/CMakeFiles/client.dir/rule
 
 # Convenience name for target.
-server: tcp_src/CMakeFiles/server.dir/rule
+client: tcp_src/CMakeFiles/client.dir/rule
 
-.PHONY : server
+.PHONY : client
 
 # fast build rule for target.
-server/fast:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/server.dir/build.make tcp_src/CMakeFiles/server.dir/build
-.PHONY : server/fast
+client/fast:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/client.dir/build.make tcp_src/CMakeFiles/client.dir/build
+.PHONY : client/fast
 
 # Convenience name for target.
 tcp_src/CMakeFiles/TcpPiper.dir/rule:
@@ -167,32 +167,32 @@ TcpPiper.cpp.s:
 	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/TcpPiper.dir/build.make tcp_src/CMakeFiles/TcpPiper.dir/TcpPiper.cpp.s
 .PHONY : TcpPiper.cpp.s
 
-server.o: server.cpp.o
+client.o: client.cpp.o
 
-.PHONY : server.o
+.PHONY : client.o
 
 # target to build an object file
-server.cpp.o:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/server.dir/build.make tcp_src/CMakeFiles/server.dir/server.cpp.o
-.PHONY : server.cpp.o
+client.cpp.o:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/client.dir/build.make tcp_src/CMakeFiles/client.dir/client.cpp.o
+.PHONY : client.cpp.o
 
-server.i: server.cpp.i
+client.i: client.cpp.i
 
-.PHONY : server.i
+.PHONY : client.i
 
 # target to preprocess a source file
-server.cpp.i:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/server.dir/build.make tcp_src/CMakeFiles/server.dir/server.cpp.i
-.PHONY : server.cpp.i
+client.cpp.i:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/client.dir/build.make tcp_src/CMakeFiles/client.dir/client.cpp.i
+.PHONY : client.cpp.i
 
-server.s: server.cpp.s
+client.s: client.cpp.s
 
-.PHONY : server.s
+.PHONY : client.s
 
 # target to generate assembly for a file
-server.cpp.s:
-	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/server.dir/build.make tcp_src/CMakeFiles/server.dir/server.cpp.s
-.PHONY : server.cpp.s
+client.cpp.s:
+	cd /home/luojunbin/project/WQ_project/WZUtils/WZPiper/build && $(MAKE) -f tcp_src/CMakeFiles/client.dir/build.make tcp_src/CMakeFiles/client.dir/client.cpp.s
+.PHONY : client.cpp.s
 
 # Help Target
 help:
@@ -200,16 +200,16 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... server"
+	@echo "... edit_cache"
+	@echo "... client"
 	@echo "... TcpPiper"
 	@echo "... TcpPiper.o"
 	@echo "... TcpPiper.i"
 	@echo "... TcpPiper.s"
-	@echo "... server.o"
-	@echo "... server.i"
-	@echo "... server.s"
+	@echo "... client.o"
+	@echo "... client.i"
+	@echo "... client.s"
 .PHONY : help
 
 

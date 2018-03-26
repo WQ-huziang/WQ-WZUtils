@@ -24,7 +24,7 @@ TcpPiper::~TcpPiper()
   close(epoll_fd);
 }
 
-void TcpPiper::init_as_server() 
+int TcpPiper::init_as_server() 
 {
   listen_fd = socket(AF_INET, SOCK_STREAM, 0);
   epoll_fd = epoll_create(MAXEPOLLSIZE);
@@ -32,11 +32,13 @@ void TcpPiper::init_as_server()
 
   int opt = 1;
   setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-  set_nonblocking(listen_fd);
+  if (set_nonblocking(listen_fd) != 0) 
+    return -1;
+
   add_event(listen_fd, EPOLLIN);
 
   memset(&servaddr, 0, sizeof(servaddr));
-  servaddr.sin_family = AF_INET; 
+  servaddr.sin_family = AF_INET;
   inet_pton(AF_INET, ip, &servaddr.sin_addr);
   servaddr.sin_port = htons (port);
 
@@ -44,29 +46,33 @@ void TcpPiper::init_as_server()
   {
     sprintf(buffer, "bind error");
     logger -> Error(buffer);
-  	return;
+  	return -1;
   }
   if (listen(listen_fd, MAXLISTENQUEUR) == -1) 
   {
     sprintf(buffer, "listen error");
     logger -> Error(buffer);
-  	return;
+  	return -1;
   }
+  return 0;
 }
 
-void TcpPiper::set_config_info(char file_path[256]) 
+int TcpPiper::set_config_info(char file_path[256]) 
 {
   CIni ini;
-  ini.OpenFile(file_path, "r");
+  if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR)
+    return -1;
   char *temp = ini.GetStr("TCPNetInfo", "ip");
   strcpy(ip, temp);
   port = ini.GetInt("TCPNetInfo", "port");
+  return 0;
 }
 
-void TcpPiper::init_as_client() 
+int TcpPiper::init_as_client()
 {
   server_fd = socket(AF_INET, SOCK_STREAM, 0);
-  set_nonblocking(server_fd);
+  if(set_nonblocking(server_fd) == -1) 
+    return -1;
 
   memset(&servaddr, 0, sizeof(servaddr));
   servaddr.sin_family = AF_INET; 
@@ -76,11 +82,13 @@ void TcpPiper::init_as_client()
 
   epoll_fd = epoll_create(MAXEPOLLSIZE);
   add_event(server_fd, EPOLLIN);
+
+  return 0;
 }
 
 int TcpPiper::do_read(Frame &mail) 
 {
-  int num_of_events = wait_event();
+  int num_of_events = epoll_wait(epoll_fd, events, 1, 0);
   for(int i=0; i<num_of_events; i++) 
   {
     event_fd = events[i].data.fd;
@@ -97,18 +105,18 @@ int TcpPiper::do_read(Frame &mail)
   return -1;
 }
 
-bool TcpPiper::do_write(Frame& mail) 
+int TcpPiper::do_write(Frame& mail) 
 {
   int ret;
   if (is_server == 0)
   {
     ret = write(server_fd, (char*)&mail, sizeof(Frame));
-    return 1;
+    return 0;
   }
   else 
   {
     ret = write(mail.dest, (char*)&mail, sizeof(Frame));
-    return 1;
+    return 0;
   }
   if (ret == -1) 
   {
@@ -117,23 +125,18 @@ bool TcpPiper::do_write(Frame& mail)
   	close(event_fd);
   	delete_event(event_fd, EPOLLOUT);
   }
-  return 0;
+  return -1;
 }
 
 int TcpPiper::set_nonblocking(int sockfd) 
 {
   if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0)|O_NONBLOCK) == -1) 
   {
-    sprintf(buffer, "listen error");
+    sprintf(buffer, "set nonblock error");
     logger -> Error(buffer);
     return -1;
   }
   return 0;
-}
-
-int TcpPiper::wait_event() 
-{
-  return  epoll_wait(epoll_fd, events, 1, 0);
 }
 
 bool TcpPiper::handle_accept() 
@@ -152,19 +155,28 @@ bool TcpPiper::handle_accept()
   return 0;
 }
 
-void TcpPiper::add_event(int& sockfd, int state) 
+int TcpPiper::add_event(int& sockfd, int state) 
 {
   struct epoll_event ev;
   ev.events = state | EPOLLET;
   ev.data.fd = sockfd;
-  epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &ev);
+  if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &ev) == -1){
+    sprintf(buffer, "add event error");
+    logger -> Error(buffer);
+    return -1;
+  }
+  return 0;
 }
 
-void TcpPiper::delete_event(int& sockfd, int state) 
+int TcpPiper::delete_event(int& sockfd, int state) 
 {
   struct epoll_event ev;
   ev.events = state | EPOLLET;
   ev.data.fd = sockfd;
-  epoll_ctl(epoll_fd, EPOLL_CTL_DEL, sockfd, &ev);
+  if (epoll_ctl(epoll_fd, EPOLL_CTL_DEL, sockfd, &ev) == -1){
+    sprintf(buffer, "delete event error");
+    logger -> Error(buffer);
+    return -1;
+  }
+  return 0;
 }
-

@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
 
 	Frame my_frame;
 	for(;;) {
-		if (pip->do_read(my_frame)) {
-			printf("%d\n",my_frame.source);
-			printf("%d\n",my_frame.msg_type);
+		if (pip->do_read(my_frame) > 0) {
+			printf("my_frame.source: %d\n",my_frame.source);
+			printf("my_frame.msg_type: %d\n",my_frame.msg_type);
 			// spi take advantage of my_frame
 		}
 		else {

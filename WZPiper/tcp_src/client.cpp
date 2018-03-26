@@ -1,5 +1,8 @@
-#include "TcpPiper.h"
-#include "WZPiper.h"
+#include "util/TcpPiper.h"
+#include "util/WZPiper.h"
+#include "util/logger.h"
+
+Logger *logger;
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +31,7 @@ int main(int argc, char *argv[])
 	Frame rec_frame;
 
 	for(;;) {
-		if (pip->do_read(rec_frame)) {
+		if (pip->do_read(rec_frame) > 0) {
 			printf("%d\n",rec_frame.source);
 			printf("%d\n",rec_frame.msg_type);
 		}
