@@ -8,7 +8,7 @@
 #ifndef BASE_DATA_STRUCT
 #define BASE_DATA_STRUCT
 
-#include "wzconstant.h"
+#include "wzadapter/wzconstant.h"
 
 typedef char char_19[19];
 typedef char char_21[21];

@@ -1,5 +1,7 @@
-#include "TcpPiper.h"
-#include "WZPiper.h"
+#include "util/TcpPiper.h"
+#include "util/logger.h"
+
+Logger *logger;
 
 int main(int argc, char *argv[])
 {
@@ -19,26 +21,19 @@ int main(int argc, char *argv[])
     }
 
 	pip->set_config_info(config_file_path);
-	pip->init_as_client();
+	pip->init_as_server();
 
-	Frame my_frame_1;
-	my_frame_1.source = 3;
-	my_frame_1.msg_type = 3;
-
-	Frame rec_frame;
-
+	Frame my_frame;
 	for(;;) {
-		if (pip->do_read(rec_frame)) {
-			printf("%d\n",rec_frame.source);
-			printf("%d\n",rec_frame.msg_type);
+		if (pip->do_read(my_frame) > 0) {
+			printf("my_frame.source: %d\n",my_frame.source);
+			printf("my_frame.msg_type: %d\n",my_frame.msg_type);
+			// spi take advantage of my_frame
 		}
 		else {
-			// run strategy here
-			printf("%s\n", "write frame");
-			pip->do_write(my_frame_1);
-			usleep(1000000);
+			
 		}
 	}
-
+	
 	return 0;
 }
