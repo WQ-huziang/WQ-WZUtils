@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -g -std=c++11 -g   CMakeFiles/server.dir/server.cpp.o  -o ../../bin/server  -L/home/luojunbin/project/WQ_project/WZUtils/WZPiper/lib ../../lib/libTcpPiper.so -liniparser -llogger -lglog -Wl,-rpath,/home/luojunbin/project/WQ_project/WZUtils/WZPiper/lib 
