@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC  -std=c++11 -g -std=c++11 -g  -shared -Wl,-soname,libMemPiper.so -o ../../../lib/libMemPiper.so CMakeFiles/MemPiper.dir/MemPiper.cpp.o 
