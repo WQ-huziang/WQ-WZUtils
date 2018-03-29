@@ -75,7 +75,7 @@ int MemPiper::do_read(Frame &mail) {
          (* (blk_cur + i)).written = 1;
          memcpy((* (blk_cur + i)).data, &mail, sizeof(Frame));
          return 0;
-      } 
+      }
    }
    // memcpy(&mail, (m_memory_addr), sizeof(mail));
    return -1;

@@ -67,6 +67,8 @@ class MemPiper : public WZPiper {
    char *m_memory_addr;	// shared memory address pointer
 
    int m_block_num; // the number of SharedMemBlock
+
+   
    
 };
 
