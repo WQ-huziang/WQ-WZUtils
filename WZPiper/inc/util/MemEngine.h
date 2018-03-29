@@ -47,6 +47,7 @@ class MemEngine{
    int m_flag;			// shared memory flag
    int m_shmid;			// shared memory descriptor
    char *m_memory_addr;	// shared memory address pointer  
+
 };
 
 #endif // MEMENGINE_H_
