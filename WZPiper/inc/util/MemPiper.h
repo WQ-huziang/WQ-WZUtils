@@ -66,9 +66,8 @@ class MemPiper : public WZPiper {
    int m_shmid;			// shared memory descriptor
    char *m_memory_addr;	// shared memory address pointer
 
-   int m_block_num; // the number of SharedMemBlock
-
-   
+   MemQueue* m_queue; // the index of reading position
+   int m_reader_num; // 
    
 };
 
