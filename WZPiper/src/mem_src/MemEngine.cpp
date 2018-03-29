@@ -1,11 +1,13 @@
-#include "util/MemPiper.h"
+#include "util/MemEngine.h"
 #include "util/logger.h"
+
+#define MAX_QUEUE_SIZE 20
 
 extern Logger *logger;
 char logger_buf[1024];
 
 // initialize some private variable
-MemPiper::MemPiper() {
+MemEngine::MemEngine() {
    // init private variable
    m_flag = 3 ;
    m_key  = 0 ;
@@ -16,27 +18,15 @@ MemPiper::MemPiper() {
 }
 
 // destructor
-MemPiper::~MemPiper() {
+MemEngine::~MemEngine() {
    // call detach_memory to detach memory
    if(m_memory_addr != NULL) {
       detach_memory(m_memory_addr);
    }
-
-}
-
-// initialize the server shared memory address pointer
-int MemPiper::init_as_server() {
-   if ( create_memory(this -> m_key, this -> m_size, this -> m_flag) ) {
-      sprintf(logger_buf, "create_memory successfully");
-      logger -> Info(logger_buf);
-      
-      return 0;
-   }
-   return -1;
 }
 
 // read key and size from configure file 
-int MemPiper::set_config_info(char file_path[256]) {
+int MemEngine::set_config_info(char file_path[256]) {
    CIni ini;
    if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR){
       sprintf(logger_buf, "INI_OPENFILE_ERROR");
@@ -57,46 +47,9 @@ int MemPiper::set_config_info(char file_path[256]) {
 
    return 0;
 }
-// initialize the client shared memory address pointer
-int MemPiper::init_as_client() {
-   if( create_memory(this -> m_key, this -> m_size, this -> m_flag) ) {
-      sprintf(logger_buf, "create_memory successfully");
-      logger -> Info(logger_buf);
-      return 0;
-   }
-   return -1;
-}
-// read from the shared memory
-int MemPiper::do_read(Frame &mail) {
-   SharedMemBlock* blk_cur;
-   blk_cur = (SharedMemBlock*) this -> m_memory_addr;
-   for (int i = 0; i < this -> m_block_num; i++) {
-      if( (* (blk_cur + i)).written == 0 ){
-         (* (blk_cur + i)).written = 1;
-         memcpy((* (blk_cur + i)).data, &mail, sizeof(Frame));
-         return 0;
-      }
-   }
-   // memcpy(&mail, (m_memory_addr), sizeof(mail));
-   return -1;
-}
-// write from the shared memory
-int MemPiper::do_write(Frame &mail) {
-   SharedMemBlock* blk_cur;
-   blk_cur = (SharedMemBlock*) this -> m_memory_addr;
-   for (int i = 0; i < this -> m_block_num ; i++) {
-      if( (* (blk_cur + i)).written == 1 ){
-         (* (blk_cur + i)).written = 0;
-         memcpy(&mail, (* (blk_cur + i)).data, sizeof(Frame));
-         return 0;
-      } 
-   }
-   // memcpy(m_memory_addr, &mail, sizeof(mail));
-   return -1;
-}
 
 // create shared memory function
-bool MemPiper::create_memory(int m_key, int m_size, int m_flag) {
+bool MemEngine::create_memory(int m_key, int m_size, int m_flag) {
    // call shmget and use return value to initialize shared memory address pointer
    m_shmid = shmget(m_key, m_size, m_flag);
 
@@ -119,7 +72,7 @@ bool MemPiper::create_memory(int m_key, int m_size, int m_flag) {
 }
 
 // destroy shared memory function
-bool MemPiper::destroy_memory(int shmid) {
+bool MemEngine::destroy_memory(int shmid) {
 
    if (shmid == -1) {
       sprintf(logger_buf, "destroy memory failed, shmid = -1");
@@ -149,7 +102,7 @@ bool MemPiper::destroy_memory(int shmid) {
 }
 
 // attach shared memory function
-bool MemPiper::attach_memory(char*& pmemoryAddr, int m_flag) {
+bool MemEngine::attach_memory(char*& pmemoryAddr, int m_flag) {
    // init as null;
    pmemoryAddr = NULL;
 
@@ -174,8 +127,9 @@ bool MemPiper::attach_memory(char*& pmemoryAddr, int m_flag) {
    pmemoryAddr = reinterpret_cast<char*> (m_memory_addr);
    return true;
 }
+
 // detach shared memory function
-bool MemPiper::detach_memory(char* pmemoryAddr) {
+bool MemEngine::detach_memory(char* pmemoryAddr) {
    // is private variable address valid
    if (m_shmid == -1 || m_memory_addr == NULL) {
       // not valid
@@ -207,6 +161,7 @@ bool MemPiper::detach_memory(char* pmemoryAddr) {
 }
 
 // get private m_shmid 
-int MemPiper::get_shmid(){
+int MemEngine::get_shmid(){
    return m_shmid;
 }
+
