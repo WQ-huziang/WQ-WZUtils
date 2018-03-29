@@ -44,16 +44,20 @@ int MemPiper::set_config_info(char file_path[256]) {
       return -1;
    }
 
-   this->m_key = ini.GetInt("MemInfo","key");
+   this -> m_key = ini.GetInt("MemInfo","key");
    
-   this->m_size = ini.GetInt("MemInfo","size");
+   // this -> m_size = ini.GetInt("MemInfo","size");
 
-   sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
+   this -> m_block_num = ini.GetInt("MemInfo", "blocknum");
+
+   this -> m_size = m_block_num * sizeof(SharedMemBlock);
+
+   sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d, MemInfo blocknum = %d\n", this->m_key, this->m_size, this->m_block_num);
    logger -> Info(logger_buf);
 
    return 0;
 }
-
+// initialize the client shared memory address pointer
 int MemPiper::init_as_client() {
    if( create_memory(this -> m_key, this -> m_size, this -> m_flag) ) {
       sprintf(logger_buf, "create_memory successfully");
@@ -62,15 +66,33 @@ int MemPiper::init_as_client() {
    }
    return -1;
 }
-
+// read from the shared memory
 int MemPiper::do_read(Frame &mail) {
-   memcpy(&mail, (m_memory_addr), sizeof(mail));
-   return 0;
+   SharedMemBlock* blk_cur;
+   blk_cur = (SharedMemBlock*) this -> m_memory_addr;
+   for (int i = 0; i < this -> m_block_num; i++) {
+      if( (* (blk_cur + i)).written == 0 ){
+         (* (blk_cur + i)).written = 1;
+         memcpy((* (blk_cur + i)).data, &mail, sizeof(Frame));
+         return 0;
+      }
+   }
+   // memcpy(&mail, (m_memory_addr), sizeof(mail));
+   return -1;
 }
-
+// write from the shared memory
 int MemPiper::do_write(Frame &mail) {
-   memcpy(m_memory_addr, &mail, sizeof(mail));
-   return 0;
+   SharedMemBlock* blk_cur;
+   blk_cur = (SharedMemBlock*) this -> m_memory_addr;
+   for (int i = 0; i < this -> m_block_num ; i++) {
+      if( (* (blk_cur + i)).written == 1 ){
+         (* (blk_cur + i)).written = 0;
+         memcpy(&mail, (* (blk_cur + i)).data, sizeof(Frame));
+         return 0;
+      } 
+   }
+   // memcpy(m_memory_addr, &mail, sizeof(mail));
+   return -1;
 }
 
 // create shared memory function
@@ -114,6 +136,7 @@ bool MemPiper::destroy_memory(int shmid) {
       m_memory_addr = NULL;
    }
 
+   // call shmctl destroy the memory
    if (shmctl(shmid, IPC_RMID, NULL) != 0) {
       sprintf(logger_buf, "call shmctl destroy memory failed");
       logger -> Error(logger_buf);

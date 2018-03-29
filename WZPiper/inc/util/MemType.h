@@ -2,9 +2,10 @@
 #define MEMPIPER_TYPE_
 
 #define MAX_QUEUE_NODE_COUNT 10
-#define SHM_DATA_SIZE        2048
 
-struct shared_struct{
+#define SHM_DATA_SIZE        250
+
+struct SharedMemBlock{
    // 0 means able to read, 1 means able to write 
    int written;
    char data[SHM_DATA_SIZE]; //frame
@@ -39,3 +40,4 @@ struct buffer_queue{
 }
 
 #endif
+

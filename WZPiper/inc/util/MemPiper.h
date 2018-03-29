@@ -7,6 +7,7 @@
 #include <sys/stat.h>  
 #include <unistd.h>
 #include "util/WZPiper.h"
+#include "MemType.h"
 
 #define PRT(...) printf(__VA_ARGS__);
 
@@ -23,14 +24,8 @@
 //#define SHM_FLAG IPC_CREAT|IPC_EXCL|SHM_R|SHM_W
 #endif // SHM_FLAG
 
-struct shared_struct
-{
-   // 0 means able to read, 1 means able to write 
-   int written;
-   char data[SHM_DATA_SIZE];
-};
-
 class MemPiper : public WZPiper {
+
  public:
    
    // from WZPiper
@@ -41,7 +36,6 @@ class MemPiper : public WZPiper {
    virtual int do_write(Frame &mail);
 
  public:
-
    
    // build-in function
    MemPiper();
@@ -71,6 +65,10 @@ class MemPiper : public WZPiper {
    int m_flag;			// shared memory flag
    int m_shmid;			// shared memory descriptor
    char *m_memory_addr;	// shared memory address pointer
+
+   int m_block_num; // the number of SharedMemBlock
+
+   
    
 };
 
