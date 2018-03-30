@@ -15,9 +15,9 @@ private:
 
     int m_readIndex_arr[MAX_READER_SIZE];
     int reader_num=-1;
-    int m_writeIndex;
-    int m_maxReadIndex;
-    int m_minReadIndex;
+    volatile atomic<int> m_writeIndex;
+    volatile atomic<int> m_maxReadIndex;
+    volatile atomic<int> m_minReadIndex;
     ELEM_T *m_theQueue;
     inline int countToIndex(unsigned int a_count);
     int Q_SIZE;
@@ -32,19 +32,19 @@ public:
 
     bool push(const ELEM_T &a_data);
     bool pop(ELEM_T &a_data,read_num);
-    unsigned int size();
+    int size();
 };
 
 
 // map the current a_count index to the real queue index
 template <typename ELEM_T, typename MAX_READER_SIZE>
-inline unsigned int MemQueue::countToIndex(unsigned int a_count) {
+inline unsigned int MemQueue::countToIndex(unsigned int &a_count) {
     return (a_count%Q_SIZE);
 }
 
-// 
+// constructure
 template <typename ELEM_T, typename MAX_READER_SIZE>
-MemQueue::MemQueue(unsigned int size) {
+MemQueue::MemQueue(int &size) {
     m_theQueue = new ELEM_T[size];
     memset(m_theQueue, 0, size*sizeof(ELEM_T));
     // set every readIndex as the max value
@@ -64,10 +64,9 @@ MemQueue::~MemQueue() {
 template <typename ELEM_T, typename MAX_READER_SIZE>
 bool MemQueue::push(const ELEM_T &a_data) {
 
-    unsigned int currentWriteIndex;
+    int currentWriteIndex;
 
     do{
-
         currentWriteIndex = m_writeIndex;
 
         // if the producer catch the slowest consumer
@@ -79,14 +78,14 @@ bool MemQueue::push(const ELEM_T &a_data) {
     // add, get the right to write
     }while(!atomic_compare_exchange_weak(&m_writeIndex, &currentWriteIndex, (currentWriteIndex+1)));
 
-    //write a_data to queue
+    // write a_data to queue
     memcpy(&m_theQueue[countToIndex(currentWriteIndex)], &a_data, sizeof(a_data));
 
     // Consider that there is more than 1 producer thread
-    // commit, wait for the producer finish the push operation
-    while(!atomic_compare_exchange_weak(&m_maxReadIndex, currentWriteIndex, (currentWriteIndex + 1))){
-//        sched_yield();
-        // 死等
+    // commit, wait for the producer finish the push operation, reset the upper bound of the to currentWriteIndex + 1
+    while(!atomic_compare_exchange_weak(&m_maxReadIndex, &currentWriteIndex, (currentWriteIndex + 1))){
+	// sched_yield();
+    // 死等
     }
     ++count;
     return true;
@@ -94,47 +93,33 @@ bool MemQueue::push(const ELEM_T &a_data) {
 
 template <typename ELEM_T, typename MAX_READER_SIZE>
 bool MemQueue::pop(ELEM_T &a_data, int reader_num) {
-    unsigned int currentReadIndex;
+    int currentReadIndex;
     do{
         currentReadIndex = m_readIndex_arr[reader_num];
         currentMaxReadIndex = m_maxReadIndex;
 
         // if the consumer catch the producer
-        if (countToIndex(currentReadIndex) == countToIndex(currentMaxReadIndex)){
+        if (countToIndex(currentReadIndex) == countToIndex(m_maxReadIndex)){
             // the queue is empty
             // the consumer catch the producer
             return false;
         }
 
-        // 
+        // pop a data from queue 
         memcpy(&a_data, &m_theQueue[countToIndex(currentReadIndex)], sizeof(a_data));
 
-
-        if (atomic_compare_exchange_weak(&m_readIndex_arr[reader_num], &currentReadIndex, (currentReadIndex + 1))){
-
-        	// pop decrease the count
-            --count;
-
-            int n_max_readIndex, n_min_readIndex;
-            for(int i = 0; i < MAX_READER_SIZE; i++) {
-
-            	// record the max read index
-            	if ( m_readIndex_arr[i] > n_max_readIndex && m_readIndex_arr[i] != -1) {
-            		n_max_readIndex = m_readIndex_arr[i];
-            	}
-
-            	// record the min read index
-            	if ( m_readIndex_arr[i] < n_min_readIndex && m_readIndex_arr[i] != -1) {
-            		n_min_readIndex = m_readIndex_arr[i];
-            	}
-            }
-
-            // update the m_minReadIndex and m_maxReadIndex
-            m_minReadIndex = n_min_readIndex;
-            m_maxReadIndex = n_max_readIndex;
-
-            return true;
+        // have atomic problem, because it's possible many reader is the lowest one
+        while(!atomic_compare_exchange_weak(&m_minReadIndex, &currentReadIndex, (currentReadIndex + 1))){
         }
+
+        // no atomic problem(every reader has a distinct reader number), asign it directly
+        m_readIndex_arr[reader_num] = currentReadIndex + 1;
+
+        // pop decrease the count
+        --count;
+
+		return true;
+
     }while(true);
 
     // Something went wrong. it shouldn't be possible to reach here
@@ -144,13 +129,16 @@ bool MemQueue::pop(ELEM_T &a_data, int reader_num) {
 
 template <typename ELEM_T, typename MAX_READER_SIZE>
 int MemQueue::add_reader(){
+
+	// add reader, reader num
 	reader_num++;
-	m_readIndex_arr[reader_num] = m_minReadIndex
+	m_readIndex_arr[reader_num] = m_minReadIndex;
 	return reader_num;
+
 }
 
 template <typename ELEM_T>
-unsigned int MemQueue::size() {
+int MemQueue::size() {
     return count;
 }
 
