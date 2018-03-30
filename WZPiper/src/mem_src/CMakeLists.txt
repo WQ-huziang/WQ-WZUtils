@@ -1,6 +1,8 @@
-SET(CLASS_FILE logger MemPiper)
-SET(MAIN_FILE testClient)
+SET(CLASS_FILE logger)
+#SET(MAIN_FILE testClient)
 #SET(MAIN_FILE testServer)
+SET(MAIN_FILE gtest_mem)
+#SET(MAIN_FILE test_memqueue)
 SET(UTILS_SO iniparser)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  
@@ -16,4 +18,4 @@ ENDFOREACH(f)
 
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
 ADD_EXECUTABLE(${MAIN_FILE} ${MAIN_FILE}.cpp)
-TARGET_LINK_LIBRARIES(${MAIN_FILE} ${CLASS_FILE} ${UTILS_SO} glog)
+TARGET_LINK_LIBRARIES(${MAIN_FILE} gtest gflags pthread gtest_main ${CLASS_FILE} ${UTILS_SO} glog)

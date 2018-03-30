@@ -11,4 +11,6 @@ INCLUDE_DIRECTORIES(inc/util)
 INCLUDE_DIRECTORIES(inc/wzadapter)
 INCLUDE_DIRECTORIES(inc/CTP)
 
+#ADD_SUBDIRECTORY(gtest)
+#include_directories(gtest/include)
 ADD_SUBDIRECTORY(src)
