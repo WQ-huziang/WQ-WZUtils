@@ -2,8 +2,8 @@
 #include <netinet/in.h>  
 #include <string.h> 
 #include <unistd.h>
-#include "UdpPiper.h"
-#include "Logger.h"
+#include "util/UdpPiper.h"
+#include "util/logger.h"
 
 Logger *logger;
   
@@ -15,44 +15,18 @@ int main(int argc,char* argv[])
    char* filePathIn;
    char* filePathOut;
 
-   while((ch = getopt(argc, argv, "i:o:p:h"))!= -1){
-      switch(ch){
-
-         case 'i':
-            filePathIn = optarg;
-            printf("%s\n", filePathIn);
-            break;
-
-         case 'o':
-            filePathOut = optarg;
-            printf("%s\n", filePathOut);
-            break;
-
-         case 'h':
-            printf("Options:\n");
-            printf("Usage: ./Md -opt1 para1 -opt2 para2 ...\n");
-            printf("-f: login config filePath\n");
-            // printf("-n: Sum of instrument\n");
-            printf("-h: Help to list the options\n");
-            exit(0);
-            break;
-
-         default:
-            printf("Usage: ./ -opt1 para1 -opt2 para2 ...\n");
-            printf("Use \"./ -h\" to see the options\n");
-            exit(0);
-            break;
-      }
-   }
+   filePathOut = argv[1];
 
    logger = new Logger(argv[0]);
-   logger->ParseConfigInfo(filePathIn);
+   logger->ParseConfigInfo(filePathOut);
    
 
    // send message
+   bool sockType = 0;
    WZPiper * piper1 = new UdpPiper();
-   piper1 -> set_config_info(filePathOut);
-   piper1 -> init_as_client();
+   piper1 -> parseConfigFile(filePathOut);
+   piper1 -> socketInit(sockType);
+   piper1 -> socketConnect(); 
 
 
    Frame frame;
@@ -61,13 +35,15 @@ int main(int argc,char* argv[])
    frame.error_id = WZ_ERROR_ID_SUCCESS;
    frame.rtn_type = 3;
    frame.length = 4;
-   char* data = new char [5];
-   sprintf(data, "%d", 1234);
-   memcpy(frame.data, data, 5);
+
+   int len = sizeof(frame);
+   char* rep = new char[500];
+   memcpy(rep, &frame, len);
 
    for (;;) {
-      
-      piper1 -> do_write(frame);
+      piper1 -> getOutputStream(rep, 500);
+      usleep(10000);
+
    }
    
    

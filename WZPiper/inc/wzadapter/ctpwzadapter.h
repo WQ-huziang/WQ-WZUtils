@@ -7,13 +7,13 @@
 #ifndef CTP_WZ_ADAPTER_H
 #define CTP_WZ_ADAPTER_H
 
-#include <wzdatastruct.h>
+#include <wzadapter/wzdatastruct.h>
 #include <string.h>
 #include <vector>
 #include <string>
 #include <iostream>
 
-#include <ThostFtdcUserApiStruct.h>
+#include <CTP/ThostFtdcUserApiStruct.h>
 
 using std::cout;
 using std::endl;
