@@ -40,8 +40,16 @@ class MemEngine{
    // detach shared memory function
    bool detach_memory(char* pmemoryAddr);
 
+   int get_key();
+
+   int get_size();
+
+   int get_flag();
+
    // return the shmid
    int get_shmid();
+
+   char * get_memory_addr();
 
 
  private:

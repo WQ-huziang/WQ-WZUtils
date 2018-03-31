@@ -6,8 +6,9 @@
 #ifndef MEMSERVER_H_
 #define MEMSERVER_H_
 
-#include "util/MemQueue.h"
+#include "util/MemQueue.hpp"
 #include "util/MemEngine.h"
+#include "wzadapter/frame.h"
 
 class MemWriter : public MemEngine{
 public:
@@ -17,7 +18,7 @@ public:
 	int init_as_server();
 	int do_write(Frame &mail);
 private:
-	MEMQueue *memQueue;
-}
+	MemQueue<Frame,3,2> *memQueue;
+};
 
-#endif MEMSERVER_H_
+#endif // MEMSERVER_H_

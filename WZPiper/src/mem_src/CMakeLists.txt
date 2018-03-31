@@ -1,8 +1,9 @@
-SET(CLASS_FILE logger)
+SET(CLASS_FILE logger MemEngine MemReader MemWriter)
 #SET(MAIN_FILE testClient)
 #SET(MAIN_FILE testServer)
-SET(MAIN_FILE gtest_memqueue)
+#SET(MAIN_FILE gtest_memqueue)
 #SET(MAIN_FILE test_thread)
+SET(MAIN_FILE test_WR)
 SET(UTILS_SO iniparser)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  
