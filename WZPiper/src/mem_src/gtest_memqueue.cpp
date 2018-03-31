@@ -9,16 +9,15 @@
 using namespace std;
 
 #ifndef PRT(...)
-#define PRT(...) printf(__VA_ARGS__)
-//#define PRT(...)
+//#define PRT(...) printf(__VA_ARGS__)
+#define PRT(...)
 #endif
 
 class QueueTest : public ::testing::Test{
 protected:
 
-	QueueTest():q_i(3,3),q_d(2,2){}
-	MemQueue<int> q_i;
-	MemQueue<double> q_d;
+	MemQueue<int,3,3> q_i;
+	MemQueue<double,3,2> q_d;
 	int int_reader1;
 	int int_reader2;
 	int int_reader3;
@@ -28,6 +27,8 @@ protected:
 	double dou_x;
 
 	virtual void SetUp(){
+
+		PRT("q_i size is:%d\n", q_i.get_queue_size());
 		
 		int_reader1 = q_i.add_reader();
 		int_reader2 = q_i.add_reader();
@@ -44,7 +45,7 @@ TEST_F(QueueTest, QueueSize){
 }
 
 TEST_F(QueueTest, EnqueueWorks){
-	PRT("q_i size is:%d\n", q_i.get_queue_size());
+	
 	EXPECT_EQ(1,q_i.push(3));
 	EXPECT_EQ(0,q_i.push(4));
 	EXPECT_EQ(3,q_i.get_max_read_index());
