@@ -16,7 +16,6 @@ using namespace std;
 class QueueTest : public ::testing::Test{
 protected:
 
-	//QueueTest():q_i(3,3),q_d(2,2){}
 	MemQueue<int,3,3> q_i;
 	MemQueue<double,2,2> q_d;
 	int int_reader1;
