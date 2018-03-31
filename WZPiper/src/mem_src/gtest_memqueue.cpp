@@ -9,8 +9,8 @@
 using namespace std;
 
 #ifndef PRT(...)
-#define PRT(...) printf(__VA_ARGS__)
-//#define PRT(...)
+//#define PRT(...) printf(__VA_ARGS__)
+#define PRT(...)
 #endif
 
 class QueueTest : public ::testing::Test{
