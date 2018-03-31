@@ -7,7 +7,8 @@
 #define MEMCLIENT_H_
 
 #include "util/MemEngine.h"
-#include "util/MemQueue.h"
+#include "util/MemQueue.hpp"
+#include "wzadapter/frame.h"
 
 class MemReader : public MemEngine{
 public:
@@ -17,8 +18,8 @@ public:
 	int init_as_client();
 	int do_read(Frame &mail);
 private:
-	MEMQueue *memQueue;
+	MemQueue<Frame,3,2> *memQueue;
 	int reader_index;
 };
 
-#endif MEMCLIENT_H_
+#endif // MEMCLIENT_H_

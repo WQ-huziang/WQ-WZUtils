@@ -35,14 +35,10 @@ int MemEngine::set_config_info(char file_path[256]) {
    }
 
    this -> m_key = ini.GetInt("MemInfo","key");
-   
-   // this -> m_size = ini.GetInt("MemInfo","size");
 
-   this -> m_block_num = ini.GetInt("MemInfo", "blocknum");
+   this -> m_size = ini.GetInt("MemInfo", "memorysize");
 
-   this -> m_size = m_block_num * sizeof(SharedMemBlock);
-
-   sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d, MemInfo blocknum = %d\n", this->m_key, this->m_size, this->m_block_num);
+   sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
    logger -> Info(logger_buf);
 
    return 0;
@@ -160,8 +156,23 @@ bool MemEngine::detach_memory(char* pmemoryAddr) {
    return true;
 }
 
+int MemEngine::get_key(){
+   return m_key;
+}
+
+int MemEngine::get_size(){
+   return m_size;
+}
+
+int MemEngine::get_flag(){
+   return m_flag;
+}
+
 // get private m_shmid 
 int MemEngine::get_shmid(){
    return m_shmid;
 }
 
+char * MemEngine::get_memory_addr(){
+   return m_memory_addr;
+}
