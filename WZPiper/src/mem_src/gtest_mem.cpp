@@ -1,4 +1,4 @@
-#include "MemQueue.h"
+#include "MemQueue.hpp"
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -8,11 +8,12 @@ using namespace std;
 class QueueTest : public ::testing::Test{
 protected:
 
-	QueueTest():q_i(3,2),q_d(2,2){}
+	QueueTest():q_i(3,3),q_d(2,2){}
 	MemQueue<int> q_i;
 	MemQueue<double> q_d;
 	int int_reader1;
 	int int_reader2;
+	int int_reader3;
 	int dou_reader1;
 
 	int int_x;
@@ -45,6 +46,7 @@ TEST_F(QueueTest, EnqueueWorks){
 	PRT("q_i size is:%d\n", q_i.get_queue_size());
 	EXPECT_EQ(1,q_i.push(3));
 	EXPECT_EQ(0,q_i.push(4));
+	EXPECT_EQ(3,q_i.get_max_read_index());
 }
 
 TEST_F(QueueTest, DequeueWorks){
@@ -99,6 +101,15 @@ TEST_F(QueueTest, DequeueWorks){
 TEST_F(QueueTest, EmptyqueuepopWorks){
 
 	EXPECT_EQ(0,q_d.pop(dou_x,dou_reader1));
+
+}
+
+TEST_F(QueueTest, ReaderCatchReader){
+
+	EXPECT_EQ(1,q_i.push(3));
+	EXPECT_EQ(0,q_i.push(4));
+
+
 
 }
 

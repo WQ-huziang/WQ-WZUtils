@@ -21,6 +21,7 @@ int MemReader::init_as_client() {
    return -1;
 }
 
+
 // read from the shared memory
 int MemReader::do_read(Frame &mail) {
    int res = this -> memQueue -> pop(mail,this -> reader_index);

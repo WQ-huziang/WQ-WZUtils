@@ -12,6 +12,8 @@
 using std::atomic_compare_exchange_weak;
 
 
+
+
 // #define MAX_READER_SIZE 20
 // #define MAX_QUEUE_SIZE 4
 
@@ -20,40 +22,40 @@ class MemQueue{
 private:
 	// each reader's readIndex
     // int m_readIndex_arr[MAX_READER_SIZE];
-    int *m_readIndex_arr;
+    unsigned int *m_readIndex_arr;
 
     // the total number of reader start from 1
-    std::atomic<int> reader_num;
+    std::atomic<unsigned int> reader_num;
 
     // the write index
-    std::atomic<int> m_write_index;
+    std::atomic<unsigned int> m_write_index;
 
     //the max can read index
-    std::atomic<int> m_max_read_index;
+    std::atomic<unsigned int> m_max_read_index;
 
     // the last waiting to read slot index
-    std::atomic<int> m_min_read_index;
+    std::atomic<unsigned int> m_min_read_index;
 
     // queue to contain the data
     // ELEM_T m_theQueue[MAX_QUEUE_SIZE];
     ELEM_T *m_theQueue;
 
     // the slowest slot read time
-    std::atomic<int> slowest_read_time;
+    std::atomic<unsigned int> slowest_read_time;
 
     // transform the count number to real index of theQueue
-    int count_to_index(int a_count);
+    unsigned int count_to_index(unsigned int a_count);
 
     int MAX_READER_SIZE;
     int Q_SIZE;
-    int count;
+    unsigned int count;
 
 public:
     MemQueue(int queue_size = 1024, int reader_size = 2);
     virtual ~MemQueue();
 
     // add a reader to the queue
-    int add_reader();
+    unsigned int add_reader();
 
     // write a data to the queue
     bool push(const ELEM_T &a_data);
@@ -65,20 +67,20 @@ public:
 
     int get_reader_size();
 
-    int get_write_index();
+    unsigned int get_write_index();
 
-    int get_max_read_index();
+    unsigned int get_max_read_index();
 
-    int get_min_read_index();
+    unsigned int get_min_read_index();
 
-    int get_slowest_read_time();
+    unsigned int get_slowest_read_time();
 
 };
 
 
 // map the current a_count index to the real queue index
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::count_to_index(int a_count) {
+unsigned int MemQueue<ELEM_T>::count_to_index(unsigned int a_count) {
     return (a_count%Q_SIZE);
 }
 
@@ -86,12 +88,12 @@ int MemQueue<ELEM_T>::count_to_index(int a_count) {
 template <typename ELEM_T>
 MemQueue <ELEM_T> ::MemQueue(int queue_size, int reader_size) {
 
-	m_readIndex_arr = new int[reader_size];
+	m_readIndex_arr = new unsigned int[reader_size];
 	m_theQueue = new ELEM_T[queue_size];
 
     memset(m_theQueue, 0, sizeof(m_theQueue));
     // set every readIndex as the max value
-    memset(m_readIndex_arr, -1, sizeof(m_readIndex_arr));
+    memset(m_readIndex_arr, 0, sizeof(m_readIndex_arr));
 
     this->slowest_read_time = 0;
     this->reader_num = 0;
@@ -112,7 +114,7 @@ MemQueue<ELEM_T>::~MemQueue() {
 template <typename ELEM_T>
 bool MemQueue<ELEM_T>::push(const ELEM_T &a_data) {
 
-    int cur_writeIndex;
+    unsigned int cur_writeIndex;
 
     do{
         cur_writeIndex = m_write_index;
@@ -144,7 +146,7 @@ bool MemQueue<ELEM_T>::push(const ELEM_T &a_data) {
 
 template <typename ELEM_T>
 bool MemQueue<ELEM_T>::pop(ELEM_T &a_data, int reader_id) {
-    int cur_readIndex, cur_max_readIndex, cur_read_time, nxt_read_time;
+    unsigned int cur_readIndex, cur_max_readIndex, cur_read_time, nxt_read_time;
 
     // the reader is not exist
     if ( reader_id == -1 || reader_id >= reader_num) {
@@ -201,7 +203,7 @@ bool MemQueue<ELEM_T>::pop(ELEM_T &a_data, int reader_id) {
 // get a reader number when a reader add to read
 // return the reader number, or return -1 if reader is full
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::add_reader(){
+unsigned int MemQueue<ELEM_T>::add_reader(){
 
 	// add reader, reader num + 1
 	reader_num++;
@@ -224,22 +226,22 @@ int MemQueue<ELEM_T>::get_reader_size() {
 }
 
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::get_write_index() {
+unsigned int MemQueue<ELEM_T>::get_write_index() {
 	return m_write_index;
 }
 
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::get_max_read_index() {
+unsigned int MemQueue<ELEM_T>::get_max_read_index() {
     return m_max_read_index;
 }
 
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::get_min_read_index() {
+unsigned int MemQueue<ELEM_T>::get_min_read_index() {
     return m_min_read_index;
 }
 
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::get_slowest_read_time() {
+unsigned int MemQueue<ELEM_T>::get_slowest_read_time() {
     return slowest_read_time;
 }
 

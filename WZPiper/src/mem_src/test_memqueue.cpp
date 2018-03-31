@@ -1,4 +1,4 @@
-#include "MemQueue.h"
+#include "MemQueue.hpp"
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,7 +12,7 @@ TEST_F(QueueTest, IsEmptyInitially){
 }
 
 TEST_F(QueueTest, EnqueueWorks){
-	EXPECT_EQ(1,q_i.push(3));
+	EXPECT_EQ(1,q_i.push(3));  
 	EXPECT_EQ(0,q_i.push(4));
 }
 
