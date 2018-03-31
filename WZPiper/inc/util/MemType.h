@@ -1,3 +1,8 @@
+// Copyright(C): wizard quant
+// Author: huangxiaolin, luoqingming
+// Functions: some struct may be used in shared memory
+// Date: 2018-03-28
+
 #ifndef MEMPIPER_TYPE_
 #define MEMPIPER_TYPE_
 

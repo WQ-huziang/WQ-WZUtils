@@ -1,3 +1,8 @@
+// Copyright(C) 2018, Wizard Quant
+// Author: huangxiaolin, luoqingming
+// Functions: MemReader reads data from shared memory(pop data from the MemQueue)
+// Date: 2018-03-30
+
 #ifndef MEMCLIENT_H_
 #define MEMCLIENT_H_
 

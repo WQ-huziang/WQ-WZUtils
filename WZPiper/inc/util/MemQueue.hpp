@@ -1,3 +1,8 @@
+// Copyright(C) 2018, Wizard Quant
+// Author: luoqingming
+// Functions: single writer and multiple reader lockless queue with atomic
+// Date: 2018-03-30
+
 #ifndef MEMQUEUE_H_
 #define MEMQUEUE_H_
 
@@ -7,12 +12,12 @@
 #include <string.h>
 #include <iostream>
 
-// using std::cout;
-// using std::endl;
+// #ifndef PRT(...)
+// #define PRT(...) printf(__VA_ARGS__)
+// #define PRT(...)
+// #endif
+
 using std::atomic_compare_exchange_weak;
-
-
-
 
 // #define MAX_READER_SIZE 20
 // #define MAX_QUEUE_SIZE 4
@@ -25,30 +30,35 @@ private:
     unsigned int *m_readIndex_arr;
 
     // the total number of reader start from 1
-    std::atomic<unsigned int> reader_num;
+    volatile std::atomic<unsigned int> reader_num;
 
-    // the write index
-    std::atomic<unsigned int> m_write_index;
+    // the next index to write(next time right to this index)
+    volatile std::atomic<unsigned int> m_write_index;
 
     //the max can read index
-    std::atomic<unsigned int> m_max_read_index;
+    volatile std::atomic<unsigned int> m_max_read_index;
 
-    // the last waiting to read slot index
-    std::atomic<unsigned int> m_min_read_index;
+    // the last waiting to be read slot index
+    volatile std::atomic<unsigned int> m_min_read_index;
 
     // queue to contain the data
     // ELEM_T m_theQueue[MAX_QUEUE_SIZE];
     ELEM_T *m_theQueue;
 
-    // the slowest slot read time
-    std::atomic<unsigned int> slowest_read_time;
+    // the every slot read time
+    volatile std::atomic<unsigned int>* read_time;
 
     // transform the count number to real index of theQueue
     unsigned int count_to_index(unsigned int a_count);
 
+    // max size of the reader list
     int MAX_READER_SIZE;
+
+    // data queue max size
     int Q_SIZE;
-    unsigned int count;
+
+    // count of the number of occupied queue slot
+    volatile std::atomic<unsigned int> count;
 
 public:
     MemQueue(int queue_size = 1024, int reader_size = 2);
@@ -63,7 +73,7 @@ public:
     // read a data from the queue
     bool pop(ELEM_T &a_data,int read_num);
 
-    int get_queue_size();
+    unsigned int get_queue_size();
 
     int get_reader_size();
 
@@ -73,7 +83,7 @@ public:
 
     unsigned int get_min_read_index();
 
-    unsigned int get_slowest_read_time();
+    unsigned int get_read_time(int index = 0);
 
 };
 
@@ -89,13 +99,20 @@ template <typename ELEM_T>
 MemQueue <ELEM_T> ::MemQueue(int queue_size, int reader_size) {
 
 	m_readIndex_arr = new unsigned int[reader_size];
+
 	m_theQueue = new ELEM_T[queue_size];
 
+    read_time = new std::atomic<unsigned int>[queue_size];
+
     memset(m_theQueue, 0, sizeof(m_theQueue));
-    // set every readIndex as the max value
+
+    // set every readIndex as the zero value
     memset(m_readIndex_arr, 0, sizeof(m_readIndex_arr));
 
-    this->slowest_read_time = 0;
+    for (int i = 0; i < queue_size; i++) {
+        *(read_time + i) = 0;
+    }
+
     this->reader_num = 0;
     this->m_write_index = 0;
     this->m_max_read_index = 0;
@@ -109,6 +126,8 @@ MemQueue <ELEM_T> ::MemQueue(int queue_size, int reader_size) {
 template <typename ELEM_T>
 MemQueue<ELEM_T>::~MemQueue() {
     delete[] m_theQueue;
+    delete[] m_readIndex_arr;
+    delete[] read_time;
 }
 
 template <typename ELEM_T>
@@ -122,7 +141,7 @@ bool MemQueue<ELEM_T>::push(const ELEM_T &a_data) {
         // if the producer catch the slowest consumer
         if  (count_to_index(cur_writeIndex) == count_to_index(m_min_read_index) && count!= 0){
             // the queue is full
-            // the producer catch the consumer
+            // the producer catch the slowest consumer
             return false;
         }
 
@@ -133,6 +152,7 @@ bool MemQueue<ELEM_T>::push(const ELEM_T &a_data) {
     memcpy(&m_theQueue[count_to_index(cur_writeIndex)], &a_data, sizeof(a_data));
 
     // cout<<"m_theQueue= "<<m_theQueue[count_to_index(cur_writeIndex)] << "; count_to_index(cur_writeIndex) = " << count_to_index(cur_writeIndex) <<endl;
+    // PRT("m_theQueue= %d; count_to_index(cur_writeIndex) = %d\n", m_theQueue[count_to_index(cur_writeIndex)], count_to_index(cur_writeIndex));
 
     // Consider that there is more than 1 producer thread
     // commit, wait for the producer finish the push operation, reset the upper bound of the to cur_writeIndex + 1
@@ -158,7 +178,9 @@ bool MemQueue<ELEM_T>::pop(ELEM_T &a_data, int reader_id) {
         cur_max_readIndex = m_max_read_index;
 
         // if the consumer catch the producer
-        if (count_to_index(cur_readIndex) == count_to_index(cur_max_readIndex)){
+        // if (count_to_index(cur_readIndex) == count_to_index(cur_max_readIndex)){
+        // cur_readIndex always slower than cur_max_readIndex, no need to use count_to_index
+        if (cur_readIndex == cur_max_readIndex){
             // the queue is empty
             // the consumer catch the producer
             return false;
@@ -167,28 +189,43 @@ bool MemQueue<ELEM_T>::pop(ELEM_T &a_data, int reader_id) {
         // pop a data from queue 
         memcpy(&a_data, &m_theQueue[count_to_index(cur_readIndex)], sizeof(a_data));
         // cout << "reader: " << reader_id << "pop: " << a_data << "from: " << cur_readIndex <<endl;
+        // PRT("reader: %d; pop: %d; from: %d\n", reader_id, a_data, cur_readIndex);
+
+        do{
+            // add, get the right to add read time
+            cur_read_time = read_time[count_to_index(cur_readIndex)];
+
+        }while(!atomic_compare_exchange_weak((read_time+count_to_index(cur_readIndex)), &cur_read_time, (cur_read_time + 1)));
 
 	    if(m_min_read_index == cur_readIndex) {
 	    	// cout<<"m_min_read_index == cur_readIndex = " << cur_readIndex << endl;
-	    	do{
-	    		// add, get the right to add read time
-		        cur_read_time = slowest_read_time;
+            // PRT("m_min_read_index == cur_readIndex =  %d\n", cur_readIndex);
+		    
+            // PRT("read_time[%d] =  %d\n", count_to_index(cur_readIndex), read_time[count_to_index(cur_readIndex)]);
+            // if every reader have read the slot
+		    if(read_time[count_to_index(cur_readIndex)] % reader_num == 0 && read_time[count_to_index(cur_readIndex)] != 0) {
+		        // min_read_index++ has atomic problem?
+		        // m_min_read_index++;
+                unsigned int tmp_int;
+                do{
+                // add, get the right to add min_read_index
+                    tmp_int = m_min_read_index;
 
-		    }while(!atomic_compare_exchange_weak(&slowest_read_time, &cur_read_time, (cur_read_time+1)));
-		    // if every reader reader the slot
-		    if(slowest_read_time % reader_num == 0 && slowest_read_time != 0) {
-		        // have atomic problem?
-		        m_min_read_index++;
-		        // pop decrease the count
-		        // have atomic problem?
-        		--count;
+                }while(!atomic_compare_exchange_weak(&m_min_read_index, &tmp_int, (tmp_int + 1)));
+
+		        // 
+		        // pop decrease the count has atomic problem?
+        		// --count;
+                do{
+                // add, get the right to add min_read_index
+                    tmp_int = count;
+
+                }while(!atomic_compare_exchange_weak(&count, &tmp_int, (tmp_int - 1)));
 		    }
 	    }
 
         // no atomic problem(every reader has a distinct reader number), asign it directly
         m_readIndex_arr[reader_id] = cur_readIndex + 1;
-
-        
 
 		return true;
 
@@ -210,13 +247,15 @@ unsigned int MemQueue<ELEM_T>::add_reader(){
 	if(reader_num > MAX_READER_SIZE) {
 		return -1;
 	}
+
+    // reader add start reading from current min_read_index
+    // reader_num start from 0, use reader_num - 1 as id
 	m_readIndex_arr[reader_num - 1] = m_min_read_index;
 	return reader_num-1;
-
 }
 
 template <typename ELEM_T>
-int MemQueue<ELEM_T>::get_queue_size() {
+unsigned int MemQueue<ELEM_T>::get_queue_size() {
     return count;
 }
 
@@ -241,8 +280,10 @@ unsigned int MemQueue<ELEM_T>::get_min_read_index() {
 }
 
 template <typename ELEM_T>
-unsigned int MemQueue<ELEM_T>::get_slowest_read_time() {
-    return slowest_read_time;
+unsigned int MemQueue<ELEM_T>::get_read_time(int index) {
+    if(index >= 0 && index < Q_SIZE)
+        return read_time[index];
+    return -1;
 }
 
 

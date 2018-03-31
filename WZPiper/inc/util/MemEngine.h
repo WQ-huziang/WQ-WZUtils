@@ -1,3 +1,8 @@
+// Copyright(C) 2018, Wizard Quant
+// Author: huangxiaolin, luoqingming
+// Functions: MemEngine create attach dettach destroy a shared memory
+// Date: 2018-03-30
+
 #ifndef MEMENGINE_H_
 #define MEMENGINE_H_
 
