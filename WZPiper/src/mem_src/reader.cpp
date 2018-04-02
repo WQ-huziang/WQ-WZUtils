@@ -6,7 +6,8 @@
 #include<netinet/in.h>  
 #include<string.h>  
 #include<iostream>
-#include "util/MemPiper.h"
+#include "util/MemEngine.h"
+#include "util/MemReader.h"
 #include "util/logger.h"
 
 Logger *logger;
@@ -49,28 +50,23 @@ int main(int argc,char* argv[])
       }
    }
 
-   logger = new Logger(argv[0]);
-   logger->ParseConfigInfo(filePathIn);
+   // logger = new Logger(argv[0]);
+   // logger->ParseConfigInfo(filePathIn);
 
-   WZPiper * piper2 = new MemPiper();
-   piper2 -> set_config_info(filePathIn);
-   piper2 -> init_as_server();
+   MemEngine * memReader = new MemReader();
+   memReader -> set_config_info("config.ini");
+   memReader -> init_as_reader();
 
    Frame recvFrame;
    
    printf("get here\n");
    for (int i = 0; i<5 ; i++ ) {
-
-      printf("return value = %d\n", piper2 -> do_read(recvFrame));
-
+      printf("[receive %d]", i);
+      printf("return value = %d\n", memReader -> do_read(recvFrame));
       printf("recv source = %d\n", recvFrame.source);
-
       printf("recv msg_type = %d\n", recvFrame.msg_type );
-
       printf("recv error_id = %d\n", recvFrame.error_id);
-
       printf("recv rtn_type = %d\n", recvFrame.rtn_type);
-
       printf("recv length = %d\n", recvFrame.length);
 
       // PRINTSTR("return value = ");

@@ -11,6 +11,7 @@
 #include <sys/types.h>  
 #include <sys/stat.h>  
 #include <unistd.h>
+#include "wzadapter/frame.h"
 
 #define PRT(...) printf(__VA_ARGS__);
 #define SHM_FAILED -1 
@@ -22,8 +23,8 @@ class MemEngine{
  public:
    
    // build-in function
-   MemEngine();
-   ~MemEngine();
+   MemEngine(){};
+   ~MemEngine(){};
 
    // set info accordding to config
    int set_config_info(char file_path[256]);
@@ -50,6 +51,11 @@ class MemEngine{
    int get_shmid();
 
    char * get_memory_addr();
+
+   virtual int init_as_reader(){};
+   virtual int init_as_writer(){};
+   virtual int do_write(Frame &frame){};
+   virtual int do_read(Frame &frame){};
 
 
  private:
