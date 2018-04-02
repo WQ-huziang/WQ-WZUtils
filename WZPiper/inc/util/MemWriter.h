@@ -15,10 +15,15 @@ public:
 	MemWriter();
 	~MemWriter();
 
-	int init_as_server();
+	int init_as_writer();
 	int do_write(Frame &mail);
 private:
 	MemQueue<Frame,3,2> *memQueue;
+	int m_key;			// shared memory key
+	int m_size;			// shared memory size
+	int m_flag;			// shared memory flag
+	int m_shmid;			// shared memory descriptor
+	char *m_memory_addr;	// shared memory address pointer 
 };
 
 #endif // MEMSERVER_H_

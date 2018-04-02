@@ -1,5 +1,6 @@
 #include "util/MemEngine.h"
 #include "util/logger.h"
+#include "util/iniparser.h"
 
 #define MAX_QUEUE_SIZE 20
 
@@ -7,23 +8,23 @@ extern Logger *logger;
 char logger_buf[1024];
 
 // initialize some private variable
-MemEngine::MemEngine() {
-   // init private variable
-   m_flag = 3 ;
-   m_key  = 0 ;
-   m_size = 0 ;
-   m_flag = SHM_FLAG ;
-   m_shmid   = -1;
-   m_memory_addr = NULL;
-}
+// MemEngine::MemEngine() {
+//    // init private variable
+//    m_flag = 3 ;
+//    m_key  = 0 ;
+//    m_size = 0 ;
+//    m_flag = SHM_FLAG ;
+//    m_shmid   = -1;
+//    m_memory_addr = NULL;
+// }
 
-// destructor
-MemEngine::~MemEngine() {
-   // call detach_memory to detach memory
-   if(m_memory_addr != NULL) {
-      detach_memory(m_memory_addr);
-   }
-}
+// // destructor
+// MemEngine::~MemEngine() {
+//    // call detach_memory to detach memory
+//    if(m_memory_addr != NULL) {
+//       detach_memory(m_memory_addr);
+//    }
+// }
 
 // read key and size from configure file 
 int MemEngine::set_config_info(char file_path[256]) {
