@@ -16,17 +16,12 @@ int main(int argc,char* argv[])
    char* filePathIn;
    char* filePathOut;
 
-   while((ch = getopt(argc, argv, "i:o:p:h"))!= -1){
+   while((ch = getopt(argc, argv, "f:p:h"))!= -1){
       switch(ch){
 
-         case 'i':
+         case 'f':
             filePathIn = optarg;
             printf("%s\n", filePathIn);
-            break;
-
-         case 'o':
-            filePathOut = optarg;
-            printf("%s\n", filePathOut);
             break;
 
          case 'h':
@@ -52,7 +47,7 @@ int main(int argc,char* argv[])
 
    // send message
    MemEngine * memWriter = new MemWriter();
-   memWriter -> set_config_info("config.ini");
+   memWriter -> set_config_info(filePathIn);
    memWriter -> init_as_writer();
 
    Frame frame;
@@ -62,14 +57,9 @@ int main(int argc,char* argv[])
    frame.rtn_type = 3;
    frame.length = 2;
 
-   //piper1 -> do_write(frame);
+   printf("write result is:%d", memWriter -> do_write(frame));
 
-   printf("size of frame = %ld\n", sizeof(frame));
-
-   for (;;) {
-      memWriter -> do_write(frame);
-   }
-   
+   // memWriter -> do_write(frame);
    
    // // receive message
    // WZPiper * piper2 = new UdpPiper();

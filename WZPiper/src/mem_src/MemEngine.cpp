@@ -2,51 +2,30 @@
 #include "util/logger.h"
 #include "util/iniparser.h"
 
-#define MAX_QUEUE_SIZE 20
-
 extern Logger *logger;
 char logger_buf[1024];
 
-// initialize some private variable
-// MemEngine::MemEngine() {
-//    // init private variable
-//    m_flag = 3 ;
-//    m_key  = 0 ;
-//    m_size = 0 ;
-//    m_flag = SHM_FLAG ;
-//    m_shmid   = -1;
-//    m_memory_addr = NULL;
-// }
-
-// // destructor
-// MemEngine::~MemEngine() {
-//    // call detach_memory to detach memory
-//    if(m_memory_addr != NULL) {
-//       detach_memory(m_memory_addr);
-//    }
-// }
-
 // read key and size from configure file 
-int MemEngine::set_config_info(char file_path[256]) {
-   CIni ini;
-   if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR){
-      sprintf(logger_buf, "INI_OPENFILE_ERROR");
-      logger -> Info(logger_buf);
-      return -1;
-   }
+// int MemEngine::set_config_info(char file_path[256]) {
+//    CIni ini;
+//    if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR){
+//       sprintf(logger_buf, "INI_OPENFILE_ERROR");
+//       logger -> Info(logger_buf);
+//       return -1;
+//    }
 
-   this -> m_key = ini.GetInt("MemInfo","key");
+//    this -> m_key = ini.GetInt("MemInfo","key");
 
-   this -> m_size = ini.GetInt("MemInfo", "memorysize");
+//    this -> m_size = ini.GetInt("MemInfo", "memorysize");
 
-   sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
-   logger -> Info(logger_buf);
+//    sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
+//    logger -> Info(logger_buf);
 
-   return 0;
-}
+//    return 0;
+// }
 
 // create shared memory function
-bool MemEngine::create_memory(int m_key, int m_size, int m_flag) {
+bool MemEngine::create_memory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
    // call shmget and use return value to initialize shared memory address pointer
    m_shmid = shmget(m_key, m_size, m_flag);
 
@@ -65,11 +44,14 @@ bool MemEngine::create_memory(int m_key, int m_size, int m_flag) {
       return false;
    }
 
+   sprintf(logger_buf, "shared memory create succeed, shmid =%d", m_shmid);
+   logger -> Info(logger_buf);
+
    return true;
 }
 
 // destroy shared memory function
-bool MemEngine::destroy_memory(int shmid) {
+bool MemEngine::destroy_memory(int & shmid, char* & m_memory_addr) {
 
    if (shmid == -1) {
       sprintf(logger_buf, "destroy memory failed, shmid = -1");
@@ -99,9 +81,7 @@ bool MemEngine::destroy_memory(int shmid) {
 }
 
 // attach shared memory function
-bool MemEngine::attach_memory(char*& pmemoryAddr, int m_flag) {
-   // init as null;
-   pmemoryAddr = NULL;
+bool MemEngine::attach_memory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr) {
 
    // is the id exist
    if (m_shmid == SHM_FAILED ) {
@@ -121,23 +101,15 @@ bool MemEngine::attach_memory(char*& pmemoryAddr, int m_flag) {
       return false;
    }
 
-   pmemoryAddr = reinterpret_cast<char*> (m_memory_addr);
    return true;
 }
 
 // detach shared memory function
-bool MemEngine::detach_memory(char* pmemoryAddr) {
+bool MemEngine::detach_memory(const int & m_shmid, char*& m_memory_addr) {
    // is private variable address valid
    if (m_shmid == -1 || m_memory_addr == NULL) {
       // not valid
       return true;
-   }
-
-   // is the same address as private variable address
-   if (pmemoryAddr != (m_memory_addr)) {
-      sprintf(logger_buf, "is not the same address as private variable address");
-      logger -> Error(logger_buf);
-      return false;
    }
 
    // call detach and return to nCode
@@ -157,23 +129,23 @@ bool MemEngine::detach_memory(char* pmemoryAddr) {
    return true;
 }
 
-int MemEngine::get_key(){
-   return m_key;
-}
+// int MemEngine::get_key(){
+//    return m_key;
+// }
 
-int MemEngine::get_size(){
-   return m_size;
-}
+// int MemEngine::get_size(){
+//    return m_size;
+// }
 
-int MemEngine::get_flag(){
-   return m_flag;
-}
+// int MemEngine::get_flag(){
+//    return m_flag;
+// }
 
-// get private m_shmid 
-int MemEngine::get_shmid(){
-   return m_shmid;
-}
+// // get private m_shmid 
+// int MemEngine::get_shmid(){
+//    return m_shmid;
+// }
 
-char * MemEngine::get_memory_addr(){
-   return m_memory_addr;
-}
+// char * MemEngine::get_memory_addr(){
+//    return m_memory_addr;
+// }

@@ -64,6 +64,9 @@ public:
     MemQueue();
     virtual ~MemQueue();
 
+    // initialize the queue
+    bool init_queue();
+
     // add a reader to the queue
     unsigned int add_reader();
 
@@ -97,7 +100,18 @@ unsigned int MemQueue<ELEM_T, queue_size, reader_size>::count_to_index(unsigned 
 // constructure
 template <typename ELEM_T, int queue_size, int reader_size>
 MemQueue <ELEM_T, queue_size, reader_size>::MemQueue() {
+    this -> init_queue();
+}
 
+template <typename ELEM_T, int queue_size, int reader_size>
+MemQueue<ELEM_T, queue_size, reader_size>::~MemQueue() {
+    // delete[] m_theQueue;
+    // delete[] m_readIndex_arr;
+    // delete[] read_time;
+}
+
+template <typename ELEM_T, int queue_size, int reader_size>
+bool MemQueue<ELEM_T, queue_size, reader_size>::init_queue(){
     this->reader_num = 0;
     this->m_write_index = 0;
     this->m_max_read_index = 0;
@@ -115,14 +129,9 @@ MemQueue <ELEM_T, queue_size, reader_size>::MemQueue() {
         *(read_time + i) = 0;
     }
 
+    return true;
 }
 
-template <typename ELEM_T, int queue_size, int reader_size>
-MemQueue<ELEM_T, queue_size, reader_size>::~MemQueue() {
-    // delete[] m_theQueue;
-    // delete[] m_readIndex_arr;
-    // delete[] read_time;
-}
 
 template <typename ELEM_T, int queue_size, int reader_size>
 bool MemQueue<ELEM_T, queue_size, reader_size>::push(const ELEM_T &a_data) {

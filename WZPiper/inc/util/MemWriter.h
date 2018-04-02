@@ -6,6 +6,10 @@
 #ifndef MEMSERVER_H_
 #define MEMSERVER_H_
 
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "util/MemQueue.hpp"
 #include "util/MemEngine.h"
 #include "wzadapter/frame.h"
@@ -16,9 +20,20 @@ public:
 	~MemWriter();
 
 	int init_as_writer();
+	int set_config_info(char file_path[256]);
 	int do_write(Frame &mail);
+
+	// int get_key();
+
+	// int get_size();
+
+	// int get_flag();
+
+	// // return the shmid
+	// int get_shmid();
+	
 private:
-	MemQueue<Frame,3,2> *memQueue;
+	QueueManager *queue_manager;
 	int m_key;			// shared memory key
 	int m_size;			// shared memory size
 	int m_flag;			// shared memory flag
