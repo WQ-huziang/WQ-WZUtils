@@ -15,10 +15,23 @@ public:
 	MemReader();
 	~MemReader();
 
+	// init as reader to read
 	int init_as_reader();
+
+	int set_config_info(char file_path[256]);
 	int do_read(Frame &mail);
+
+	// int get_key();
+
+	// int get_size();
+
+	// int get_flag();
+
+	// // return the shmid
+	// int get_shmid();
+	
 private:
-	MemQueue<Frame,3,2> *memQueue;
+	QueueManager *queue_manager;
 	int reader_index;
 	int m_key;			// shared memory key
 	int m_size;			// shared memory size

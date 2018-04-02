@@ -20,17 +20,12 @@ int main(int argc,char* argv[])
    char* filePathIn;
    char* filePathOut;
 
-   while((ch = getopt(argc, argv, "i:o:p:h"))!= -1){
+   while((ch = getopt(argc, argv, "f:p:h"))!= -1){
       switch(ch){
 
-         case 'i':
+         case 'f':
             filePathIn = optarg;
             printf("%s\n", filePathIn);
-            break;
-
-         case 'o':
-            filePathOut = optarg;
-            printf("%s\n", filePathOut);
             break;
 
          case 'h':
@@ -54,7 +49,7 @@ int main(int argc,char* argv[])
    // logger->ParseConfigInfo(filePathIn);
 
    MemEngine * memReader = new MemReader();
-   memReader -> set_config_info("config.ini");
+   memReader -> set_config_info(filePathIn);
    memReader -> init_as_reader();
 
    Frame recvFrame;

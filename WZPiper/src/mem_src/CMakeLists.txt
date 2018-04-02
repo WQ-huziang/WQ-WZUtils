@@ -1,4 +1,4 @@
-SET(CLASS_FILE MemEngine MemReader MemWriter)
+SET(CLASS_FILE MemReader MemWriter MemEngine)
 SET(READER_FILE reader)
 SET(WRITER_FILE writer)
 #SET(MAIN_FILE gtest_memqueue)
