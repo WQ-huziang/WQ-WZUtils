@@ -58,4 +58,4 @@ struct Config{
 
 Config* loadConfig(const char* filePath);
 
-#endif
+#endif //INI_PARSER_H

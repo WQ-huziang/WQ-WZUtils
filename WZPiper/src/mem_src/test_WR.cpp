@@ -1,12 +1,12 @@
 // Copyright(C) 2018, Wizard Quant
 // Author: luoqingming
-// Functions: simple gtest for the module MemQueue
-// Date: 2018-03-30
+// Functions: simple gtest for the module MemReader and MemWriter
+// Date: 2018-04-2
 
-#include "MemQueue.hpp"
+#include "util/MemReader.h"
+#include "util/MemWriter.h"
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
-using namespace std;
 
 #ifndef PRT(...)
 #define PRT(...) printf(__VA_ARGS__)
@@ -15,16 +15,9 @@ using namespace std;
 
 class QueueTest : public ::testing::Test{
 protected:
-
-	MemQueue<int,3,3> q_i;
-	MemQueue<double,2,2> q_d;
-	int int_reader1;
-	int int_reader2;
-	int int_reader3;
-	int dou_reader1;
-
-	int int_x;
-	double dou_x;
+	MemEngine * memWriter;
+	MemEngine * memReader1;
+	MemEngine * memReader2;
 
 	virtual void SetUp(){
 		printf("%d\n", sizeof(q_i));

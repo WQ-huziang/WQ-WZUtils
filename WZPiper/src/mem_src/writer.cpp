@@ -51,43 +51,16 @@ int main(int argc,char* argv[])
    memWriter -> init_as_writer();
 
    Frame frame;
-   frame.source = 5;
-   frame.msg_type = 4;
-   frame.error_id = WZ_ERROR_ID_SUCCESS;
-   frame.rtn_type = 3;
-   frame.length = 2;
 
-   printf("write result is:%d", memWriter -> do_write(frame));
+   for (int i = 0; i<4 ; i++ ) {
+      frame.source = i;
+      frame.msg_type = i;
+      frame.error_id = WZ_ERROR_ID_SUCCESS;
+      frame.rtn_type = i;
+      frame.length = i;
 
-   // memWriter -> do_write(frame);
-   
-   // // receive message
-   // WZPiper * piper2 = new UdpPiper();
-   // piper2 -> set_config_info(filePathIn);
-   // piper2 -> init_as_server();
-
-   // // declare a frame to receive data;
-   // Frame recvFrame;
-   // piper2 -> do_read(recvFrame);
-
-   // PRINTSTR("recv source = ");
-   // PRINTINT(recvFrame.source);
-
-   // PRINTSTR("recv msg_type = ");
-   // PRINTINT(recvFrame.msg_type);
-
-   // PRINTSTR("recv error_id = ");
-   // PRINTINT(recvFrame.error_id);
-
-   // PRINTSTR("recv rtn_type = ");
-   // PRINTINT(recvFrame.rtn_type);
-
-   // PRINTSTR("recv length = ");
-   // PRINTINT(recvFrame.length);
-
-   // PRINTSTR("recv data = ");
-   // PRINTSTR(recvFrame.data);
-
-   exit(0);  
+      printf("write result is:%d\n", memWriter -> write_mem(frame));
+   }
+  
    return 0;  
 }  
