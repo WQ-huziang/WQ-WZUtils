@@ -2,7 +2,8 @@
 #include <netinet/in.h>  
 #include <string.h> 
 #include <unistd.h>
-#include "util/MemPiper.h"
+#include "util/MemEngine.h"
+#include "util/MemWriter.h"
 #include "util/logger.h"
 
 Logger *logger;
@@ -45,15 +46,14 @@ int main(int argc,char* argv[])
       }
    }
 
-   logger = new Logger(argv[0]);
-   logger->ParseConfigInfo(filePathOut);
+   // logger = new Logger(argv[0]);
+   // logger->ParseConfigInfo(filePathOut);
    
 
    // send message
-   WZPiper * piper1 = new MemPiper();
-   piper1 -> set_config_info(filePathOut);
-   piper1 -> init_as_client();
-
+   MemEngine * memWriter = new MemWriter();
+   memWriter -> set_config_info("config.ini");
+   memWriter -> init_as_writer();
 
    Frame frame;
    frame.source = 5;
@@ -62,13 +62,13 @@ int main(int argc,char* argv[])
    frame.rtn_type = 3;
    frame.length = 2;
 
-   piper1 -> do_write(frame);
+   //piper1 -> do_write(frame);
 
    printf("size of frame = %ld\n", sizeof(frame));
 
-   // for (;;) {
-   //    piper1 -> do_write(frame);
-   // }
+   for (;;) {
+      memWriter -> do_write(frame);
+   }
    
    
    // // receive message
