@@ -8,18 +8,22 @@
 #include <atomic>
 #include <sched.h>
 #include <assert.h>
+#include <cstring>
+
 using std::atomic_compare_exchange_weak;
+using std::atomic;
 
 template <typename ELEM_T>
 class FQueue{
 private:
-    unsigned int m_readIndex;
-    unsigned int m_writeIndex;
-    unsigned int m_maxReadIndex;
+    volatile atomic<unsigned int> m_readIndex;
+    volatile atomic<unsigned int> m_writeIndex;
+    volatile atomic<unsigned int> m_maxReadIndex;
     ELEM_T *m_theQueue;
     inline unsigned int countToIndex(unsigned int a_count);
     unsigned int Q_SIZE;
     unsigned int count;
+
 
 public:
     FQueue(unsigned int size = 1024);
@@ -31,12 +35,12 @@ public:
 };
 
 template <typename ELEM_T>
-inline unsigned int FQueue::countToIndex(unsigned int a_count) {
+inline unsigned int FQueue<ELEM_T>::countToIndex(unsigned int a_count) {
     return (a_count%Q_SIZE);
 }
 
 template <typename ELEM_T>
-FQueue::FQueue(unsigned int size) {
+FQueue<ELEM_T>::FQueue(unsigned int size) {
     m_theQueue = new ELEM_T[size];
     memset(m_theQueue, 0, size*sizeof(ELEM_T));
     this->m_readIndex = 0;
@@ -47,12 +51,12 @@ FQueue::FQueue(unsigned int size) {
 }
 
 template <typename ELEM_T>
-FQueue::~FQueue() {
+FQueue<ELEM_T>::~FQueue() {
     delete[] m_theQueue;
 }
 
 template <typename ELEM_T>
-bool FQueue::push(const ELEM_T &a_data) {
+bool FQueue<ELEM_T>::push(const ELEM_T &a_data) {
     unsigned int currentReadIndex, currentWriteIndex;
     do{
         currentReadIndex = m_readIndex;
@@ -64,11 +68,11 @@ bool FQueue::push(const ELEM_T &a_data) {
     }while(!atomic_compare_exchange_weak(&m_writeIndex, &currentWriteIndex, (currentWriteIndex+1)));
 
     //write
-    m_theQueue[countToIndex(currentWriteIndex)] = a_data;
-
+//    m_theQueue[countToIndex(currentWriteIndex)] = a_data;
+    memcpy(&m_theQueue[countToIndex(currentWriteIndex)], &a_data, sizeof(a_data));
     // Consider that there is more than 1 producer thread
     // commit
-    while(!atomic_compare_exchange_weak(&m_maxReadIndex, currentWriteIndex, (currentWriteIndex + 1))){
+    while(!atomic_compare_exchange_weak(&m_maxReadIndex, &currentWriteIndex, (currentWriteIndex + 1))){
 //        sched_yield();
         // 死等
     }
@@ -77,8 +81,8 @@ bool FQueue::push(const ELEM_T &a_data) {
 }
 
 template <typename ELEM_T>
-bool FQueue::pop(ELEM_T &a_data) {
-    unsigned int currentReadIndex, currentWriteIndex;
+bool FQueue<ELEM_T>::pop(ELEM_T &a_data) {
+    unsigned int currentReadIndex, currentMaxReadIndex;
     do{
         currentReadIndex = m_readIndex;
         currentMaxReadIndex = m_maxReadIndex;
@@ -86,7 +90,8 @@ bool FQueue::pop(ELEM_T &a_data) {
             // the queue is empty
             return false;
         }
-        a_data = m_theQueue[countToIndex(currentReadIndex)];
+//        a_data = m_theQueue[countToIndex(currentReadIndex)];
+        memcpy(&a_data, &m_theQueue[countToIndex(currentReadIndex)], sizeof(a_data));
         if  (atomic_compare_exchange_weak(&m_readIndex, &currentReadIndex, (currentReadIndex + 1))){
             --count;
             return true;
@@ -98,8 +103,8 @@ bool FQueue::pop(ELEM_T &a_data) {
 }
 
 template <typename ELEM_T>
-unsigned int FQueue::size() {
-    return count;
+unsigned int FQueue<ELEM_T>::size() {
+    return this->count;
 }
 
 
