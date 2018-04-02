@@ -1,28 +1,14 @@
+// Copyright(C) 2018, Wizard Quant
+// Author: huangxiaolin, luoqingming
+// Functions: MemEngine create attach dettach destroy a shared memory
+// Date: 2018-03-30
+
 #include "util/MemEngine.h"
 #include "util/logger.h"
 #include "util/iniparser.h"
 
 extern Logger *logger;
 char logger_buf[1024];
-
-// read key and size from configure file 
-// int MemEngine::set_config_info(char file_path[256]) {
-//    CIni ini;
-//    if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR){
-//       sprintf(logger_buf, "INI_OPENFILE_ERROR");
-//       logger -> Info(logger_buf);
-//       return -1;
-//    }
-
-//    this -> m_key = ini.GetInt("MemInfo","key");
-
-//    this -> m_size = ini.GetInt("MemInfo", "memorysize");
-
-//    sprintf(logger_buf, "MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
-//    logger -> Info(logger_buf);
-
-//    return 0;
-// }
 
 // create shared memory function
 bool MemEngine::create_memory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
@@ -77,6 +63,9 @@ bool MemEngine::destroy_memory(int & shmid, char* & m_memory_addr) {
    
    shmid = -1;
    m_memory_addr = NULL;
+   sprintf(logger_buf, "destroy memory succeed");
+   logger -> Info(logger_buf);
+
    return true;
 }
 
@@ -128,24 +117,3 @@ bool MemEngine::detach_memory(const int & m_shmid, char*& m_memory_addr) {
    m_memory_addr = NULL;
    return true;
 }
-
-// int MemEngine::get_key(){
-//    return m_key;
-// }
-
-// int MemEngine::get_size(){
-//    return m_size;
-// }
-
-// int MemEngine::get_flag(){
-//    return m_flag;
-// }
-
-// // get private m_shmid 
-// int MemEngine::get_shmid(){
-//    return m_shmid;
-// }
-
-// char * MemEngine::get_memory_addr(){
-//    return m_memory_addr;
-// }

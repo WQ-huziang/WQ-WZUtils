@@ -1,3 +1,8 @@
+// Copyright(C) 2018, Wizard Quant
+// Author: huangxiaolin, luoqingming
+// Functions: MemReader reads data from shared memory(pop data from the MemQueue)
+// Date: 2018-03-30
+
 #include "util/MemReader.h"
 #include "util/logger.h"
 
@@ -10,6 +15,7 @@ MemReader::MemReader(){
    this->m_size = 0 ;
    this->m_flag = SHM_FLAG ;
    this->m_shmid  = -1;
+   this->reader_index=0;
    this->queue_manager = NULL;
 }
 
@@ -41,16 +47,19 @@ int MemReader::set_config_info(char file_path[256]) {
 // initialize the client shared memory address pointer
 int MemReader::init_as_reader() {
 
-   sprintf(logger_buf, "Create memory MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
+   sprintf(logger_buf, "Memory MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
    logger -> Info(logger_buf);
    
    if(MemEngine::create_memory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
-      sprintf(logger_buf, "create_memory successfully");
-      logger -> Info(logger_buf);
 
-      // memcpy(&this->memQueue, m_memory_addr, sizeof(MEMQueue));
-
+      // assign queue_manager to the first address of shared memory
       this -> queue_manager = reinterpret_cast<QueueManager * > (this -> m_memory_addr);
+
+      // add as a reader and get the reader_id
+      this -> reader_index = this -> queue_manager -> mem_queue.add_reader();
+
+      sprintf(logger_buf, "attach memory successfully");
+      logger -> Info(logger_buf);
 
       return 0;
    }
@@ -59,7 +68,10 @@ int MemReader::init_as_reader() {
 
 
 // read from the shared memory
-int MemReader::do_read(Frame &mail) {
+int MemReader::read_mem(Frame &mail) {
+
+   // printf("reader_index =%d\n", this -> reader_index);
    int res = this -> queue_manager -> mem_queue.pop(mail,this -> reader_index);
+
    return res;
 }

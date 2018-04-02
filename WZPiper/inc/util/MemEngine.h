@@ -34,9 +34,7 @@ class MemEngine{
    
    // build-in function
    MemEngine(){};
-   ~MemEngine(){};
-
-
+   virtual ~MemEngine(){};
 
    // create shared memory function
    bool create_memory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr);
@@ -59,25 +57,27 @@ class MemEngine{
    // return the shmid
    virtual int get_shmid(){};
 
+   // get a char pointer point to the first address of shared memory
    virtual char * get_memory_addr(){};
 
    // set info accordding to config
    virtual int set_config_info(char file_path[256]){};
 
+   // use as a reader read a data from
    virtual int init_as_reader(){};
+
+
    virtual int init_as_writer(){};
-   virtual int do_write(Frame &frame){};
-   virtual int do_read(Frame &frame){};
+
+   // write a datum to shared memory
+   virtual int write_mem(Frame &frame){};
+
+   // read a datum from shared memory
+   virtual int read_mem(Frame &frame){};
 
 
  private:
 
-   // shared memory information
-   // int m_key;			// shared memory key
-   // int m_size;			// shared memory size
-   // int m_flag;			// shared memory flag
-   // int m_shmid;			// shared memory descriptor
-   // char *m_memory_addr;	// shared memory address pointer  
 
 };
 

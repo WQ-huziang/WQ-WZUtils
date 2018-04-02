@@ -1,3 +1,8 @@
+// Copyright(C) 2018, Wizard Quant
+// Author: huangxiaolin, luoqingming
+// Functions: MemWriter writes data to shared memory(push data to the MemQueue)
+// Date: 2018-03-30
+
 #include "util/MemWriter.h"
 #include "util/logger.h"
 
@@ -16,10 +21,8 @@ MemWriter::MemWriter(){
 }
 
 MemWriter::~MemWriter(){
-   if(this->m_memory_addr != NULL) {
-      detach_memory(this -> m_shmid, this -> m_memory_addr);
-   }
-   if(this->m_memory_addr != NULL) {
+   printf("call ~MemWriter\n");
+   if(this->m_memory_addr != NULL) { 
       destroy_memory(this -> m_shmid, this -> m_memory_addr);
    }
 }
@@ -44,39 +47,37 @@ int MemWriter::set_config_info(char file_path[256]) {
 }
 
 // initialize the server shared memory address pointer
+
 int MemWriter::init_as_writer() {
 
-   sprintf(logger_buf, "Create memory MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
-   logger -> Info(logger_buf);
-
    if (MemEngine::create_memory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
+
+      sprintf(logger_buf, "Create memory MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
+      logger -> Info(logger_buf);
       
-      printf("Before asigin to queue_manager\n" );
+      // assign queue_manager to the first address of shared memory
+      this -> queue_manager = reinterpret_cast<QueueManager * > (this -> m_memory_addr) ;
 
-      // copy the queue to shared memory
-      // memcpy(&m_memory_addr, this->memQueue, sizeof(this->memQueue));
-
-      this -> queue_manager = (QueueManager *) (this -> m_memory_addr) ;
-
-      printf("After asigin to queue_manager\n");
-
-      printf("queue_manager size is:%ld\n",sizeof(*queue_manager) );
-
+      // initialize the queues before using
       this -> queue_manager -> init_manager();
 
-      printf("After init to queue_manager\n");
+      sprintf(logger_buf, "check reader size:%d\n", this -> queue_manager -> mem_queue.get_reader_size());
+      logger -> Info(logger_buf);
 
-      printf("%d\n", this -> queue_manager -> mem_queue.get_reader_size());
-
-      printf("create_memory successfully\n");
+      sprintf(logger_buf, "init as writer successfully");
+      logger -> Info(logger_buf);
 
       return 0;
    }
+
+   sprintf(logger_buf, "Failed to init as writer, create memory failed.");
+   logger -> Error(logger_buf);
+
    return -1;
 }
 
 // write from the shared memory
-int MemWriter::do_write(Frame &mail) {
+int MemWriter::write_mem(Frame &mail) {
 
    int res = this -> queue_manager -> mem_queue.push(mail);
 

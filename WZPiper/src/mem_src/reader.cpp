@@ -55,9 +55,9 @@ int main(int argc,char* argv[])
    Frame recvFrame;
    
    printf("get here\n");
-   for (int i = 0; i<5 ; i++ ) {
+   for (int i = 0; i<2 ; i++ ) {
       printf("[receive %d]", i);
-      printf("return value = %d\n", memReader -> do_read(recvFrame));
+      printf("return value = %d\n", memReader -> read_mem(recvFrame));
       printf("recv source = %d\n", recvFrame.source);
       printf("recv msg_type = %d\n", recvFrame.msg_type );
       printf("recv error_id = %d\n", recvFrame.error_id);
@@ -104,9 +104,6 @@ int main(int argc,char* argv[])
    // memcpy(frame.data, data, 5);
    // piper1 -> do_write(frame);
    
-
-
-   
-   exit(0);  
+   delete memReader; 
    return 0;  
 }  

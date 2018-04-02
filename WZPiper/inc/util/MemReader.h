@@ -19,7 +19,7 @@ public:
 	int init_as_reader();
 
 	int set_config_info(char file_path[256]);
-	int do_read(Frame &mail);
+	int read_mem(Frame &mail);
 
 	// int get_key();
 

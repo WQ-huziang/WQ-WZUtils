@@ -1,7 +1,7 @@
 SET(CLASS_FILE MemReader MemWriter MemEngine)
 SET(READER_FILE reader)
 SET(WRITER_FILE writer)
-#SET(MAIN_FILE gtest_memqueue)
+SET(QUEUETEST_FILE gtest_memqueue)
 #SET(MAIN_FILE test_thread)
 #SET(MAIN_FILE test_WR)
 SET(UTILS_SO iniparser)
@@ -18,7 +18,11 @@ FOREACH(f ${CLASS_FILE})
 ENDFOREACH(f)
 
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
+
 ADD_EXECUTABLE(${READER_FILE} ${READER_FILE}.cpp)
 ADD_EXECUTABLE(${WRITER_FILE} ${WRITER_FILE}.cpp)
+ADD_EXECUTABLE(${QUEUETEST_FILE} ${QUEUETEST_FILE}.cpp)
+
 TARGET_LINK_LIBRARIES(${READER_FILE} ${CLASS_FILE} gtest gflags pthread gtest_main ${UTILS_SO} logger glog )
 TARGET_LINK_LIBRARIES(${WRITER_FILE} ${CLASS_FILE} gtest gflags pthread gtest_main ${UTILS_SO} logger glog )
+TARGET_LINK_LIBRARIES(${QUEUETEST_FILE} gtest gflags pthread gtest_main ${UTILS_SO} logger glog )
