@@ -1,7 +1,9 @@
-// Copyright(C) 2018, Wizard Quant
-// Author: luoqingming
-// Functions: simple gtest for the module MemQueue
-// Date: 2018-03-30
+/***************************************************************************
+Copyright(C) 2018, Wizard Quant
+Author: luoqingming
+Description: simple gtest for the module MemQueue
+Date: 2018-03-30
+***************************************************************************/
 
 #include "MemQueue.hpp"
 #include "gtest/gtest.h"
@@ -29,8 +31,8 @@ protected:
 	virtual void SetUp(){
 		printf("%d\n", sizeof(q_i));
 
-		int_reader1 = q_i.add_reader();
-		int_reader2 = q_i.add_reader();
+		int_reader1 = q_i.addReader();
+		int_reader2 = q_i.addReader();
 
 		EXPECT_EQ(1,q_i.push(1));
 		EXPECT_EQ(1,q_i.push(2));
@@ -39,8 +41,8 @@ protected:
 };
 
 TEST_F(QueueTest, QueueSize){
-	EXPECT_EQ(2,q_i.get_queue_size());
-	EXPECT_EQ(0,q_d.get_queue_size());
+	EXPECT_EQ(2,q_i.getQueueSize());
+	EXPECT_EQ(0,q_d.getQueueSize());
 }
 
 int main(int argc, char* argv[]){

@@ -1,17 +1,22 @@
-// Copyright(C) 2018, Wizard Quant
-// Author: huangxiaolin, luoqingming
-// Functions: MemEngine create attach dettach destroy a shared memory
-// Date: 2018-03-30
+/***************************************************************************
+Copyright(C) 2018, Wizard Quant
+Author: huangxiaolin, luoqingming
+Description: MemEngine create attach dettach destroy a shared memory
+Date: 2018-03-30
+***************************************************************************/
 
 #include "util/MemEngine.h"
 #include "util/logger.h"
 #include "util/iniparser.h"
 
+// logger
 extern Logger *logger;
+
+// logger buffer
 char logger_buf[1024];
 
 // create shared memory function
-bool MemEngine::create_memory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
+bool MemEngine::createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
    // call shmget and use return value to initialize shared memory address pointer
    m_shmid = shmget(m_key, m_size, m_flag);
 
@@ -30,14 +35,14 @@ bool MemEngine::create_memory(const int &m_key, const int &m_size, const int &m_
       return false;
    }
 
-   sprintf(logger_buf, "shared memory create succeed, shmid =%d", m_shmid);
+   sprintf(logger_buf, "shared memory create succeed, key = %d, size = %d, shmid = %d", m_key, m_size, m_shmid);
    logger -> Info(logger_buf);
 
    return true;
 }
 
 // destroy shared memory function
-bool MemEngine::destroy_memory(int & shmid, char* & m_memory_addr) {
+bool MemEngine::destroyMemory(int & shmid, char* & m_memory_addr) {
 
    if (shmid == -1) {
       sprintf(logger_buf, "destroy memory failed, shmid = -1");
@@ -70,7 +75,7 @@ bool MemEngine::destroy_memory(int & shmid, char* & m_memory_addr) {
 }
 
 // attach shared memory function
-bool MemEngine::attach_memory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr) {
+bool MemEngine::attachMemory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr) {
 
    // is the id exist
    if (m_shmid == SHM_FAILED ) {
@@ -94,7 +99,7 @@ bool MemEngine::attach_memory(const int & m_key, int & m_shmid, const int & m_fl
 }
 
 // detach shared memory function
-bool MemEngine::detach_memory(const int & m_shmid, char*& m_memory_addr) {
+bool MemEngine::detachMemory(const int & m_shmid, char*& m_memory_addr) {
    // is private variable address valid
    if (m_shmid == -1 || m_memory_addr == NULL) {
       // not valid
