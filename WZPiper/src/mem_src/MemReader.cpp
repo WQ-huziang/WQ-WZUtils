@@ -5,9 +5,9 @@ Description: MemReader reads data from shared memory(pop data from the MemQueue)
 Date: 2018-03-30
 ***************************************************************************/
 
-#include "util/MemReader.h"
-#include "util/iniparser.h"
-#include "util/logger.h"
+#include "MemReader.h"
+#include "iniparser.h"
+#include "logger.h"
 
 // logger
 extern Logger *logger;

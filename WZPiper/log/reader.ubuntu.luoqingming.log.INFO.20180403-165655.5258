@@ -1,8 +1,0 @@
-Log file created at: 2018/04/03 16:56:55
-Running on machine: ubuntu
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-I0403 16:56:55.012326  5258 logger.cpp:65] Config read MemInfo key = 12, MemInfo size = 1024000
-I0403 16:56:55.012526  5258 logger.cpp:65] Memory MemInfo key = 12, MemInfo size = 1024000
-I0403 16:56:55.012568  5258 logger.cpp:65] shared memory create succeed, key = 12, size = 1024000, shmid = 400359664
-I0403 16:56:55.012581  5258 logger.cpp:65] reader id is:1
-I0403 16:56:55.012585  5258 logger.cpp:65] attach memory successfully

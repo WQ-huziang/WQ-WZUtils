@@ -5,8 +5,8 @@ Description: MemEngine create attach dettach destroy a shared memory
 Date: 2018-03-30
 ***************************************************************************/
 
-#include "util/MemEngine.h"
-#include "util/logger.h"
+#include "MemEngine.h"
+#include "logger.h"
 
 // logger
 extern Logger *logger;

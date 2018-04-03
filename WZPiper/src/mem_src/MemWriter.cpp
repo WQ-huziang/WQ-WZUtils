@@ -5,9 +5,9 @@ Description: MemWriter writes data to shared memory(push data to the MemQueue)
 Date: 2018-03-30
 ***************************************************************************/
 
-#include "util/MemWriter.h"
-#include "util/iniparser.h"
-#include "util/logger.h"
+#include "MemWriter.h"
+#include "iniparser.h"
+#include "logger.h"
 
 // logger
 extern Logger *logger;
