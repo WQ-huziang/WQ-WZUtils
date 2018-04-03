@@ -5,9 +5,9 @@ Description: simple gtest for the module MemReader and MemWriter
 Date: 2018-04-2
 ***************************************************************************/
 
-#include "util/MemReader.h"
-#include "util/MemWriter.h"
-#include "util/logger.h"
+#include "MemReader.h"
+#include "MemWriter.h"
+#include "logger.h"
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
 

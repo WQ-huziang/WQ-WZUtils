@@ -2,9 +2,9 @@
 #include <netinet/in.h>  
 #include <string.h> 
 #include <unistd.h>
-#include "util/MemEngine.h"
-#include "util/MemWriter.h"
-#include "util/logger.h"
+#include "MemEngine.h"
+#include "MemWriter.h"
+#include "logger.h"
 
 Logger *logger;
   
@@ -61,5 +61,6 @@ int main(int argc,char* argv[])
       printf("write result is:%d\n", memWriter -> writeMem(frame));
    }
   
+   // delete memWriter;
    return 0;  
 }  

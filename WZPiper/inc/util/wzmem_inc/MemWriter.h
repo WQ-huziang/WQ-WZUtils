@@ -8,9 +8,9 @@ Date: 2018-03-30
 #ifndef MEMSERVER_H_
 #define MEMSERVER_H_
 
-#include "util/MemQueue.hpp"
-#include "util/MemEngine.h"
-#include "wzadapter/frame.h"
+#include "MemQueue.hpp"
+#include "MemEngine.h"
+#include "frame.h"
 
 class MemWriter : public MemEngine{
 public:

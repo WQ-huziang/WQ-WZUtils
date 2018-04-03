@@ -8,9 +8,9 @@ Date: 2018-03-30
 #ifndef MEMCLIENT_H_
 #define MEMCLIENT_H_
 
-#include "util/MemEngine.h"
-#include "util/MemQueue.hpp"
-#include "wzadapter/frame.h"
+#include "MemEngine.h"
+#include "MemQueue.hpp"
+#include "frame.h"
 
 class MemReader : public MemEngine{
 public:

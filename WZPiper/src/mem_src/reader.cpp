@@ -6,9 +6,9 @@
 #include<netinet/in.h>  
 #include<string.h>  
 #include<iostream>
-#include "util/MemEngine.h"
-#include "util/MemReader.h"
-#include "util/logger.h"
+#include "MemEngine.h"
+#include "MemReader.h"
+#include "logger.h"
 
 Logger * logger;
   

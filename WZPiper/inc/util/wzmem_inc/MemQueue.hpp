@@ -12,7 +12,6 @@ Date: 2018-03-30
 #include <sched.h>
 #include <assert.h>
 #include <string.h>
-#include <iostream>
 
 // #ifndef PRT(...)
 // #define PRT(...) printf(__VA_ARGS__)
@@ -20,6 +19,8 @@ Date: 2018-03-30
 // #endif
 
 using std::atomic_compare_exchange_weak;
+
+// here to define a QueueDataStruct?
 
 /***************************************************************************
 Description: single writer and multiple reader lockless queue with atomic,
@@ -294,6 +295,9 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 
                 }while(!atomic_compare_exchange_weak(&m_min_read_index, &tmp_int, (tmp_int + 1)));
 
+                // read_time[countToIndex(cur_readIndex)] = 0 has atomic problem?
+                read_time[countToIndex(cur_readIndex)] = 0;
+
 		        // pop decrease the count has atomic problem?
         		// --count;
                 do{
@@ -330,7 +334,9 @@ unsigned int MemQueue<ELEM_T, queue_size, reader_size>::addReader(){
 
     // reader added start reading from current min_read_index
     // reader_num start from 0, use (reader_num - 1) as id
-	m_readIndex_arr[reader_num - 1] = m_min_read_index;
+	// m_readIndex_arr[reader_num - 1] = m_min_read_index;
+    // reader added start reading from 0
+    m_readIndex_arr[reader_num - 1] = 0;
 	return reader_num-1;
 }
 

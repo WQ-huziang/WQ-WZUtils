@@ -13,9 +13,9 @@ Date: 2018-03-30
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "wzadapter/frame.h"
-#include "util/MemQueue.hpp"
-#include "util/logger.h"
+#include "frame.h"
+#include "MemQueue.hpp"
+#include "logger.h"
 
 #define PRT(...) printf(__VA_ARGS__);
 #define SHM_FAILED -1 
@@ -28,7 +28,7 @@ Description: QueueManager manage the MemQueue used in shared memory
 typedef struct QueueManager_
 {
 
-   // the MemQueue
+   // the MemQueue<DataType, DataQueueSize(must be 2^n), MaxReaderSize>
    MemQueue<Frame, 4, 2> frame_mem_queue;
    // MemQueue<Frame, 1024, 2 > frame_mem_queue;
 

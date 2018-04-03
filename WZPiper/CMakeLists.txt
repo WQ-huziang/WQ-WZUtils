@@ -10,6 +10,7 @@ INCLUDE_DIRECTORIES(inc)
 INCLUDE_DIRECTORIES(inc/util)
 INCLUDE_DIRECTORIES(inc/wzadapter)
 INCLUDE_DIRECTORIES(inc/CTP)
+INCLUDE_DIRECTORIES(inc/util/wzmem_inc)
 
 #ADD_SUBDIRECTORY(gtest)
 #include_directories(gtest/include)
