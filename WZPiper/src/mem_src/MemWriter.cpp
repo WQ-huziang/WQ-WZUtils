@@ -6,6 +6,7 @@ Date: 2018-03-30
 ***************************************************************************/
 
 #include "util/MemWriter.h"
+#include "util/iniparser.h"
 #include "util/logger.h"
 
 // logger

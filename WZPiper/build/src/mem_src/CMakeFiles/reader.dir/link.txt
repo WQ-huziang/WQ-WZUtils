@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -g -std=c++11 -g   CMakeFiles/reader.dir/reader.cpp.o  -o ../../../bin/reader  -L/home/luoqingming/coding/WZUtils/WZPiper/lib ../../../lib/libMemReader.so ../../../lib/libMemWriter.so ../../../lib/libMemEngine.so -liniparser -llogger -lglog -Wl,-rpath,/home/luoqingming/coding/WZUtils/WZPiper/lib 

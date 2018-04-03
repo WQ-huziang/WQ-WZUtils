@@ -6,6 +6,7 @@ Date: 2018-03-30
 ***************************************************************************/
 
 #include "util/MemReader.h"
+#include "util/iniparser.h"
 #include "util/logger.h"
 
 // logger
@@ -62,6 +63,9 @@ int MemReader::initAsReader() {
 
       // add as a reader and get the reader_id
       this -> reader_index = this -> queue_manager -> frame_mem_queue.addReader();
+
+      sprintf(logger_buf, "reader id is:%d", this -> reader_index);
+      logger -> Info(logger_buf);
 
       sprintf(logger_buf, "attach memory successfully");
       logger -> Info(logger_buf);

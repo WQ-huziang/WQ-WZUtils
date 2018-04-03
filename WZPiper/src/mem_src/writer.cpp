@@ -61,5 +61,6 @@ int main(int argc,char* argv[])
       printf("write result is:%d\n", memWriter -> writeMem(frame));
    }
   
+   // delete memWriter;
    return 0;  
 }  

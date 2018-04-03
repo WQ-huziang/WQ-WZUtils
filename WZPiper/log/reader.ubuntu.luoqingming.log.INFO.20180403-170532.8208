@@ -1,0 +1,4 @@
+Log file created at: 2018/04/03 17:05:32
+Running on machine: ubuntu
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0403 17:05:32.418782  8208 logger.cpp:65] Config read MemInfo key = 12, MemInfo size = 1024000
