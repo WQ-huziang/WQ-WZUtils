@@ -41,14 +41,13 @@ int main(int argc,char* argv[])
       }
    }
 
-   // logger = new Logger(argv[0]);
-   // logger->ParseConfigInfo(filePathOut);
-   
+   logger = new Logger(argv[0]);
+   logger->ParseConfigInfo(filePathOut);
 
    // send message
    MemEngine * memWriter = new MemWriter();
-   memWriter -> set_config_info(filePathIn);
-   memWriter -> init_as_writer();
+   memWriter -> setConfigInfo(filePathIn);
+   memWriter -> initAsWriter();
 
    Frame frame;
 
@@ -59,7 +58,7 @@ int main(int argc,char* argv[])
       frame.rtn_type = i;
       frame.length = i;
 
-      printf("write result is:%d\n", memWriter -> write_mem(frame));
+      printf("write result is:%d\n", memWriter -> writeMem(frame));
    }
   
    return 0;  

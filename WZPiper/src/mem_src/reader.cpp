@@ -10,7 +10,7 @@
 #include "util/MemReader.h"
 #include "util/logger.h"
 
-Logger *logger;
+Logger * logger;
   
 int main(int argc,char* argv[])   
 {  
@@ -45,19 +45,19 @@ int main(int argc,char* argv[])
       }
    }
 
-   // logger = new Logger(argv[0]);
-   // logger->ParseConfigInfo(filePathIn);
+   logger = new Logger(argv[0]);
+   logger -> ParseConfigInfo(filePathIn);
 
    MemEngine * memReader = new MemReader();
-   memReader -> set_config_info(filePathIn);
-   memReader -> init_as_reader();
+   memReader -> setConfigInfo(filePathIn);
+   memReader -> initAsReader();
 
    Frame recvFrame;
    
    printf("get here\n");
    for (int i = 0; i<2 ; i++ ) {
       printf("[receive %d]", i);
-      printf("return value = %d\n", memReader -> read_mem(recvFrame));
+      printf("return value = %d\n", memReader -> readMem(recvFrame));
       printf("recv source = %d\n", recvFrame.source);
       printf("recv msg_type = %d\n", recvFrame.msg_type );
       printf("recv error_id = %d\n", recvFrame.error_id);
