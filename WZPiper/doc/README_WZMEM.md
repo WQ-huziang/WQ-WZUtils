@@ -266,3 +266,22 @@ else {
 delete memReader;
 
 ```
+
+------
+
+### Related Knowledge:
+
+- ##### 无锁队列：
+
+  www.cnblogs.com/sniperHW/p/4172248.html
+
+- ##### C++类继承：
+
+  - **public 继承：**基类的public，protected成员在子类中访问属性不变，子类新增的成员函数可以直接访问，但是对于基类的private成员依然是基类的私有，子类无法直接进行访问。
+  - **private 继承：**基类的public，protected成员转变为子类的private成员，子类新增的成员函数可以进行访问，对于基类的private成员依然是基类的私有，子类无法直接进行访问。
+  - **protected 继承：**基类的public，protected成员转变为子类的protected成员，子类新增的成员函数可以进行访问，对于基类的private成员依然是基类的私有，子类无法直接进行访问。
+
+
+
+
+
