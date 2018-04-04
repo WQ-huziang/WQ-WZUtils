@@ -272,8 +272,8 @@ delete memReader;
 ### Related Knowledge:
 
 - ##### 无锁队列：
-
-  www.cnblogs.com/sniperHW/p/4172248.html
+    
+  - www.cnblogs.com/sniperHW/p/4172248.html
 
 - ##### C++类继承：
 
