@@ -10,7 +10,6 @@ int WZSocket::epollInit()
 		return -1;
 	addEvent(tcpfd, EPOLLIN);
 	addEvent(udpfd, EPOLLIN);
-	cout << udpfd << " " << epollfd << endl;
 	return 0;
 }
 
@@ -20,7 +19,6 @@ int WZSocket::wzRecv(Frame &md)
 	for (int i=0; i<num_of_events; i++) 
 	{
 		int eventfd = events[i].data.fd;
-		cout << eventfd << endl;
 		if (sockAccept(eventfd) == 0)
 			continue;
 		else if (eventfd == udpfd)
