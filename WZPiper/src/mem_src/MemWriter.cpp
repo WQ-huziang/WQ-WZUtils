@@ -25,7 +25,6 @@ MemWriter::MemWriter(){
 }
 
 MemWriter::~MemWriter(){
-   printf("call ~MemWriter\n");
    if(this->m_memory_addr != NULL) { 
       destroyMemory(this -> m_shmid, this -> m_memory_addr);
    }

@@ -1,6 +1,6 @@
 
-#include "util/udp.h"
-#include "util/wzclient.hpp"
+#include "udp.h"
+#include "wzclient.hpp"
 #include <iostream>
 
 using namespace std;

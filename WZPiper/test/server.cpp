@@ -2,8 +2,8 @@
 // Author: luojunbin
 
 #include <iostream>
-#include "util/wzserver.hpp"
-#include "util/udp.h"
+#include "wzserver.hpp"
+#include "udp.h"
 
 using namespace std;
 

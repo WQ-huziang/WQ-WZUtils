@@ -1,1 +1,0 @@
-/usr/bin/c++   -fPIC    CMakeFiles/stacktrace_unittest.dir/src/stacktrace_unittest.cc.o  -o stacktrace_unittest -rdynamic libglog.a /usr/local/lib/libgflags.a -lpthread 

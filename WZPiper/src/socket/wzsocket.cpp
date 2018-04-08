@@ -1,7 +1,7 @@
 //
 // Author: luojunbin
 
-#include "util/wzsocket.h"
+#include "wzsocket.h"
 
 int WZSocket::epollInit()
 {
