@@ -9,10 +9,10 @@
 
 struct Frame{
     short source;
+    short dest;
     short msg_type;
     short error_id;
     short rtn_type;
-    short dest;
     int length;
     union Data{
         TSInputOrderField insert;
@@ -23,55 +23,6 @@ struct Frame{
     } data;
 };
 
-struct ReqFrame{
-    char source;
-    char msg_type;
-    char error_id;
-    char rtn_type;
-    int length;
-    union ReqData{
-        TSInputOrderField insert;
-        TSOrderActionField action;
-    } req_data;
-};
-
-/* 用的比较少，所以还没用简化的TS的形式 */
-struct RspFrame{
-    char source;
-    char msg_type;
-    char error_id;
-    char rtn_type;
-    int length;
-    union RspData{
-        WZRspAccountField account;
-        WZRspPositionField position;
-    } rsp_data;
-};
-
-struct RtnFrame{
-    char source;
-    char msg_type;
-    char error_id;
-    char rtn_type;
-    int length;
-    union RtnData{
-        TSRtnOrderField order;
-        TSRtnTradeField trade;
-    } rtn_data;
-};
-
-struct MarketDataFrame{
-    char source;
-    char msg_type;
-    char error_id;
-    char rtn_type;
-    int length;
-    TSMarketDataField market_data;
-//    union MarketData{
-//        TSMarketDataField
-//    } market_data;
-};
-//
 ///////////////////////////////////
 // source: 数据来源
 ///////////////////////////////////
@@ -79,8 +30,20 @@ struct MarketDataFrame{
 #define WZ_SOURCE_CTP          0
 //xtp
 #define WZ_SOURCE_XTP          1
+//其他index
 
 typedef short WZSourceType;
+
+///////////////////////////////////
+// source: 数据去向
+///////////////////////////////////
+//ctp
+#define WZ_DEST_CTP          0
+//xtp
+#define WZ_DEST_XTP          1
+//其他index
+
+typedef short WZDestType;
 
 ///////////////////////////////////
 // msg_type: 数据类型
@@ -108,17 +71,6 @@ typedef short WZMsgType;
 #define WZ_ERROR_ID_ERROR            1
 
 typedef short WZErrorId;
-
-
-///////////////////////////////////
-// source: 数据来源
-///////////////////////////////////
-//ctp
-#define WZ_SOURCE_CTP          0
-//xtp
-#define WZ_SOURCE_XTP          1
-
-typedef short WZSourceType;
 
 ///////////////////////////////////
 // rtn_type: 用来二级区分msg_type, 暂时用不着
