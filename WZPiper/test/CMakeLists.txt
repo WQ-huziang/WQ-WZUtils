@@ -1,0 +1,14 @@
+SET(CLASS_FILE tcp wzsocket udp)
+SET(UTILS_SO iniparser)
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  
+
+LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
+LINK_DIRECTORIES(../../WZConfigReader)
+LINK_DIRECTORIES(../../WZLogger/lib)
+
+ADD_EXECUTABLE(server server.cpp)
+TARGET_LINK_LIBRARIES(server ${CLASS_FILE} ${UTILS_SO})
+
+ADD_EXECUTABLE(client client.cpp)
+TARGET_LINK_LIBRARIES(client ${CLASS_FILE} ${UTILS_SO})

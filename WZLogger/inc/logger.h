@@ -2,10 +2,10 @@
 #define LOGGER_H_
 
 #include <logging.h>
-#include <wzdatastruct.h>
-#include "frame.h"
-#include "iniparser.h"
-#include "transportstruct.h"
+#include "wzadapter/wzdatastruct.h"
+#include "wzadapter/frame.h"
+#include "util/iniparser.h"
+#include "wzadapter/transportstruct.h"
 
 class Logger
 {
