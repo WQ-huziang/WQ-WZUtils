@@ -46,6 +46,7 @@ struct RspFrame{
         WZRspAccountField account;
         WZRspPositionField position;
     } rsp_data;
+    
 };
 
 struct RtnFrame{
@@ -79,6 +80,7 @@ struct MarketDataFrame{
 #define WZ_SOURCE_CTP          0
 //xtp
 #define WZ_SOURCE_XTP          1
+
 
 typedef short WZSourceType;
 

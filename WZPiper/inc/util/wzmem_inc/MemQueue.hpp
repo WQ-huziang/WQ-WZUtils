@@ -13,12 +13,16 @@ Date: 2018-03-30
 #include <assert.h>
 #include <string.h>
 
-// #ifndef PRT(...)
+// #ifndef PRT
 // #define PRT(...) printf(__VA_ARGS__)
 // #define PRT(...)
 // #endif
 
 using std::atomic_compare_exchange_weak;
+using std::atomic_load;
+using std::atomic_fetch_add;
+using std::atomic_fetch_sub;
+using std::atomic_store;
 
 // here to define a QueueDataStruct?
 
@@ -215,7 +219,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::push(const ELEM_T &a_datum) {
     unsigned int cur_writeIndex;
 
     do{
-        cur_writeIndex = m_write_index;
+        cur_writeIndex = atomic_load( &m_write_index );
 
         // if the producer catch the slowest consumer
         if  (countToIndex(cur_writeIndex) == countToIndex(m_min_read_index) && count!= 0){
@@ -238,7 +242,8 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::push(const ELEM_T &a_datum) {
     // sched_yield();
     // 死等
     }
-    ++count;
+
+    atomic_fetch_add(&count, (unsigned int) 1);
     return true;
 }
 
@@ -255,6 +260,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 
     do{
         cur_readIndex = m_readIndex_arr[reader_id];
+        
         cur_max_readIndex = m_max_read_index;
 
         // if the consumer catch the producer
@@ -272,8 +278,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 
         do{
             // add, get the right to add read time
-            cur_read_time = read_time[countToIndex(cur_readIndex)];
-
+            cur_read_time = atomic_load(&read_time[countToIndex(cur_readIndex)]);
         }while(!atomic_compare_exchange_weak((read_time+countToIndex(cur_readIndex)), &cur_read_time, (cur_read_time + 1)));
 
         if(m_min_read_index == cur_readIndex) {
@@ -285,26 +290,19 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
             // when read_num is 2^n
             // if(read_time[countToIndex(cur_readIndex)] & (reader_num - 1) == 0 && read_time[countToIndex(cur_readIndex)] != 0) {
             // when read_num is not 2^n
-              if(read_time[countToIndex(cur_readIndex)] % reader_num == 0 && read_time[countToIndex(cur_readIndex)] != 0) {
-                // ++min_read_index has atomic problem?
-                // ++m_min_read_index;
-                unsigned int tmp_int;
-                do{
-                // add, get the right to add min_read_index
-                    tmp_int = m_min_read_index;
-
-                }while(!atomic_compare_exchange_weak(&m_min_read_index, &tmp_int, (tmp_int + 1)));
+            // if(read_time[countToIndex(cur_readIndex)] % reader_num == 0 && read_time[countToIndex(cur_readIndex)] != 0) {
+            if(cur_read_time + 1 == reader_num) {
 
                 // read_time[countToIndex(cur_readIndex)] = 0 has atomic problem?
-                read_time[countToIndex(cur_readIndex)] = 0;
+                atomic_store(&read_time[countToIndex(cur_readIndex)],(unsigned int) 0);
 
                 // pop decrease the count has atomic problem?
                 // --count;
-                do{
-                // add, get the right to add min_read_index
-                    tmp_int = count;
+                atomic_fetch_sub(&count, (unsigned int) 1);
 
-                }while(!atomic_compare_exchange_weak(&count, &tmp_int, (tmp_int - 1)));
+                // ++min_read_index has atomic problem?
+                // ++m_min_read_index;
+                atomic_fetch_add(&m_min_read_index, (unsigned int) 1);
             }
         }
 
@@ -328,18 +326,22 @@ unsigned int MemQueue<ELEM_T, queue_size, reader_size>::addReader(){
 
     // add reader, reader num + 1, 
     // has atomic problem?
-    reader_num++;
+    unsigned int cur_reader_num;
+    do{
+        // add, get the right to add read time
+        cur_reader_num = atomic_load(&reader_num);
+    }while(!atomic_compare_exchange_weak(&reader_num, &cur_reader_num, (cur_reader_num + 1)));
 
-    if(reader_num > MAX_READER_SIZE) {
+    if(cur_reader_num >= MAX_READER_SIZE) {
         return -1;
     }
 
     // reader added start reading from current min_read_index
-    // reader_num start from 0, use (reader_num - 1) as id
-    // m_readIndex_arr[reader_num - 1] = m_min_read_index;
+    // cur_reader_num start from 0, use (cur_reader_num - 1) as id
+    // m_readIndex_arr[cur_reader_num - 1] = m_min_read_index;
     // reader added start reading from 0
-    m_readIndex_arr[reader_num - 1] = 0;
-    return reader_num-1;
+    m_readIndex_arr[cur_reader_num] = 0;
+    return cur_reader_num;
 }
 
 template <typename ELEM_T, int queue_size, int reader_size>
