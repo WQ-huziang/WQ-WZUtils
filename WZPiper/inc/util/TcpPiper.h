@@ -16,31 +16,50 @@
 
 class TcpPiper : public WZPiper {
  public:
-    TcpPiper();
- 	/* System configuration */
-	virtual int parseConfigFile(char file_path[256]);
-	/* Session management */
-	virtual int socketInit(bool sockType);
-	virtual int socketConnect();
-	/* Data management */
-	virtual char* getInputStream(int len);
-	virtual int getOutputStream(void *, int len);
-	/* Event management */
-	int addEvent(int &sockfd, int state);
-	int deleteEvent(int &sockfd, int state);
-    int setNonblocking(int sockfd);
-    int handleAccept(int);
+
+   /*
+   from WZPiper
+   */
+   virtual int init_as_server();
+   virtual int set_config_info(char file_path[256]);
+   virtual int init_as_client();
+   virtual int do_read(Frame &mail);
+   virtual int do_write(Frame &mail);
+
+ public:
+
+   /*
+   build-in function
+   */
+   TcpPiper();
+   ~TcpPiper();
+
+   /*set socket nonblocking*/
+   int set_nonblocking(int sockfd);
+
+   /*action in epoll*/
+   int handle_accept();
+   int add_event(int &sockfd, int state);
+   int delete_event(int &sockfd, int state);
 
  private:
-	bool is_server;
+
    /*link information*/
    char ip[256];
    int port;
+
    /*epoll socket*/
-   int sockfd;
-   int epollfd;
+   int listen_fd;
+   int server_fd;
+   int epoll_fd;
+   int event_fd;
+
    struct sockaddr_in servaddr;
    struct epoll_event events[MAXEPOLLSIZE];
+
+   bool is_server;
+
+   char buffer[256];
 };
 
 #endif

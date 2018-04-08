@@ -1,5 +1,9 @@
 SET(CLASS_FILE TcpPiper)
+<<<<<<< HEAD
 SET(MAIN_FILE server)
+=======
+SET(MAIN_FILE client)
+>>>>>>> ee4aef9acb823f0e0a64c913562f1e4a823c4464
 SET(UTILS_SO iniparser)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  

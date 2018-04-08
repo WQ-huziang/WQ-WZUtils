@@ -35,6 +35,7 @@ int main(int argc,char* argv[])
    frame.error_id = WZ_ERROR_ID_SUCCESS;
    frame.rtn_type = 3;
    frame.length = 4;
+<<<<<<< HEAD:WZPiper/src/udp_src/testClient.cpp
 
    int len = sizeof(frame);
    char* rep = new char[500];
@@ -44,6 +45,11 @@ int main(int argc,char* argv[])
       piper1 -> getOutputStream(rep, 500);
       usleep(10000);
 
+=======
+
+   for (;;) {
+      piper1 -> do_write(frame);
+>>>>>>> ee4aef9acb823f0e0a64c913562f1e4a823c4464:WZPiper/src/udp_src/testClient.cpp
    }
    
    

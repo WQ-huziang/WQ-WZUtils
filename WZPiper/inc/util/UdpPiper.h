@@ -8,31 +8,35 @@
 #include "wzadapter/frame.h"
 #include "util/WZPiper.h"
 
+
+
 class UdpPiper : public WZPiper {
  public:
    UdpPiper();
-   virtual ~UdpPiper();
+   ~UdpPiper();
    // initialize the server
-   virtual int parseConfigFile(char file_path[256]);
-   /* Session management */
-   virtual int socketInit(bool sockType);
-   virtual int socketConnect();
-   /* Data management */
-   virtual char* getInputStream(int len);
-   virtual int getOutputStream(void *, int len);
+   virtual int init_as_server();
+   // set the ip and port according to the config file
+   virtual int set_config_info(char file_path[256]);
+   // link to the 
+   virtual int init_as_client();
+   // read data from the pipe
+   virtual int do_read(Frame& mail);
+   // write data to the pipe
+   virtual int do_write(Frame& mail);
+
 
  private:
    // sokect ip address
-   char ip[256];
+   char UDP_ip [128];
    // sokect conect port 
-   int port;
+   int UDP_port;
    // sokect id
-   int sockfd;
+   int UDP_sockfd;
    // buffer size
+   char buffer[256];
 
    struct sockaddr_in addr;
-
-   bool is_server;
 };
 
 #endif //UdpPiper
