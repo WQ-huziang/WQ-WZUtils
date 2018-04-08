@@ -10,7 +10,7 @@ Date: 2018-03-30
 #include <bits/stdc++.h>
 using namespace std;
 
-#ifndef PRT(...)
+#ifndef PRT
 #define PRT(...) printf(__VA_ARGS__)
 //#define PRT(...)
 #endif
@@ -24,7 +24,7 @@ protected:
 	int int_x;
 
 	virtual void SetUp(){
-		printf("%d\n", sizeof(q_i));
+		printf("%ld\n", sizeof(q_i));
 
 		int_reader1 = q_i.addReader();
 

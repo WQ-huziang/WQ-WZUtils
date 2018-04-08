@@ -11,7 +11,7 @@ Date: 2018-04-2
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
 
-#ifndef PRT(...)
+#ifndef PRT
 #define PRT(...) printf(__VA_ARGS__)
 //#define PRT(...)
 #endif
@@ -52,7 +52,7 @@ TEST_F(WriterReaderTest, WriteAndReadWorks){
 
 	// test write
 	Frame sendFrame;
-	for (int i = 0; i<4 ; i++ ) {
+	for (int i = 0; i<DataQueueSize ; i++ ) {
 		sendFrame.source = i;
 		sendFrame.msg_type = i;
 		sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
@@ -67,7 +67,7 @@ TEST_F(WriterReaderTest, WriteAndReadWorks){
 	// test reader1
 	Frame recvFrame;
 
-	for (int i = 0; i<4 ; i++ ) {
+	for (int i = 0; i<DataQueueSize ; i++ ) {
 		EXPECT_EQ(0,memReader1 -> readMem(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
@@ -78,14 +78,14 @@ TEST_F(WriterReaderTest, WriteAndReadWorks){
 	}
 	// test catch writer
 	EXPECT_EQ(-1,memReader1 -> readMem(recvFrame));
-	EXPECT_EQ(3,recvFrame.source);
-	EXPECT_EQ(3,recvFrame.msg_type );
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.source);
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.msg_type );
 	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-	EXPECT_EQ(3,recvFrame.rtn_type);
-	EXPECT_EQ(3,recvFrame.length);
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.rtn_type);
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.length);
 
 	// test reader2
-	for (int i = 0; i<4 ; i++ ) {
+	for (int i = 0; i<DataQueueSize ; i++ ) {
 		EXPECT_EQ(0,memReader2 -> readMem(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
@@ -95,11 +95,11 @@ TEST_F(WriterReaderTest, WriteAndReadWorks){
 	}
 	// test catch writer
 	EXPECT_EQ(-1,memReader2 -> readMem(recvFrame));
-	EXPECT_EQ(3,recvFrame.source);
-	EXPECT_EQ(3,recvFrame.msg_type );
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.source);
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.msg_type );
 	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-	EXPECT_EQ(3,recvFrame.rtn_type);
-	EXPECT_EQ(3,recvFrame.length);
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.rtn_type);
+	EXPECT_EQ(DataQueueSize - 1,recvFrame.length);
 
 	// test write
 	EXPECT_EQ(0,memWriter -> writeMem(sendFrame));

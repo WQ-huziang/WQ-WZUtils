@@ -76,7 +76,7 @@ bool FQueue<ELEM_T>::push(const ELEM_T &a_data) {
 //        sched_yield();
         // 死等
     }
-    ++count;
+    atomic_fetch_add(&count, (unsigned int) 1);
     return true;
 }
 
@@ -93,7 +93,7 @@ bool FQueue<ELEM_T>::pop(ELEM_T &a_data) {
 //        a_data = m_theQueue[countToIndex(currentReadIndex)];
         memcpy(&a_data, &m_theQueue[countToIndex(currentReadIndex)], sizeof(a_data));
         if  (atomic_compare_exchange_weak(&m_readIndex, &currentReadIndex, (currentReadIndex + 1))){
-            --count;
+            atomic_fetch_sub(&count, (unsigned int) 1);
             return true;
         }
     }while(true);

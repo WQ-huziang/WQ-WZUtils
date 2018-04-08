@@ -9,7 +9,7 @@ Date: 2018-03-30
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
 
-#ifndef PRT(...)
+#ifndef PRT
 //#define PRT(...) printf(__VA_ARGS__)
 #define PRT(...)
 #endif

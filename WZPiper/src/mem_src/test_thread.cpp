@@ -10,7 +10,7 @@ Date: 2018-03-30
 #include <bits/stdc++.h>
 using namespace std;
 
-#ifndef PRT(...)
+#ifndef PRT
 #define PRT(...) printf(__VA_ARGS__)
 //#define PRT(...)
 #endif

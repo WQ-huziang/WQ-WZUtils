@@ -17,10 +17,30 @@ Date: 2018-03-30
 #include "MemQueue.hpp"
 #include "logger.h"
 
+#ifndef PRT
 #define PRT(...) printf(__VA_ARGS__);
+//#define PRT(...)
+#endif
+
+#ifndef SHM_FAILED
 #define SHM_FAILED -1 
-#define SHM_DATA_SIZE 2048
+#endif
+
+#ifndef SHM_FLAG
 #define SHM_FLAG IPC_CREAT|0666
+#endif
+
+#ifndef QueueDataType
+#define QueueDataType Frame
+#endif
+
+#ifndef DataQueueSize
+#define DataQueueSize 1024
+#endif
+
+#ifndef MaxReaderSize
+#define MaxReaderSize 2
+#endif
 
 /***************************************************************************
 Description: QueueManager manage the MemQueue used in shared memory
@@ -29,8 +49,9 @@ typedef struct QueueManager_
 {
 
    // the MemQueue<DataType, DataQueueSize(must be 2^n), MaxReaderSize>
-   MemQueue<Frame, 4, 2> frame_mem_queue;
-   // MemQueue<Frame, 1024, 2 > frame_mem_queue;
+   MemQueue<QueueDataType, DataQueueSize, MaxReaderSize> frame_mem_queue;
+   // MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_rec_queue;
+   // MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_req_queue;
 
    // Return: 1 if initManager succeed, 0 if failed
    bool initManager(){
@@ -139,7 +160,6 @@ class MemEngine{
  private:
 
  public:
-
 
 };
 
