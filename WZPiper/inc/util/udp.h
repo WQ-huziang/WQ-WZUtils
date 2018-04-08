@@ -3,7 +3,7 @@
 //
 
 #include "util/wzsocket.h"
-#include "util/iniparse.h"
+#include "util/iniparser.h"
 
 #ifndef UDPSOCKET_H_
 #define UDPSOCKET_H_

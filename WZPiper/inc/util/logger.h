@@ -1,19 +1,11 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
 
-<<<<<<< HEAD
-#include "logging.h"
+#include "util/logging.h"
 #include <wzadapter/wzdatastruct.h>
 #include "wzadapter/frame.h"
-#include "iniparser.h"
+#include "util/iniparser.h"
 #include "wzadapter/transportstruct.h"
-=======
-#include <logging.h>
-#include <wzdatastruct.h>
-#include "frame.h"
-#include "iniparser.h"
-#include "transportstruct.h"
->>>>>>> ee4aef9acb823f0e0a64c913562f1e4a823c4464
 
 class Logger
 {
