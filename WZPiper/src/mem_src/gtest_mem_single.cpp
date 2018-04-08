@@ -18,21 +18,15 @@ using namespace std;
 class QueueTest : public ::testing::Test{
 protected:
 
-	MemQueue<int,4,3> q_i;
-	MemQueue<double,4,2> q_d;
+	MemQueue<int,4,1> q_i;
 	int int_reader1;
-	int int_reader2;
-	int int_reader3;
-	int dou_reader1;
 
 	int int_x;
-	double dou_x;
 
 	virtual void SetUp(){
 		printf("%d\n", sizeof(q_i));
 
 		int_reader1 = q_i.addReader();
-		int_reader2 = q_i.addReader();
 
 		EXPECT_EQ(1,q_i.push(1));
 		EXPECT_EQ(1,q_i.push(2));
@@ -42,7 +36,19 @@ protected:
 
 TEST_F(QueueTest, QueueSize){
 	EXPECT_EQ(2,q_i.getQueueSize());
-	EXPECT_EQ(0,q_d.getQueueSize());
+}
+
+TEST_F(QueueTest, PushPop){
+	EXPECT_EQ(1,q_i.pop(int_x, int_reader1));
+	EXPECT_EQ(1,int_x);
+	EXPECT_EQ(1,q_i.pop(int_x, int_reader1));
+	EXPECT_EQ(2,int_x);
+	EXPECT_EQ(0,q_i.pop(int_x, int_reader1));
+	EXPECT_EQ(1,q_i.push(3));
+	EXPECT_EQ(1,q_i.push(4));
+	EXPECT_EQ(1,q_i.push(5));
+	EXPECT_EQ(1,q_i.push(6));
+	EXPECT_EQ(0,q_i.push(7));
 }
 
 int main(int argc, char* argv[]){

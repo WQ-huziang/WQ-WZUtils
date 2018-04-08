@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -g -std=c++11 -g   CMakeFiles/gtest_memqueue.dir/gtest_memqueue.cpp.o  -o ../../../bin/gtest_memqueue  -L/home/luoqingming/coding/WZUtils/WZPiper/lib -lgtest -lgflags -lpthread -lgtest_main -liniparser -llogger -lglog -Wl,-rpath,/home/luoqingming/coding/WZUtils/WZPiper/lib 
