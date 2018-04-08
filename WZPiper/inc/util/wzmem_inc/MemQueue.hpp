@@ -124,7 +124,7 @@ public:
 
 
 private:
-	// each reader's readIndex
+    // each reader's readIndex
     unsigned int m_readIndex_arr[reader_size];
 
     // the total number of reader start from 1
@@ -235,7 +235,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::push(const ELEM_T &a_datum) {
     // Consider that there is more than 1 producer thread
     // commit, wait for the producer finish the push operation, reset the upper bound of the to cur_writeIndex + 1
     while(!atomic_compare_exchange_weak(&m_max_read_index, &cur_writeIndex, (cur_writeIndex + 1))){
-	// sched_yield();
+    // sched_yield();
     // 死等
     }
     ++count;
@@ -250,7 +250,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 
     // the reader is not exist
     if ( reader_id == -1 || reader_id >= reader_num) {
-    	return false;
+        return false;
     }
 
     do{
@@ -276,7 +276,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 
         }while(!atomic_compare_exchange_weak((read_time+countToIndex(cur_readIndex)), &cur_read_time, (cur_read_time + 1)));
 
-	    if(m_min_read_index == cur_readIndex) {
+        if(m_min_read_index == cur_readIndex) {
 
             // PRT("m_min_read_index == cur_readIndex =  %d\n", cur_readIndex);
             // PRT("read_time[%d] =  %d\n", countToIndex(cur_readIndex), read_time[countToIndex(cur_readIndex)]);
@@ -285,9 +285,9 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
             // when read_num is 2^n
             // if(read_time[countToIndex(cur_readIndex)] & (reader_num - 1) == 0 && read_time[countToIndex(cur_readIndex)] != 0) {
             // when read_num is not 2^n
-		    if(read_time[countToIndex(cur_readIndex)] % reader_num == 0 && read_time[countToIndex(cur_readIndex)] != 0) {
-		        // ++min_read_index has atomic problem?
-		        // ++m_min_read_index;
+              if(read_time[countToIndex(cur_readIndex)] % reader_num == 0 && read_time[countToIndex(cur_readIndex)] != 0) {
+                // ++min_read_index has atomic problem?
+                // ++m_min_read_index;
                 unsigned int tmp_int;
                 do{
                 // add, get the right to add min_read_index
@@ -298,20 +298,20 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
                 // read_time[countToIndex(cur_readIndex)] = 0 has atomic problem?
                 read_time[countToIndex(cur_readIndex)] = 0;
 
-		        // pop decrease the count has atomic problem?
-        		// --count;
+                // pop decrease the count has atomic problem?
+                // --count;
                 do{
                 // add, get the right to add min_read_index
                     tmp_int = count;
 
                 }while(!atomic_compare_exchange_weak(&count, &tmp_int, (tmp_int - 1)));
-		    }
-	    }
+            }
+        }
 
         // no atomic problem(every reader has a distinct reader number), asign it directly
         m_readIndex_arr[reader_id] = cur_readIndex + 1;
 
-		return true;
+        return true;
 
     }while(true);
 
@@ -326,18 +326,20 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 template <typename ELEM_T, int queue_size, int reader_size>
 unsigned int MemQueue<ELEM_T, queue_size, reader_size>::addReader(){
 
-	// add reader, reader num + 1
-	reader_num++;
-	if(reader_num > MAX_READER_SIZE) {
-		return -1;
-	}
+    // add reader, reader num + 1, 
+    // has atomic problem?
+    reader_num++;
+
+    if(reader_num > MAX_READER_SIZE) {
+        return -1;
+    }
 
     // reader added start reading from current min_read_index
     // reader_num start from 0, use (reader_num - 1) as id
-	// m_readIndex_arr[reader_num - 1] = m_min_read_index;
+    // m_readIndex_arr[reader_num - 1] = m_min_read_index;
     // reader added start reading from 0
     m_readIndex_arr[reader_num - 1] = 0;
-	return reader_num-1;
+    return reader_num-1;
 }
 
 template <typename ELEM_T, int queue_size, int reader_size>
@@ -352,7 +354,7 @@ int MemQueue<ELEM_T, queue_size, reader_size>::getReaderSize() {
 
 template <typename ELEM_T, int queue_size, int reader_size>
 unsigned int MemQueue<ELEM_T, queue_size, reader_size>::getWriteIndex() {
-	return m_write_index;
+    return m_write_index;
 }
 
 template <typename ELEM_T, int queue_size, int reader_size>
