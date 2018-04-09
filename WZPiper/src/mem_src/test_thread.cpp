@@ -5,7 +5,7 @@ Description: simple gtest for the module MemQueue
 Date: 2018-03-30
 ***************************************************************************/
 
-#include "MemEngine.h"
+#include "memengine.h"
 #include "gtest/gtest.h"
 #include <bits/stdc++.h>
 using namespace std;
