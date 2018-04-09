@@ -130,17 +130,26 @@ TARGET_LINK_LIBRARIES(main ${UTILS_SO})
 
 #### For MemEngine user:
 
-- If use it as server, such as Td and Md:
+- If you are the server(which should run first) like TraderServer and MdServer, follow the next step:
 
 ```
 // declare
 WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memServer;
 
-// new a MemWriter object
+// new a memServer object using parameter WZ_PIPER_SERVER
 memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_SERVER);
 
-// read configuer file, create or attach shared memory
-memServer -> init(file);
+// read configuer file and create the shared memory
+memServer -> init(filePath);
+
+// receive message
+int rtn = memServer -> wzRecv(recvFrame);
+if(rtn == -1) {
+  printf("read failed\n");
+}
+else if (rtn == 0) {
+  printf("read succeed\n");
+}
 
 // write message
 Frame sendFrame;
@@ -150,17 +159,9 @@ sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
 sendFrame.rtn_type = 1;
 sendFrame.length = 1;
 
+
 // send message
 int rtn = memServer -> wzSend(sendFrame);
-if(rtn == -1) {
-	printf("write failed\n");
-}
-else if (rtn == 0) {
-	printf("write succeed\n");
-}
-
-// receive message
-int rtn = memServer -> wzRecv(recvFrame);
 if(rtn == -1) {
   printf("write failed\n");
 }
@@ -168,22 +169,23 @@ else if (rtn == 0) {
   printf("write succeed\n");
 }
 
-// delete the memServer pointer to detach the memory
+
+// delete it.
 delete memServer;
 
 ```
 
-- If use it as client, such as strategy:
+- If you are the client(which should run later) like strategy, follow the next step:
 
 ```
 // declare
 WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient;
 
-// new a MemWriter object
+// new a memClient object using parameter WZ_PIPER_CLIENT
 memClient = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_CLIENT);
 
-// read configuer file, create or attach shared memory
-memClient -> init(file);
+// read configuer file and create the shared memory
+memClient -> init(filePath);
 
 // write message
 Frame sendFrame;
@@ -193,14 +195,6 @@ sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
 sendFrame.rtn_type = 1;
 sendFrame.length = 1;
 
-// receive message
-int rtn = memClient -> wzRecv(recvFrame);
-if(rtn == -1) {
-  printf("write failed\n");
-}
-else if (rtn == 0) {
-  printf("write succeed\n");
-}
 
 // send message
 int rtn = memClient -> wzSend(sendFrame);
@@ -211,7 +205,29 @@ else if (rtn == 0) {
   printf("write succeed\n");
 }
 
-// delete the memClient pointer to detach the memory
+// receive message
+int rtn = memClient -> wzRecv(recvFrame);
+if(rtn == -1) {
+  printf("read failed\n");
+}
+else if (rtn == 0) {
+  printf("read succeed\n");
+}
+// delete it.
 delete memClient;
 
 ```
+
+------
+
+### Related Knowledge:
+
+- ##### 无锁队列：
+    
+  - www.cnblogs.com/sniperHW/p/4172248.html
+
+- ##### C++类继承：
+
+  - **public 继承：**基类的public，protected成员在子类中访问属性不变，子类新增的成员函数可以直接访问，但是对于基类的private成员依然是基类的私有，子类无法直接进行访问。
+  - **private 继承：**基类的public，protected成员转变为子类的private成员，子类新增的成员函数可以进行访问，对于基类的private成员依然是基类的私有，子类无法直接进行访问。
+  - **protected 继承：**基类的public，protected成员转变为子类的protected成员，子类新增的成员函数可以进行访问，对于基类的private成员依然是基类的私有，子类无法直接进行访问。

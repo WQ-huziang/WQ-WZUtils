@@ -6,145 +6,89 @@
 
 ### Interface Instructions:
 
-- MemEngine class interface:
+- MemEngine class template interface:
 
 ```
-
-/************************************************* 
-Function: createMemory
-Description: create shared memory function
-InputParameter: 
-  m_key: the key of to-create shared memory
-  m_size: the size of to-create shared memory
-  m_flag: the shm flag of to-create shared memory
-  m_shmid: a initial int id, will be set to
-     the shared memory id after calling the function.
-  m_memory_addr: a initial address, will be set point to
-     the shared memory first address after calling the function.
-Return: 1 if create succeed, 0 if failed
-*************************************************/ 
-bool createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr);
-
-/************************************************* 
-Function: destroyMemory
-Description: destroy shared memory function
-InputParameter: 
-  m_shmid: the to-destroy shared memory id, will be set to -1 if succeed.
-  m_memory_addr: the pointer point to to-destroy shared memory address, will be set to NULL if succeed.
-Return: 1 if create succeed, 0 if failed
-*************************************************/
-bool destroyMemory(int & m_shmid, char* & m_memory_addr);
-
-/************************************************* 
-Function: attachMemory
-Description: attach shared memory function
-InputParameter:
-  m_key: the to-attach shared memory key.
-  m_shmid: the to-attach shared memory id.
-  m_flag: the to-attach shared memory flag.
-  m_memory_addr: the pointer will be point to to-attach shared memory address.
-Return: 1 if create succeed, 0 if failed
-*************************************************/
-bool attachMemory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr);
-
-/************************************************* 
-Function: detachMemory
-Description: detach shared memory function
-InputParameter:
-  m_shmid: the to-detach shared memory id.
-  m_memory_addr: the pointer point to to-detach shared memory address.
-Return: 1 if create succeed, 0 if failed
-*************************************************/
-bool detachMemory(const int & m_shmid, char*& m_memory_addr);
-
-```
-
-- QueueManager use in MemWriter and MemReader:
-
-```
-// To use this, the writer and readers should decide the DataQueueSize and MaxReaderSize first
+// To use this, the Server and client should decide the QueueDataType, DataQueueSize and MaxReaderSize at first
 /***************************************************************************
-Description: QueueManager manage different kind of MemQueue s used in shared memory
+Description: MemEngine reads data from shared memory(pop data from the MemQueue)
+             MemEngine writes data into shared memory(push data to the MemQueue)
 ****************************************************************************/
-typedef struct QueueManager_
+template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
+class MemEngine{
+
+  /************************************************* 
+  Function: MemEngine
+  Description: Constructor, read key and size from configure file 
+     create or attach the shared memory
+     and init the queue_manager according to piperMode
+  InputParameter: 
+     piperMode:  the flag to mark server or client, 
+       0 or WZ_PIPER_SERVER as server,
+       1 or WZ_PIPER_CLIENT as client
+  Return: none
+  *************************************************/
+  MemEngine(int piperMode);
+
+  /************************************************* 
+  Function: init
+  Description: read configure file and init as server or client,
+    server will create the shared memory and init the QueueManager
+  InputParameter: none
+  Return: true if create succeed, false if failed
+  *************************************************/
+  bool init(char file_path[256]);
+
+  /************************************************* 
+  Function: wzRecv
+  Description: read a frame from shared memory queue
+  InputParameter: 
+    frame: pop(memcpy) a datum in queue to mail
+  Return: 1 if receive succeed, 0 if failed
+  *************************************************/
+  int wzRecv(QueueDataType &data);
+
+  /************************************************* 
+  Function: wzSend
+  Description: write a frame to shared memory queue
+  InputParameter: 
+    frame: the datum to push(memcpy) into queue
+  Return: 1 if send succeed, 0 if failed
+  *************************************************/
+  int wzSend(QueueDataType &data);
+};
+```
+
+- QueueManager use in MemEngine:
+
+```
+// To use this, the MemEngine should decide the DataQueueSize and MaxReaderSize first
+/***************************************************************************
+Description: QueueManager manage the MemQueue used in shared memory
+****************************************************************************/
+template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
+struct QueueManager
 {
 
    // the MemQueue<DataType, DataQueueSize(must be 2^n), MaxReaderSize>
-   MemQueue<Frame, 4, 2> frame_mem_queue;
-   // MemQueue<Frame, 1024, 2 > frame_mem_queue;
+   MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_rec_queue;
+   MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_req_queue;
 
    // Return: 1 if initManager succeed, 0 if failed
    bool initManager(){
-      // init MemQueue
-      int rtn = true;
 
       // call different queue's init
-      if (!frame_mem_queue.initQueue()) {
-         rtn = false;
+      if (!frame_req_queue.initQueue()) {
+         return false;
       }
-      
-      return rtn;
+
+      if (!frame_rec_queue.initQueue()) {
+         return false;
+      }
+
+      return true;
    }
-   
-}QueueManager;
-```
-
-- MemWriter class interface:
-
-```
-/************************************************* 
-Function: initAsWriter
-Description: init as writer to read
-InputParameter: none
-Return: 0 if create succeed, -1 if failed
-*************************************************/
-int initAsWriter();
-
-/************************************************* 
-Function: setConfigInfo
-Description: read configure file and set key and size
-InputParameter: none
-Return: 0 if create succeed, -1 if failed
-*************************************************/
-int setConfigInfo(char file_path[256]);
-
-/************************************************* 
-Function: writeMem
-Description: write a frame to shared memory queue
-InputParameter: 
-	mail: push (memcpy) a datum to push into queue
-Return: 0 if create succeed, -1 if failed
-*************************************************/
-int writeMem(Frame &mail);
-```
-
-- MemReader class interface:
-
-```
-/************************************************* 
-Function: initAsReader
-Description: init as reader to read
-InputParameter: none
-Return: 0 if create succeed, -1 if failed
-*************************************************/
-int initAsReader();
-
-/************************************************* 
-Function: setConfigInfo
-Description: read configure file and set key and size
-InputParameter: none
-Return: 0 if create succeed, -1 if failed
-*************************************************/
-int setConfigInfo(char file_path[256]);
-
-/************************************************* 
-Function: readMem
-Description: read a frame from shared memory queue
-InputParameter: 
-	mail: pop(memcpy) a datum in queue to mail
-Return: 0 if create succeed, -1 if failed
-*************************************************/
-int readMem(Frame &mail);
+};
 ```
 
 ----
@@ -157,63 +101,56 @@ int readMem(Frame &mail);
 [MemInfo]
 # key of the shared memory, better not to use 0
 key=12
-# shared memory size, must be enough to contain the QueueManager
-memorysize=1024000
 
 ```
 
-#### Include .h file in folder WZUtils/WZPiper/inc/util/wzmem_inc/, remember to copy them to your include folder:
+#### Include .h and .hpp file in folder WZUtils/WZPiper/inc/util/wzmem_inc/, remember to copy them to your include folder:
 
 ```
 MemEngine.h
-MemWriter.h
-MemReader.h
 MemQueue.hpp
 ```
 
-#### .so file is in folder WZUtils/WZPiper/lib, remember to copy them to your lib folder:
-
-```
-libMemEngine.so
-libMemReader.so
-libMemWriter.so
-libiniparser.so
-liblogger.so
-```
+#### No need to link .so file(for use class template):
 
 #### The CmakeLists.txt should add following statements:
 
 ```
-SET(MEM_FILE MemReader MemWriter MemEngine)
 SET(UTILS_SO iniparser logger glog)
 
+// INC_FOLDER_PATH should contains the .h and .hpp files above
 INCLUDE_DIRECTORIES(${INC_FOLDER_PATH})
 
 LINK_DIRECTORIES(${LIB_FOLDER_PATH})
 
 ADD_EXECUTABLE(main main.cpp)
 
-// link UTILS_SO before link MEM_FILE!!!
-TARGET_LINK_LIBRARIES(main ${MEM_FILE} ${UTILS_SO})
+// link UTILS_SO!!!
+TARGET_LINK_LIBRARIES(main ${UTILS_SO})
 ```
 
 #### For MemEngine user:
 
-- If use MemWriter to send data, follow the next step:
+- If you are the server(which should run first) like TraderServer and MdServer, follow the next step:
 
 ```
-// send message
 // declare
-MemEngine * memWriter;
+WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memServer;
 
-// new a MemWriter object
-memWriter = new MemWriter();
+// new a memServer object using parameter WZ_PIPER_SERVER
+memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_SERVER);
 
-// read configuer file and set private variable shared memory key and shared memory size
-memWriter -> setConfigInfo(file);
+// read configuer file and create the shared memory
+memServer -> init(filePath);
 
-// initialize as writer
-memWriter -> initAsWriter();
+// receive message
+int rtn = memServer -> wzRecv(recvFrame);
+if(rtn == -1) {
+  printf("read failed\n");
+}
+else if (rtn == 0) {
+  printf("read succeed\n");
+}
 
 // write message
 Frame sendFrame;
@@ -223,7 +160,9 @@ sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
 sendFrame.rtn_type = 1;
 sendFrame.length = 1;
 
-int rtn = memWriter -> writeMem();
+
+// send message
+int rtn = memServer -> wzSend(sendFrame);
 if(rtn == -1) {
 	printf("write failed\n");
 }
@@ -231,39 +170,52 @@ else if (rtn == 0) {
 	printf("write succeed\n");
 }
 
-// optional, if you want to destroy the shared memory created, add this, else don't.
-// delete memWriter;
+
+// delete it.
+delete memServer;
 
 ```
 
-- If use MemReader to receive data, follow the next step:
+- If you are the client(which should run later) like strategy, follow the next step:
 
 ```
-// receive message
 // declare
-MemEngine * memReader;
+WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient;
 
-// new a MemWriter object
-memReader = new MemReader();
+// new a memClient object using parameter WZ_PIPER_CLIENT
+memClient = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_CLIENT);
 
-// read configuer file and set private variable shared memory key and shared memory size
-memReader -> setConfigInfo(file);
-
-// initialize as reader
-memReader -> initAsReader();
+// read configuer file and create the shared memory
+memClient -> init(filePath);
 
 // write message
-Frame recvFrame;
-recvFrame.length = 1;
-if(memReader -> readMem(recvFrame) == -1) {
-	printf("write failed\n");
+Frame sendFrame;
+sendFrame.source = 1;
+sendFrame.msg_type = 1;
+sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
+sendFrame.rtn_type = 1;
+sendFrame.length = 1;
+
+
+// send message
+int rtn = memClient -> wzSend(sendFrame);
+if(rtn == -1) {
+  printf("write failed\n");
 }
-else {
-	printf("write succeed\n");
+else if (rtn == 0) {
+  printf("write succeed\n");
 }
 
-// delete the Reader pointer to detach the memory
-delete memReader;
+// receive message
+int rtn = memClient -> wzRecv(recvFrame);
+if(rtn == -1) {
+  printf("read failed\n");
+}
+else if (rtn == 0) {
+  printf("read succeed\n");
+}
+// delete it.
+delete memClient;
 
 ```
 
