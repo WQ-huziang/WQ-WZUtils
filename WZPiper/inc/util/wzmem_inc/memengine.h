@@ -93,6 +93,7 @@ public:
     *************************************************/ 
     bool createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr);
  
+ 
     /************************************************* 
     Function: destroyMemory
     Description: destroy shared memory function
@@ -102,6 +103,7 @@ public:
      Return: 1 if create succeed, 0 if failed
     *************************************************/
     bool destroyMemory(int & m_shmid, char* & m_memory_addr);
+
 
     /************************************************* 
     Function: attachMemory
@@ -115,6 +117,7 @@ public:
     *************************************************/
     bool attachMemory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr);
 
+
     /************************************************* 
     Function: detachMemory
     Description: detach shared memory function
@@ -124,8 +127,6 @@ public:
     Return: 1 if create succeed, 0 if failed
     *************************************************/
     bool detachMemory(const int & m_shmid, char*& m_memory_addr);
-
-
 
 
     /************************************************* 
