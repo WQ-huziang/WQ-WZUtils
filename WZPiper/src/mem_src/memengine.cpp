@@ -6,7 +6,7 @@ Description: MemEngine reads data from shared memory(pop data from the MemQueue)
 Date: 2018-04-09
 ***************************************************************************/
 
-#include "memengine.h"
+// #include "memengine.h"
 #include "iniparser.h"
 #include "logger.h"
 
@@ -16,8 +16,8 @@ extern Logger *logger;
 // logger buffer
 char logger_buf[1024];
 
-// server:server_client_flag = 0  client:server_client_flag = 1; 
-MemEngine::MemEngine(int server_client_flag){
+// server:piperMode = 0  client:piperMode = 1; 
+MemEngine::MemEngine(int piperMode){
    this->m_flag = 3 ;
    this->m_key  = 0 ;
    this->m_size = 0 ;
@@ -25,7 +25,7 @@ MemEngine::MemEngine(int server_client_flag){
    this->m_shmid  = -1;
    this->reader_index=0;
    this->queue_manager = NULL;
-   this->server_client_flag = server_client_flag;
+   this->piperMode = piperMode;
 }
 
 MemEngine::~MemEngine(){
@@ -159,18 +159,18 @@ bool MemEngine::init(char file_path[256]){
    logger -> Info(logger_buf);
    
    // init the queue_manager
-   if(createMemory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
-
+   // if(createMemory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
+   if(createMemory(this -> m_key, sizeof(QueueManager<QueueDataType, DataQueueSize, MaxReaderSize>), this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
       // assign queue_manager to the first address of shared memory
-      this -> queue_manager = reinterpret_cast<QueueManager * > (this -> m_memory_addr);
+      this -> queue_manager = reinterpret_cast<QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> * > (this -> m_memory_addr);
 
-      if(this->server_client_flag == 0){
+      if(this->piperMode == 0){
          // initialize the queues before using
          this -> queue_manager -> initManager();
          // add as a reader of the frame_req_queue and get the reader_id
          this -> reader_index = this -> queue_manager -> frame_req_queue.addReader();
       }
-      else if(this->server_client_flag == 1){
+      else if(this->piperMode == 1){
          // add as a reader of the frame_rec_queue and get the reader_id
          this -> reader_index = this -> queue_manager -> frame_rec_queue.addReader();
       }
@@ -190,12 +190,12 @@ bool MemEngine::init(char file_path[256]){
 
 
 // read from the shared memory
-int MemEngine::wzRecv(Frame &mail) {
+int MemEngine::wzRecv(QueueDataType &data) {
 
-   if(this->server_client_flag == 1 && this -> queue_manager -> frame_rec_queue.pop(mail,this -> reader_index) == 1) {
+   if(this->piperMode == 1 && this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_index) == 1) {
       return 0;
    } // client
-   else if(this->server_client_flag == 0 && this -> queue_manager -> frame_req_queue.pop(mail,this -> reader_index) == 1){
+   else if(this->piperMode == 0 && this -> queue_manager -> frame_req_queue.pop(data,this -> reader_index) == 1){
       return 0;
    } // server
    else {
@@ -204,12 +204,12 @@ int MemEngine::wzRecv(Frame &mail) {
 }
 
 // write from the shared memory
-int MemEngine::wzSend(Frame &mail) {
+int MemEngine::wzSend(QueueDataType &data) {
 
-   if(this->server_client_flag == 1 && this -> queue_manager -> frame_req_queue.push(mail) == 1) {
+   if(this->piperMode == 1 && this -> queue_manager -> frame_req_queue.push(data) == 1) {
       return 0;
    }// client
-   else if(this->server_client_flag == 0 && this -> queue_manager -> frame_rec_queue.push(mail) == 1){
+   else if(this->piperMode == 0 && this -> queue_manager -> frame_rec_queue.push(data) == 1){
       return 0;
    }// server
    else {
