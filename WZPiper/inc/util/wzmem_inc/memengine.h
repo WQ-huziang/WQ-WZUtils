@@ -1,15 +1,16 @@
 /***************************************************************************
 Copyright(C) 2018, Wizard Quant
 Author: huangxiaolin, luoqingming
-Description: MemEngine reads data from shared memory(pop data from the MemQueue)
-			 MemEngine writes data into shared memory(push data to the MemQueue)
+Description:struct QueueManager:manage the MemQueue used in shared memory
+            class MemEngine:reads data from shared memory(pop data from the MemQueue)
+                        and writes data into shared memory(push data to the MemQueue)
 Date: 2018-04-09
 ***************************************************************************/
 
-#ifndef MEMCLIENT_H_
-#define MEMCLIENT_H_
+#ifndef MEMENGINE_H_
+#define MEMENGINE_H_
 
-#include "wzpiper.h"
+#include "wzpiper.hpp"
 #include "memqueue.hpp"
 #include "frame.h"
 #include "logger.h"
@@ -38,11 +39,11 @@ Date: 2018-04-09
 #endif
 
 #ifndef DataQueueSize
-#define DataQueueSize 1024
+#define DataQueueSize 2048
 #endif
 
 #ifndef MaxReaderSize
-#define MaxReaderSize 2
+#define MaxReaderSize 4
 #endif
 
 /***************************************************************************
@@ -68,15 +69,38 @@ struct QueueManager
          return false;
       }
       
+      //printf("sizeof frame_rec_queue:%ld;sizeof frame_req_queue:%ld\n", sizeof(frame_rec_queue ), sizeof(frame_req_queue));
+
       return true;
    }
    
 };
 
+/***************************************************************************
+Description: MemEngine reads data from shared memory(pop data from the MemQueue)
+             MemEngine writes data into shared memory(push data to the MemQueue)
+****************************************************************************/
 class MemEngine{
 public:
-	   MemEngine(int server_client_flag);
-	   ~MemEngine();
+
+    /************************************************* 
+    Function: MemEngine
+    Description: Constructor, read key and size from configure file 
+       create or attach the shared memory
+       and init the queue_manager according to server_client_flag
+    InputParameter: 
+       server_client_flag: the flag to mark server or client, 0 as server, 1 as client
+    Return: none
+    *************************************************/
+    MemEngine(int server_client_flag);
+
+    /************************************************* 
+    Function: ~MemEngine
+    Description: Destructor, detach the shared memory
+    InputParameter: none
+    Return: none
+    *************************************************/
+    ~MemEngine();
 
     /************************************************* 
     Function: createMemory
@@ -90,17 +114,17 @@ public:
        m_memory_addr: a initial address, will be set point to
           the shared memory first address after calling the function.
     Return: 1 if create succeed, 0 if failed
-    *************************************************/ 
+    *************************************************/
     bool createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr);
- 
- 
+
+
     /************************************************* 
     Function: destroyMemory
     Description: destroy shared memory function
     InputParameter: 
        m_shmid: the to-destroy shared memory id, will be set to -1 if succeed.
        m_memory_addr: the pointer point to to-destroy shared memory address, will be set to NULL if succeed.
-     Return: 1 if create succeed, 0 if failed
+    Return: 1 if destroy succeed, 0 if failed
     *************************************************/
     bool destroyMemory(int & m_shmid, char* & m_memory_addr);
 
@@ -113,7 +137,7 @@ public:
        m_shmid: the to-attach shared memory id.
        m_flag: the to-attach shared memory flag.
        m_memory_addr: the pointer will be point to to-attach shared memory address.
-    Return: 1 if create succeed, 0 if failed
+    Return: 1 if attach succeed, 0 if failed
     *************************************************/
     bool attachMemory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr);
 
@@ -124,46 +148,47 @@ public:
     InputParameter:
        m_shmid: the to-detach shared memory id.
        m_memory_addr: the pointer point to to-detach shared memory address.
-    Return: 1 if create succeed, 0 if failed
+    Return: 1 if detach succeed, 0 if failed
     *************************************************/
     bool detachMemory(const int & m_shmid, char*& m_memory_addr);
 
 
     /************************************************* 
     Function: init
-    Description: read configure file and init as reader and writer
+    Description: read configure file and init as server or client,
+      server will create the shared memory and init the QueueManager
     InputParameter: none
     Return: true if create succeed, false if failed
     *************************************************/
-	  bool init(char file_path[256]);
+    bool init(char file_path[256]);
 
     /************************************************* 
-    Function: readMem
+    Function: wzRecv
     Description: read a frame from shared memory queue
     InputParameter: 
-    	mail: pop(memcpy) a datum in queue to mail
-    Return: true if create succeed, false if failed
+    	frame: pop(memcpy) a datum in queue to mail
+    Return: 0 if receive succeed, -1 if failed
     *************************************************/
-	  bool wzRecv(Frame &mail);
+    int wzRecv(Frame &frame);
 
-	  /************************************************* 
-    Function: writeMem
+    /************************************************* 
+    Function: wzSend
     Description: write a frame to shared memory queue
     InputParameter: 
-    	mail: push (memcpy) a datum to push into queue
-    Return: true if create succeed, false if failed
+    	frame: the datum to push(memcpy) into queue
+    Return: 0 if send succeed, -1 if failed
     *************************************************/
-	  bool wzSend(Frame &mail);
+    int wzSend(Frame &frame);
 	
 private:
-  	QueueManager *queue_manager;// pointer point to the queue manager in shared memory address
-  	int reader_index; 			// reader index
-  	int m_key;					// shared memory key
-  	int m_size;					// shared memory size
-  	int m_flag;					// shared memory flag
-  	int m_shmid;				// shared memory descriptor
-  	char *m_memory_addr;		// shared memory address pointer
-  	int server_client_flag;     // the flag to mark server or client
+    QueueManager *queue_manager;// pointer point to the queue manager in shared memory address
+    int reader_index; 			    // reader index
+    int m_key;					        // shared memory key
+    int m_size;					        // shared memory size
+    int m_flag;					        // shared memory flag
+    int m_shmid;				        // shared memory descriptor
+    char *m_memory_addr;		    // shared memory address pointer
+    int server_client_flag;     // the flag to mark server or client, 0 as server, 1 as client
 };
 
-#endif // MEMCLIENT_H_
+#endif // MEMENGINE_H_

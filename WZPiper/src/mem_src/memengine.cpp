@@ -164,19 +164,18 @@ bool MemEngine::init(char file_path[256]){
       // assign queue_manager to the first address of shared memory
       this -> queue_manager = reinterpret_cast<QueueManager * > (this -> m_memory_addr);
 
-      // initialize the queues before using
       if(this->server_client_flag == 0){
+         // initialize the queues before using
          this -> queue_manager -> initManager();
-      }
-
-      if(this->server_client_flag == 0){
-         // add as a reader and get the reader_id
+         // add as a reader of the frame_req_queue and get the reader_id
          this -> reader_index = this -> queue_manager -> frame_req_queue.addReader();
       }
       else if(this->server_client_flag == 1){
-         // add as a reader and get the reader_id
+         // add as a reader of the frame_rec_queue and get the reader_id
          this -> reader_index = this -> queue_manager -> frame_rec_queue.addReader();
       }
+
+      //printf("sizeof queue_manager:%ld\n", sizeof(*queue_manager) );
 
       sprintf(logger_buf, "Reader id is:%d", this -> reader_index);
       logger -> Info(logger_buf);
@@ -191,29 +190,29 @@ bool MemEngine::init(char file_path[256]){
 
 
 // read from the shared memory
-bool MemEngine::wzRecv(Frame &mail) {
+int MemEngine::wzRecv(Frame &mail) {
 
    if(this->server_client_flag == 1 && this -> queue_manager -> frame_rec_queue.pop(mail,this -> reader_index) == 1) {
-      return true;
+      return 0;
    } // client
    else if(this->server_client_flag == 0 && this -> queue_manager -> frame_req_queue.pop(mail,this -> reader_index) == 1){
-      return true;
+      return 0;
    } // server
    else {
-      return false;
+      return -1;
    }
 }
 
 // write from the shared memory
-bool MemEngine::wzSend(Frame &mail) {
+int MemEngine::wzSend(Frame &mail) {
 
    if(this->server_client_flag == 1 && this -> queue_manager -> frame_req_queue.push(mail) == 1) {
-      return true;
+      return 0;
    }// client
    else if(this->server_client_flag == 0 && this -> queue_manager -> frame_rec_queue.push(mail) == 1){
-      return true;
+      return 0;
    }// server
    else {
-      return false;
+      return -1;
    }
 }
