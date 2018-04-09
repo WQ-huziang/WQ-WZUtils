@@ -20,10 +20,12 @@ class WZPiper{
 		Function: WZPiper
 		Description: Constructor, calls the constructor of T
 		InputParameter: 
-			server_client_flag: the flag to mark server or client, 0 as server, 1 as client
+			piperMode: the flag to mark server or client, 
+				0 or WZ_PIPER_SERVER as server,
+				1 or WZ_PIPER_CLIENT as client
 		Return: none
 		*************************************************/
-		WZPiper(int server_client_flag);
+		WZPiper(int piperMode);
 
 		/************************************************* 
 		Function: ~WZPiper
@@ -63,7 +65,7 @@ class WZPiper{
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: receive a frame from piper
 			frame: read receive datum from piper to frame
-		Return: true if receive succeed, false if failed
+		Return: positive if receive succeed, 0 if failed
 		*************************************************/
 		int wzRecv(Frame &frame);
 
@@ -72,7 +74,7 @@ class WZPiper{
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: send a frame to piper
 			frame: the datum to send to piper
-		Return: 0 if send succeed, -1 if failed
+		Return: positive if send succeed, 0 if failed
 		*************************************************/
 		int wzSend(Frame &frame);
 
@@ -118,5 +120,14 @@ int WZPiper<T>::wzSend(Frame &frame){
 	return t->wzSend(frame);
 }
 
+///////////////////////////////////
+// The mode of the piper 
+// (server or client)
+///////////////////////////////////
+//server
+#define WZ_PIPER_SERVER          0
+//client 
+#define WZ_PIPER_CLIENT          1
+typedef short WZPiperMode;
 
 #endif

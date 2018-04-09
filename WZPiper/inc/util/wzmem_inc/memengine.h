@@ -167,7 +167,7 @@ public:
     Description: read a frame from shared memory queue
     InputParameter: 
     	frame: pop(memcpy) a datum in queue to mail
-    Return: 0 if receive succeed, -1 if failed
+    Return: 1 if receive succeed, 0 if failed
     *************************************************/
     int wzRecv(Frame &frame);
 
@@ -176,7 +176,7 @@ public:
     Description: write a frame to shared memory queue
     InputParameter: 
     	frame: the datum to push(memcpy) into queue
-    Return: 0 if send succeed, -1 if failed
+    Return: 1 if send succeed, 0 if failed
     *************************************************/
     int wzSend(Frame &frame);
 	
