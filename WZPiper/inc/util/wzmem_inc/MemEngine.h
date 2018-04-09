@@ -45,39 +45,48 @@ Date: 2018-03-30
 /***************************************************************************
 Description: QueueManager manage the MemQueue used in shared memory
 ****************************************************************************/
-typedef struct QueueManager_
+
+struct QueueManager
 {
 
    // the MemQueue<DataType, DataQueueSize(must be 2^n), MaxReaderSize>
-   MemQueue<QueueDataType, DataQueueSize, MaxReaderSize> frame_mem_queue;
-   // MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_rec_queue;
-   // MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_req_queue;
+   // MemQueue<QueueDataType, DataQueueSize, MaxReaderSize> frame_mem_queue;
+   MemQueue<QueueDataType, > frame_rec_queue;
+   MemQueue<QueueDataType, > frame_req_queue;
 
    // Return: 1 if initManager succeed, 0 if failed
-   bool initManager(){
+   bool initManager(int size, int reader_size){
       // init MemQueue
       int rtn = true;
 
       // call different queue's init
-      if (!frame_mem_queue.initQueue()) {
+      // if (!frame_mem_queue.initQueue()) {
+      //    rtn = false;
+      // }
+
+      if (!frame_rec_queue.initQueue(int size, int reader_size)) {
+         rtn = false;
+      }
+
+      if (!frame_req_queue.initQueue()) {
          rtn = false;
       }
       
       return rtn;
    }
    
-}QueueManager;
+};
 
 /***************************************************************************
 Description: MemEngine create attach dettach destroy a shared memory
 ****************************************************************************/
-class MemEngine{
+class MemBuilder{
  
  public:
    
    // build-in function
-   MemEngine(){};
-   virtual ~MemEngine(){};
+   MemBuilder(){};
+   virtual ~MemBuilder(){};
 
    /************************************************* 
    Function: createMemory
@@ -145,20 +154,40 @@ class MemEngine{
    virtual int setConfigInfo(char file_path[256]){};
 
    // use as a reader read a data from queue
-   virtual int initAsReader(){};
+   virtual int initAsReader();
 
    // use as a writer write a data to queue
-   virtual int initAsWriter(){};
+   virtual int initAsWriter();
 
    // write a frame to shared memory
-   virtual int writeMem(Frame &frame){};
+   virtual int writeMem(Frame &frame);
 
    // read a frame from shared memory
-   virtual int readMem(Frame &frame){};
+   virtual int readMem(Frame &frame);
 
 
  private:
+   QueueManager *queue_manager;// pointer point to the queue manager in shared memory address
 
+   (Type, queuesize, reader_index)
+
+   template <typename T>
+   QueueManager* malloc_queuemanager(int queuesize, int reader_index){
+      void *head = m_memory_addr;
+      queue_manager = (Queue_manager*) head;
+      queue_manager->init(queuesize, reader_index);      
+      // queue_manager->frame_rec_queue = (QueueManager*) head;
+      // queue_manager->frame_rec_queue->init
+      // int size = sizeof( QueueManager<T>(queuesize, reader_index));
+      return queue_manager;
+   }
+
+   int reader_index;          // reader index
+   int m_key;              // shared memory key
+   int m_size;             // shared memory size
+   int m_flag;             // shared memory flag
+   int m_shmid;            // shared memory descriptor
+   char *m_memory_addr;    // shared memory address pointer
  public:
 
 };

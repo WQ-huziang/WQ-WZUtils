@@ -43,13 +43,7 @@ public:
 	int readMem(Frame &mail);
 	
 private:
-	QueueManager *queue_manager;// pointer point to the queue manager in shared memory address
-	int reader_index; 			// reader index
-	int m_key;					// shared memory key
-	int m_size;					// shared memory size
-	int m_flag;					// shared memory flag
-	int m_shmid;				// shared memory descriptor
-	char *m_memory_addr;		// shared memory address pointer
+
 };
 
 #endif // MEMCLIENT_H_

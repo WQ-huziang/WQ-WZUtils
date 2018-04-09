@@ -1,11 +1,11 @@
 /***************************************************************************
 Copyright(C) 2018, Wizard Quant
 Author: huangxiaolin, luoqingming
-Description: MemEngine create attach dettach destroy a shared memory
+Description: MemBuilder create attach dettach destroy a shared memory
 Date: 2018-03-30
 ***************************************************************************/
 
-#include "MemEngine.h"
+#include "MemBuilder.h"
 #include "logger.h"
 
 // logger
@@ -15,7 +15,7 @@ extern Logger *logger;
 char logger_buf[1024];
 
 // create shared memory function
-bool MemEngine::createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
+bool MemBuilder::createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
    // call shmget and use return value to initialize shared memory address pointer
    m_shmid = shmget(m_key, m_size, m_flag);
 
@@ -41,7 +41,7 @@ bool MemEngine::createMemory(const int &m_key, const int &m_size, const int &m_f
 }
 
 // destroy shared memory function
-bool MemEngine::destroyMemory(int & shmid, char* & m_memory_addr) {
+bool MemBuilder::destroyMemory(int & shmid, char* & m_memory_addr) {
 
    if (shmid == -1) {
       sprintf(logger_buf, "destroy memory failed, shmid = -1");
@@ -74,7 +74,7 @@ bool MemEngine::destroyMemory(int & shmid, char* & m_memory_addr) {
 }
 
 // attach shared memory function
-bool MemEngine::attachMemory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr) {
+bool MemBuilder::attachMemory(const int & m_key, int & m_shmid, const int & m_flag, char*& m_memory_addr) {
 
    // is the id exist
    if (m_shmid == SHM_FAILED ) {
@@ -98,7 +98,7 @@ bool MemEngine::attachMemory(const int & m_key, int & m_shmid, const int & m_fla
 }
 
 // detach shared memory function
-bool MemEngine::detachMemory(const int & m_shmid, char*& m_memory_addr) {
+bool MemBuilder::detachMemory(const int & m_shmid, char*& m_memory_addr) {
    // is private variable address valid
    if (m_shmid == -1 || m_memory_addr == NULL) {
       // not valid

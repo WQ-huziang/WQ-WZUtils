@@ -32,6 +32,7 @@ Description: single writer and multiple reader lockless queue with atomic,
     int queue_size: the maximum number of data can push, must be 2^n
     int reader_size:the maximum number of reader can add
 ****************************************************************************/
+MemQueue<T, 213, 14>
 template <typename ELEM_T, int queue_size, int reader_size>
 class MemQueue{
 public:
