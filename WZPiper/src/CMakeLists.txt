@@ -1,3 +1,0 @@
-ADD_SUBDIRECTORY(socket)
-ADD_SUBDIRECTORY(mem_src)
-
