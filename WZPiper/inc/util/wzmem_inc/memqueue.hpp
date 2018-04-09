@@ -36,9 +36,15 @@ Description: single writer and multiple reader lockless queue with atomic,
 template <typename ELEM_T, int queue_size, int reader_size>
 class MemQueue{
 public:
-
+    /************************************************* 
+    Function: MemQueue
+    Description: call initQueue;
+    InputParameter: none
+    Return: if succeed return 1, else return 0
+    *************************************************/  
     MemQueue();
-    virtual ~MemQueue();
+
+    ~MemQueue();
 
     /************************************************* 
     Function: initQueue
@@ -190,7 +196,6 @@ MemQueue<ELEM_T, queue_size, reader_size>::~MemQueue() {
 }
 
 // initialize the queue
-// return: 
 template <typename ELEM_T, int queue_size, int reader_size>
 bool MemQueue<ELEM_T, queue_size, reader_size>::initQueue(){
     this->reader_num = 0;
