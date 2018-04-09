@@ -29,13 +29,13 @@ protected:
 		char file[] = "../doc/config.ini";
 		logger -> ParseConfigInfo(file);
 
-		memServer = new WZPiper<MemEngine>(0);
+		memServer = new WZPiper<MemEngine>(WZ_PIPER_SERVER);
 		memServer -> init(file);
 
-		memClient1 = new WZPiper<MemEngine>(1);
+		memClient1 = new WZPiper<MemEngine>(WZ_PIPER_CLIENT);
 		memClient1 -> init(file);
 
-		memClient2 = new WZPiper<MemEngine>(1);
+		memClient2 = new WZPiper<MemEngine>(WZ_PIPER_CLIENT);
 		memClient2 -> init(file);
 	}
 	virtual void TearDown(){
