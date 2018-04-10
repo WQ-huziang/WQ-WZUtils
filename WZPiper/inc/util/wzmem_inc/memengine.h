@@ -89,9 +89,7 @@ public:
 
     /************************************************* 
     Function: MemEngine
-    Description: Constructor, read key and size from configure file 
-       create or attach the shared memory
-       and init the queue_manager according to piperMode
+    Description: Constructor, init some variables
     InputParameter: none
     Return: none
     *************************************************/
@@ -205,7 +203,7 @@ MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::MemEngine(){
   this->m_size = 0 ;
   this->m_flag = SHM_FLAG ;
   this->m_shmid  = -1;
-  this->reader_index=0;
+  this->reader_index = 0;
   this->queue_manager = NULL;
 }
 
@@ -305,6 +303,7 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::attachMemory(const 
 // detach shared memory function
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::detachMemory(const int & m_shmid, char*& m_memory_addr) {
+  
   // is private variable address valid
   if (m_shmid == -1 || m_memory_addr == NULL) {
     // not valid
@@ -332,6 +331,7 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::detachMemory(const 
 // initialize the client shared memory address pointer
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[256], int piperMode) {
+  
   // set server or client mode
   this->piperMode = piperMode;
 
@@ -359,13 +359,15 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[
         return -1;
       }
       // add as a reader of the frame_req_queue and get the reader_id
-      if(this -> reader_index = this -> queue_manager -> frame_req_queue.addReader() == -1) {
+      this -> reader_index = this -> queue_manager -> frame_req_queue.addReader();
+      if(this -> reader_index == -1) {
         return -1;
       }
     }
     else if(this->piperMode == 1){ // client
       // add as a reader of the frame_rec_queue and get the reader_id
-      if(this -> reader_index = this -> queue_manager -> frame_rec_queue.addReader() == -1) {
+      this -> reader_index = this -> queue_manager -> frame_rec_queue.addReader();
+      if(this -> reader_index == -1) {
         return -1;
       }
     }
@@ -389,17 +391,17 @@ template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Recv(QueueDataType &data) {
 
   if(this->piperMode == 1 ) { // client
-    if(this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_index) == 1) {
-      return 0;
+    if(!this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_index)) {
+      return -1;
     }
   } 
   else if(this->piperMode == 0 ){ // server
-    if(this -> queue_manager -> frame_req_queue.pop(data,this -> reader_index) == 1) {
-      return 0;
+    if(!this -> queue_manager -> frame_req_queue.pop(data,this -> reader_index)) {
+      return -1;
     }
-  } 
+  }
 
-  return -1;
+  return 0;
 }
 
 // write from the shared memory
@@ -416,6 +418,7 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Send(QueueDataType &
       return 0;
     }
   }// server
+
   return -1;
 }
 

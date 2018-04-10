@@ -40,7 +40,7 @@ public:
     Function: MemQueue
     Description: call initQueue;
     InputParameter: none
-    Return: if succeed return 1, else return 0
+    Return: none
     *************************************************/  
     MemQueue();
 
@@ -58,10 +58,26 @@ public:
     Function: addReader
     Description: add a reader to the queue
     InputParameter: none
-    Return: if succeed return a available reader id(>=0), 
+    Return: if succeed return an available reader id(>=0), 
         else if the reader is full return -1
     *************************************************/ 
     int addReader();
+
+    /************************************************* 
+    Function: hangReader
+    Description: when a reader proccess stop, call it
+    InputParameter: reader proccess's reader id
+    Return: if succeed return positive, else return -1
+    *************************************************/ 
+    int hangReader(int reader_id);
+
+    /************************************************* 
+    Function: resetReader
+    Description: when a reader proccess reload, call it
+    InputParameter: reader proccess's reader id
+    Return: if succeed return positive, else return -1
+    *************************************************/
+    int resetReader(int reader_id);
 
     /************************************************* 
     Function: push
@@ -189,7 +205,7 @@ MemQueue <ELEM_T, queue_size, reader_size>::MemQueue() {
 }
 
 template <typename ELEM_T, int queue_size, int reader_size>
-MemQueue<ELEM_T, queue_size, reader_size>::~MemQueue() {
+MemQueue <ELEM_T, queue_size, reader_size>::~MemQueue() {
     // delete[] m_data_queue;
     // delete[] m_readIndex_arr;
     // delete[] read_time;
@@ -270,7 +286,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
         // if the consumer catch the producer
         // if (countToIndex(cur_readIndex) == countToIndex(cur_max_readIndex)){
         // cur_readIndex always slower than cur_max_readIndex, no need to use countToIndex
-        if (cur_readIndex == cur_max_readIndex){
+        if (cur_readIndex >= cur_max_readIndex){
             // the queue is empty, the consumer catch the producer
             return false;
         }
@@ -316,6 +332,42 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 // return the reader number, or return -1 if reader is full
 template <typename ELEM_T, int queue_size, int reader_size>
 int MemQueue<ELEM_T, queue_size, reader_size>::addReader(){
+
+    // add reader, reader num + 1, 
+    // has atomic problem?
+    int cur_reader_num;
+    do{
+        // add, get the right to add read time
+        cur_reader_num = atomic_load(&reader_num);
+    }while(!atomic_compare_exchange_weak(&reader_num, &cur_reader_num, (cur_reader_num + 1)));
+
+    if(cur_reader_num >= MAX_READER_SIZE) {
+        return -1;
+    }
+
+    // reader added start reading from current min_read_index
+    m_readIndex_arr[cur_reader_num] = m_min_read_index;
+    // reader added start reading from 0
+    // m_readIndex_arr[cur_reader_num] = 0;
+
+    // reader_num start from 0, use cur_reader_num  as id
+    return cur_reader_num;
+}
+
+// when a reader proccess stop, call it
+template <typename ELEM_T, int queue_size, int reader_size>
+int MemQueue<ELEM_T, queue_size, reader_size>::hangReader(int reader_id){
+
+    // reader proccess stopped set the index as max value
+    m_readIndex_arr[reader_id] = -1;
+
+    // reader_num start from 0, use cur_reader_num  as id
+    return cur_reader_num;
+}
+
+// when a reader proccess reload, call it
+template <typename ELEM_T, int queue_size, int reader_size>
+int MemQueue<ELEM_T, queue_size, reader_size>::resetReader(int reader_id){
 
     // add reader, reader num + 1, 
     // has atomic problem?
