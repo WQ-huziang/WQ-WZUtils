@@ -42,14 +42,14 @@ protected:
 		char file[] = "../doc/config.ini";
 		logger -> ParseConfigInfo(file);
 
-		memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_SERVER);
-		memServer -> init(file);
+		memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memServer -> init(file, WZ_PIPER_SERVER);
 
-		memClient1 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_CLIENT);
-		memClient1 -> init(file);
+		memClient1 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memClient1 -> init(file, WZ_PIPER_CLIENT);
 
-		memClient2 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_CLIENT);
-		memClient2 -> init(file);
+		memClient2 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memClient2 -> init(file, WZ_PIPER_CLIENT);
 	}
 	virtual void TearDown(){
 		delete memServer;

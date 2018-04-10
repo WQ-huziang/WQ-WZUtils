@@ -95,7 +95,7 @@ public:
     InputParameter: none
     Return: none
     *************************************************/
-    MemEngine(int piperMode);
+    MemEngine();
 
     /************************************************* 
     Function: ~MemEngine
@@ -410,14 +410,13 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Send(QueueDataType &
     if(this -> queue_manager -> frame_req_queue.push(data) == 1) {
       return 0;
     }
-    
   }// client
-  else if(this->piperMode == 0 && this -> queue_manager -> frame_rec_queue.push(data) == 1){
-    return 0;
+  else if(this->piperMode == 0 ){
+    if(this -> queue_manager -> frame_rec_queue.push(data) == 1) {
+      return 0;
+    }
   }// server
-  else {
-    return -1;
-  }
+  return -1;
 }
 
 #endif // MEMENGINE_H_
