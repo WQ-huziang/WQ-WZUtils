@@ -18,9 +18,9 @@ int UdpSocket::init(char file_path[256], int piperMode)
 	CIni ini;
 	if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR)
 		return -1;
-	char *temp = ini.GetStr("UdpNetInfo", "ip");
+	char *temp = ini.GetStr("UDPNetInfo", "ip");
 	strcpy(ip, temp);
-	port = ini.GetInt("UdpNetInfo", "port");
+	port = ini.GetInt("UDPNetInfo", "port");
 
 	// create fd
 	udpfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -35,13 +35,12 @@ int UdpSocket::init(char file_path[256], int piperMode)
     inet_pton(AF_INET, ip, &addr.sin_addr);
     addr.sin_port = htons (port);
 
-    if (WZSocket::epollInit() == -1)
-    	return -1;
-
     server_client_flag = piperMode;
 
     if (server_client_flag == 0)
     {
+    	if (WZSocket::epollInit() == -1)
+    		return -1;
     	if (Bind() == -1)
     		return -1;
     }
