@@ -117,7 +117,7 @@ public:
     int init(char file_path[256], int piperMode);
 
     /************************************************* 
-    Function: wzRecv
+    Function: Recv
     Description: read a frame from shared memory queue
     InputParameter: 
     	frame: pop(memcpy) a datum in queue to mail
@@ -126,7 +126,7 @@ public:
     int Recv(QueueDataType &data);
 
     /************************************************* 
-    Function: wzSend
+    Function: Send
     Description: write a frame to shared memory queue
     InputParameter: 
     	frame: the datum to push(memcpy) into queue
@@ -183,6 +183,8 @@ public:
     Return: 1 if detach succeed, 0 if failed
     *************************************************/
     bool detachMemory(const int & m_shmid, char*& m_memory_addr);
+
+    
 
 private:
     QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> *queue_manager;// pointer point to the queue manager in shared memory address
@@ -400,8 +402,8 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Recv(QueueDataType &
       return -1;
     }
   }
-
-  return 0;
+  //printf("sizeof(data)%lu\n", sizeof(data));
+  return sizeof(data);
 }
 
 // write from the shared memory

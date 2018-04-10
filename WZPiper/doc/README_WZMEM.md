@@ -39,7 +39,7 @@ class MemEngine{
     int init(char file_path[256], int piperMode);
 
     /************************************************* 
-    Function: wzRecv
+    Function: Recv
     Description: read a frame from shared memory queue
     InputParameter: 
       frame: pop(memcpy) a datum in queue to mail
@@ -48,7 +48,7 @@ class MemEngine{
     int Recv(QueueDataType &data);
 
     /************************************************* 
-    Function: wzSend
+    Function: Send
     Description: write a frame to shared memory queue
     InputParameter: 
       frame: the datum to push(memcpy) into queue
@@ -105,7 +105,7 @@ key=12
 #### Include .h and .hpp file in folder WZUtils/WZPiper/inc/util/wzmem_inc/, or remember to copy them to your include folder:
 
 ```
-memengine.h
+memengine.hpp
 memqueue.hpp
 ```
 
@@ -142,7 +142,7 @@ memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
 memServer -> init(filePath, WZ_PIPER_SERVER);
 
 // receive message
-int rtn = memServer -> wzRecv(recvFrame);
+int rtn = memServer -> Recv(recvFrame);
 if(rtn == -1) {
   printf("read failed\n");
 }
@@ -160,7 +160,7 @@ sendFrame.length = 1;
 
 
 // send message
-int rtn = memServer -> wzSend(sendFrame);
+int rtn = memServer -> Send(sendFrame);
 if(rtn == -1) {
   printf("write failed\n");
 }
@@ -196,7 +196,7 @@ sendFrame.length = 1;
 
 
 // send message
-int rtn = memClient -> wzSend(sendFrame);
+int rtn = memClient -> Send(sendFrame);
 if(rtn == -1) {
   printf("write failed\n");
 }
@@ -205,7 +205,7 @@ else if (rtn == 0) {
 }
 
 // receive message
-int rtn = memClient -> wzRecv(recvFrame);
+int rtn = memClient -> Recv(recvFrame);
 if(rtn == -1) {
   printf("read failed\n");
 }

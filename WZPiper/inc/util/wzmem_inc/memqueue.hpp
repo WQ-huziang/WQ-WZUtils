@@ -154,6 +154,9 @@ private:
     // each reader's readIndex
     unsigned int m_readIndex_arr[reader_size];
 
+    // which reader index can be used
+    bool reader_able_arr[reader_size];
+
     // the total number of reader start from 1
     volatile std::atomic<int> reader_num;
 
@@ -226,6 +229,8 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::initQueue(){
 
     // set every readIndex as the zero value
     memset(m_readIndex_arr, 0, sizeof(m_readIndex_arr));
+
+    memset(reader_able_arr, 0, sizeof(reader_able_arr));
 
     for (int i = 0; i < queue_size; i++) {
         *(read_time + i) = 0;

@@ -5,7 +5,7 @@ Description: simple gtest for the module MemClient and MemServer
 Date: 2018-04-2
 ***************************************************************************/
 
-#include "memengine.h"
+#include "memengine.hpp"
 #include "wzpiper.hpp"
 #include "logger.h"
 #include "gtest/gtest.h"
@@ -82,7 +82,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 	Frame recvFrame;
 
 	for (int i = 0; i<QueueSize ; i++ ) {
-		EXPECT_EQ(0,memClient1 -> Recv(recvFrame));
+		EXPECT_EQ(sizeof(sendFrame),memClient1 -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -90,7 +90,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 		EXPECT_EQ(i,recvFrame.length);
 
 
-		EXPECT_EQ(0,memServer -> Recv(recvFrame));
+		EXPECT_EQ(sizeof(sendFrame),memServer -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -109,7 +109,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 
 	// test Reader2
 	for (int i = 0; i<QueueSize ; i++ ) {
-		EXPECT_EQ(0,memClient2 -> Recv(recvFrame));
+		EXPECT_EQ(sizeof(sendFrame),memClient2 -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
