@@ -2,13 +2,12 @@
 // Author: luojunbin
 // 
 
-#include "tcp.h"
+#include "udp.h"
 #include "wzpiper.hpp"
 #include "gtest/gtest.h"
-#include <pthread.h>
 #include <bits/stdc++.h>
 
-WZPiper<TcpSocket> pip;
+WZPiper<UdpSocket> pip;
 Frame send_frame;
 Frame recv_frame;
 
@@ -26,7 +25,7 @@ void setFrame()
 	memset(&recv_frame, 0, sizeof(recv_frame));
 }
 
-class TcpTest : public ::testing::Test{
+class UdpTest : public ::testing::Test{
 protected:
     static void SetUpTestCase()
     {
@@ -46,29 +45,22 @@ protected:
     // }
 };
 
-void *server_thread(void *ptr)
-{
- 	int dest = pip.init("../doc/config.ini", WZ_PIPER_SERVER);
-	pip.Recv(recv_frame);
-    return 0;
+TEST_F(UdpTest, InitServer){
+	EXPECT_NE(-1, pip.init("../doc/config.ini", WZ_PIPER_SERVER));
 }
 
-void *client_thread(void *ptr)
-{
- 	int dest = pip.init("../doc/config.ini", WZ_PIPER_CLIENT);
-	send_frame.dest = dest;
-	pip.Send(send_frame);
-	return 0;
+TEST_F(UdpTest, InitClient){
+	EXPECT_NE(-1, pip.init("../doc/config.ini", WZ_PIPER_CLIENT));
 }
 
-TEST_F(TcpTest, Test){
-	pthread_t thread_1 = 1;
-    int ret = pthread_create(&thread_1, NULL, server_thread, NULL);
-    pthread_t thread_2 = 2;
-    ret = pthread_create(&thread_2, NULL, client_thread, NULL);
+TEST_F(UdpTest, Send)
+{
+	EXPECT_NE(-1, pip.Send(send_frame));
+}
 
-    pthread_join(thread_1, NULL);
-    pthread_join(thread_2, NULL);
+TEST_F(UdpTest, Recv)
+{
+	EXPECT_EQ(-1, pip.Recv(recv_frame));
 }
 
 int main(int argc, char* argv[]){

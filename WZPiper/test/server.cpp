@@ -10,14 +10,13 @@ using namespace std;
 int main()
 {
 	WZServer<UdpSocket> pip;
-	pip.init("../doc/config.ini");
+	pip.init("../doc/config.ini", WZ_PIPER_SERVER);
 	pip.epollInit();
-	pip.wzBind();
 
 	Frame my_frame;
 	while(1)
 	{
-		int ret = pip.wzRecv(my_frame);
+		int ret = pip.Recv(my_frame);
 		if (ret > 0)
 			cout << my_frame.source << endl;
 	}

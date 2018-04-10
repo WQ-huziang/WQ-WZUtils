@@ -22,7 +22,7 @@ class WZPiper{
 		InputParameter: none
 		Return: none
 		*************************************************/
-		WZPiper(int piperMode);
+		WZPiper();
 
 		/************************************************* 
 		Function: ~WZPiper
@@ -39,7 +39,7 @@ class WZPiper{
 			file_path: the path of the configure file
 		Return: true if create succeed, false if failed
 		*************************************************/
-		bool init(char file_path[256]);
+		int init(char file_path[256], int piperMode);
 
 		/************************************************* 
 		Function: wzBind
@@ -47,7 +47,7 @@ class WZPiper{
 		InputParameter: none
 		Return: true if bind succeed, false if failed
 		*************************************************/		
-		bool wzBind();
+		int Bind();
 
 		/************************************************* 
 		Function: wzConnect
@@ -55,7 +55,7 @@ class WZPiper{
 		InputParameter: none
 		Return: true if connect succeed, false if failed
 		*************************************************/
-		bool wzConnect();
+		int Connect();
 
 		/************************************************* 
 		Function: wzRecv
@@ -64,7 +64,7 @@ class WZPiper{
 			frame: read receive datum from piper to frame
 		Return: positive if receive succeed, 0 if failed
 		*************************************************/
-		int wzRecv(Frame &frame);
+		int Recv(Frame &frame);
 
 		/************************************************* 
 		Function: wzSend
@@ -73,7 +73,7 @@ class WZPiper{
 			frame: the datum to send to piper
 		Return: positive if send succeed, 0 if failed
 		*************************************************/
-		int wzSend(Frame &frame);
+		int Send(Frame &frame);
 
 	private:
 
