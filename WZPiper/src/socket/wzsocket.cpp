@@ -3,6 +3,22 @@
 
 #include "wzsocket.h"
 
+
+WZSocket::WZSocket()
+{
+	strcpy(ip, "127.0.0.1");
+	port = 0;
+
+	tcpfd = 0;
+	udpfd = 0;
+	epollfd = 0;
+
+	memset(addr, 0, sizeof(addr));
+	memset(events, 0, sizeof(events));
+
+	server_client_flag = 0;
+}
+
 int WZSocket::epollInit()
 {
 	epollfd = epoll_create(MAXEPOLLSIZE);
