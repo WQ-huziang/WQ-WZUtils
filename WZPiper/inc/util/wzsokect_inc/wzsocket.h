@@ -30,8 +30,8 @@ public:
 	WZSocket();
 	~WZSocket();
 	int epollInit();
-	int wzRecv(Frame &md);
-	int wzSend(Frame &md);
+	int Recv(Frame &md);
+	int Send(Frame &md);
 
 private:
 	int addEvent(int sockfd, int state);

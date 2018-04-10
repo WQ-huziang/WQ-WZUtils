@@ -13,10 +13,17 @@ WZSocket::WZSocket()
 	udpfd = 0;
 	epollfd = 0;
 
-	memset(addr, 0, sizeof(addr));
+	memset(&addr, 0, sizeof(addr));
 	memset(events, 0, sizeof(events));
 
 	server_client_flag = 0;
+}
+
+WZSocket::~WZSocket()
+{
+	close(tcpfd);
+	close(udpfd);
+	close(epollfd);
 }
 
 int WZSocket::epollInit()
@@ -29,7 +36,7 @@ int WZSocket::epollInit()
 	return 0;
 }
 
-int WZSocket::wzRecv(Frame &md)
+int WZSocket::Recv(Frame &md)
 {
 	int num_of_events = epoll_wait(epollfd, events, 1, -1);
 	for (int i=0; i<num_of_events; i++) 
@@ -53,7 +60,7 @@ int WZSocket::wzRecv(Frame &md)
 	return -1;
 }
 
-int WZSocket::wzSend(Frame &md)
+int WZSocket::Send(Frame &md)
 {
 	if (write(md.dest, (char*)&md, sizeof(Frame)) == -1)
 		return -1;
