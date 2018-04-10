@@ -45,22 +45,6 @@ class WZPiper{
 		int init(char file_path[256], int piperMode);
 
 		/************************************************* 
-		Function: wzBind
-		Description: do what???
-		InputParameter: none
-		Return: positive if bind succeed, -1 if failed
-		*************************************************/		
-		int Bind();
-
-		/************************************************* 
-		Function: wzConnect
-		Description: do what???
-		InputParameter: none
-		Return: positive if connect succeed, -1 if failed
-		*************************************************/
-		int Connect();
-
-		/************************************************* 
 		Function: wzRecv
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: receive a frame from piper
@@ -97,16 +81,6 @@ WZPiper<T>::~WZPiper(){
 template<typename T>
 int WZPiper<T>::init(char file_path[256], int piperMode){
 	return t->init(file_path, piperMode);
-}
-
-template<typename T>
-int WZPiper<T>::Bind(){
-	return t->Bind();
-}
-
-template<typename T>
-int WZPiper<T>::Connect(){
-	return t->Connect();
 }
 
 template<typename T>
