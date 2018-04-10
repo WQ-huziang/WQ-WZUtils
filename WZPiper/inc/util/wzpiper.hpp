@@ -93,30 +93,6 @@ WZPiper<T>::~WZPiper(){
 }
 
 template<typename T>
-<<<<<<< HEAD
-bool WZPiper<T>::init(char file_path[256]){
-	return t->init(file_path);
-}
-
-template<typename T>
-bool WZPiper<T>::wzBind(){
-	return t->wzBind();
-}
-
-template<typename T>
-bool WZPiper<T>::wzConnect(){
-	return t->wzConnect();
-}
-
-template<typename T>
-int WZPiper<T>::wzRecv(Frame &frame){
-	return t->wzRecv(frame);
-}
-
-template<typename T>
-int WZPiper<T>::wzSend(Frame &frame){
-	return t->wzSend(frame);
-=======
 int WZPiper<T>::init(char file_path[256], int piperMode){
 	return t->init(file_path, piperMode);
 }
@@ -139,7 +115,6 @@ int WZPiper<T>::Recv(Frame &frame){
 template<typename T>
 int WZPiper<T>::Send(Frame &frame){
 	return t->Send(frame);
->>>>>>> f52455414ccdedac964699b8490ac0b74fa9e6dd
 }
 
 ///////////////////////////////////
