@@ -8,13 +8,10 @@
 /************************************************* 
 Function: WZPiper
 Description: Constructor, calls the constructor of T
-InputParameter: 
-	piperMode: the flag to mark server or client, 
-		0 or WZ_PIPER_SERVER as server,
-		1 or WZ_PIPER_CLIENT as client
+InputParameter: none
 Return: none
 *************************************************/
-WZPiper(int piperMode);
+WZPiper();
 
 /************************************************* 
 Function: ~WZPiper
@@ -29,25 +26,12 @@ Function: init
 Description: read configure file and init the IPC according to server_client_flag
 InputParameter: 
 	file_path: the path of the configure file
-Return: true if create succeed, false if failed
+	piperMode: the flag to mark server or client, 
+		0 or WZ_PIPER_SERVER as server,
+		1 or WZ_PIPER_CLIENT as client
+Return: positive if init succeed, -1 if failed
 *************************************************/
-bool init(char file_path[256]);
-
-/************************************************* 
-Function: wzBind
-Description: do what???
-InputParameter: none
-Return: true if bind succeed, false if failed
-*************************************************/		
-bool wzBind();
-
-/************************************************* 
-Function: wzConnect
-Description: do what???
-InputParameter: none
-Return: true if connect succeed, false if failed
-*************************************************/
-bool wzConnect();
+int init(char file_path[256], int piperMode);
 
 /************************************************* 
 Function: wzRecv
@@ -56,7 +40,7 @@ InputParameter: receive a frame from piper
 	frame: read receive datum from piper to frame
 Return: positive if receive succeed, 0 if failed
 *************************************************/
-int wzRecv(Frame &frame);
+int Recv(Frame &frame);
 
 /************************************************* 
 Function: wzSend
@@ -65,7 +49,7 @@ InputParameter: send a frame to piper
 	frame: the datum to send to piper
 Return: positive if send succeed, 0 if failed
 *************************************************/
-int wzSend(Frame &frame);
+int Send(Frame &frame);
 ```
 
 #### To use WZPiper:

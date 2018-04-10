@@ -362,32 +362,14 @@ int MemQueue<ELEM_T, queue_size, reader_size>::hangReader(int reader_id){
     m_readIndex_arr[reader_id] = -1;
 
     // reader_num start from 0, use cur_reader_num  as id
-    return cur_reader_num;
+    return 0;
 }
 
 // when a reader proccess reload, call it
 template <typename ELEM_T, int queue_size, int reader_size>
 int MemQueue<ELEM_T, queue_size, reader_size>::resetReader(int reader_id){
-
-    // add reader, reader num + 1, 
-    // has atomic problem?
-    int cur_reader_num;
-    do{
-        // add, get the right to add read time
-        cur_reader_num = atomic_load(&reader_num);
-    }while(!atomic_compare_exchange_weak(&reader_num, &cur_reader_num, (cur_reader_num + 1)));
-
-    if(cur_reader_num >= MAX_READER_SIZE) {
-        return -1;
-    }
-
-    // reader added start reading from current min_read_index
-    m_readIndex_arr[cur_reader_num] = m_min_read_index;
-    // reader added start reading from 0
-    // m_readIndex_arr[cur_reader_num] = 0;
-
-    // reader_num start from 0, use cur_reader_num  as id
-    return cur_reader_num;
+    
+    return 0;
 }
 
 template <typename ELEM_T, int queue_size, int reader_size>

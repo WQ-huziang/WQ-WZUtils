@@ -40,23 +40,7 @@ class WZPiper{
 		Return: true if create succeed, false if failed
 		*************************************************/
 		int init(char file_path[256], int piperMode);
-
-		/************************************************* 
-		Function: Bind
-		Description: do what???
-		InputParameter: none
-		Return: true if bind succeed, false if failed
-		*************************************************/		
-		int Bind();
-
-		/************************************************* 
-		Function: Connect
-		Description: do what???
-		InputParameter: none
-		Return: true if connect succeed, false if failed
-		*************************************************/
-		int Connect();
-
+		
 		/************************************************* 
 		Function: Recv
 		Description: read configure file and init the IPC according to server_client_flag
@@ -94,16 +78,6 @@ WZPiper<T>::~WZPiper(){
 template<typename T>
 int WZPiper<T>::init(char file_path[256], int piperMode){
 	return t->init(file_path, piperMode);
-}
-
-template<typename T>
-int WZPiper<T>::Bind(){
-	return t->Bind();
-}
-
-template<typename T>
-int WZPiper<T>::Connect(){
-	return t->Connect();
 }
 
 template<typename T>
