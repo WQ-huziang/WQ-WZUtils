@@ -42,7 +42,7 @@ class WZPiper{
 		int init(char file_path[256], int piperMode);
 
 		/************************************************* 
-		Function: wzBind
+		Function: Bind
 		Description: do what???
 		InputParameter: none
 		Return: true if bind succeed, false if failed
@@ -50,7 +50,7 @@ class WZPiper{
 		int Bind();
 
 		/************************************************* 
-		Function: wzConnect
+		Function: Connect
 		Description: do what???
 		InputParameter: none
 		Return: true if connect succeed, false if failed
@@ -58,7 +58,7 @@ class WZPiper{
 		int Connect();
 
 		/************************************************* 
-		Function: wzRecv
+		Function: Recv
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: receive a frame from piper
 			frame: read receive datum from piper to frame
@@ -67,7 +67,7 @@ class WZPiper{
 		int Recv(Frame &frame);
 
 		/************************************************* 
-		Function: wzSend
+		Function: Send
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: send a frame to piper
 			frame: the datum to send to piper

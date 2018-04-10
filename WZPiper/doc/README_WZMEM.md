@@ -39,7 +39,7 @@ class MemEngine{
     int init(char file_path[256], int piperMode);
 
     /************************************************* 
-    Function: wzRecv
+    Function: Recv
     Description: read a frame from shared memory queue
     InputParameter: 
       frame: pop(memcpy) a datum in queue to mail
@@ -48,7 +48,7 @@ class MemEngine{
     int Recv(QueueDataType &data);
 
     /************************************************* 
-    Function: wzSend
+    Function: Send
     Description: write a frame to shared memory queue
     InputParameter: 
       frame: the datum to push(memcpy) into queue
