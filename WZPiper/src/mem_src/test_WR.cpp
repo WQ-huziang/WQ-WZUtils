@@ -68,21 +68,21 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 		sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
 		sendFrame.rtn_type = i;
 		sendFrame.length = i;
-		EXPECT_EQ(0 ,memServer -> wzSend(sendFrame));
-		if(i<(QueueSize/2)) 	EXPECT_EQ(0,memClient1 -> wzSend(sendFrame));
-		else 	EXPECT_EQ(0,memClient2 -> wzSend(sendFrame));
+		EXPECT_EQ(0 ,memServer -> Send(sendFrame));
+		if(i<(QueueSize/2)) 	EXPECT_EQ(0,memClient1 -> Send(sendFrame));
+		else 	EXPECT_EQ(0,memClient2 -> Send(sendFrame));
 	}
 
 	// test queue full
-	EXPECT_EQ(-1,memServer -> wzSend(sendFrame));
-	EXPECT_EQ(-1,memClient1 -> wzSend(sendFrame));
-	EXPECT_EQ(-1,memClient2 -> wzSend(sendFrame));
+	EXPECT_EQ(-1,memServer -> Send(sendFrame));
+	EXPECT_EQ(-1,memClient1 -> Send(sendFrame));
+	EXPECT_EQ(-1,memClient2 -> Send(sendFrame));
 	
 	// test Reader1
 	Frame recvFrame;
 
 	for (int i = 0; i<QueueSize ; i++ ) {
-		EXPECT_EQ(0,memClient1 -> wzRecv(recvFrame));
+		EXPECT_EQ(0,memClient1 -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -90,7 +90,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 		EXPECT_EQ(i,recvFrame.length);
 
 
-		EXPECT_EQ(0,memServer -> wzRecv(recvFrame));
+		EXPECT_EQ(0,memServer -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -99,17 +99,17 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 	}
 	
 	// test catch Writer
-	EXPECT_EQ(-1,memClient1 -> wzRecv(recvFrame));
+	EXPECT_EQ(-1,memClient1 -> Recv(recvFrame));
 	EXPECT_EQ(QueueSize - 1,recvFrame.source);
 	EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
 	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
 	EXPECT_EQ(QueueSize - 1,recvFrame.rtn_type);
 	EXPECT_EQ(QueueSize - 1,recvFrame.length);
-	EXPECT_EQ(-1,memServer -> wzSend(sendFrame));
+	EXPECT_EQ(-1,memServer -> Send(sendFrame));
 
 	// test Reader2
 	for (int i = 0; i<QueueSize ; i++ ) {
-		EXPECT_EQ(0,memClient2 -> wzRecv(recvFrame));
+		EXPECT_EQ(0,memClient2 -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -118,7 +118,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 	}
 
 	// test catch Writer
-	EXPECT_EQ(-1,memClient2 -> wzRecv(recvFrame));
+	EXPECT_EQ(-1,memClient2 -> Recv(recvFrame));
 	EXPECT_EQ(QueueSize - 1,recvFrame.source);
 	EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
 	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -126,7 +126,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 	EXPECT_EQ(QueueSize - 1,recvFrame.length);
 
 	// test write
-	EXPECT_EQ(0,memServer -> wzSend(sendFrame));
+	EXPECT_EQ(0,memServer -> Send(sendFrame));
 
 }
 

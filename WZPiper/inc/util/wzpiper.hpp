@@ -19,13 +19,11 @@ class WZPiper{
 		/************************************************* 
 		Function: WZPiper
 		Description: Constructor, calls the constructor of T
-		InputParameter: 
-			piperMode: the flag to mark server or client, 
-				0 or WZ_PIPER_SERVER as server,
-				1 or WZ_PIPER_CLIENT as client
+		InputParameter: none
+
 		Return: none
 		*************************************************/
-		WZPiper(int piperMode);
+		WZPiper();
 
 		/************************************************* 
 		Function: ~WZPiper
@@ -40,9 +38,12 @@ class WZPiper{
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: 
 			file_path: the path of the configure file
+			piperMode: the flag to mark server or client, 
+				0 or WZ_PIPER_SERVER as server,
+				1 or WZ_PIPER_CLIENT as client
 		Return: positive if init succeed, -1 if failed
 		*************************************************/
-		int init(char file_path[256]);
+		int init(char file_path[256], int piperMode);
 
 		/************************************************* 
 		Function: wzBind
@@ -50,7 +51,7 @@ class WZPiper{
 		InputParameter: none
 		Return: positive if bind succeed, -1 if failed
 		*************************************************/		
-		int wzBind();
+		int Bind();
 
 		/************************************************* 
 		Function: wzConnect
@@ -58,7 +59,7 @@ class WZPiper{
 		InputParameter: none
 		Return: positive if connect succeed, -1 if failed
 		*************************************************/
-		int wzConnect();
+		int Connect();
 
 		/************************************************* 
 		Function: wzRecv
@@ -67,7 +68,7 @@ class WZPiper{
 			frame: read receive datum from piper to frame
 		Return: positive if receive succeed, 0 if failed
 		*************************************************/
-		int wzRecv(Frame &frame);
+		int Recv(Frame &frame);
 
 		/************************************************* 
 		Function: wzSend
@@ -76,7 +77,7 @@ class WZPiper{
 			frame: the datum to send to piper
 		Return: positive if send succeed, 0 if failed
 		*************************************************/
-		int wzSend(Frame &frame);
+		int Send(Frame &frame);
 
 	private:
 
@@ -101,22 +102,22 @@ int WZPiper<T>::init(char file_path[256]){
 }
 
 template<typename T>
-int WZPiper<T>::wzBind(){
+int WZPiper<T>::Bind(){
 	return t->wzBind();
 }
 
 template<typename T>
-int WZPiper<T>::wzConnect(){
+int WZPiper<T>::Connect(){
 	return t->wzConnect();
 }
 
 template<typename T>
-int WZPiper<T>::wzRecv(Frame &frame){
+int WZPiper<T>::Recv(Frame &frame){
 	return t->wzRecv(frame);
 }
 
 template<typename T>
-int WZPiper<T>::wzSend(Frame &frame){
+int WZPiper<T>::Send(Frame &frame){
 	return t->wzSend(frame);
 }
 
