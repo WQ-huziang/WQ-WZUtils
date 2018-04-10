@@ -17,45 +17,44 @@ Description: MemEngine reads data from shared memory(pop data from the MemQueue)
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 class MemEngine{
 
-  /************************************************* 
-  Function: MemEngine
-  Description: Constructor, read key and size from configure file 
-     create or attach the shared memory
-     and init the queue_manager according to piperMode
-  InputParameter: 
-     piperMode:  the flag to mark server or client, 
-       0 or WZ_PIPER_SERVER as server,
-       1 or WZ_PIPER_CLIENT as client
-  Return: none
-  *************************************************/
-  MemEngine(int piperMode);
+    /************************************************* 
+    Function: MemEngine
+    Description: Constructor, init some variables
+    InputParameter: none
+    Return: none
+    *************************************************/
+    MemEngine();
 
-  /************************************************* 
-  Function: init
-  Description: read configure file and init as server or client,
-    server will create the shared memory and init the QueueManager
-  InputParameter: none
-  Return: true if create succeed, false if failed
-  *************************************************/
-  bool init(char file_path[256]);
+    /************************************************* 
+    Function: init
+    Description: read configure file and init as server or client,
+      server will create the shared memory and init the QueueManager
+    InputParameter: 
+      file_path: the path of the configure file
+      piperMode: the flag to mark server or client, 
+        0 or WZ_PIPER_SERVER as server,
+        1 or WZ_PIPER_CLIENT as client
+    Return: positive if create succeed, -1 if failed
+    *************************************************/
+    int init(char file_path[256], int piperMode);
 
-  /************************************************* 
-  Function: wzRecv
-  Description: read a frame from shared memory queue
-  InputParameter: 
-    frame: pop(memcpy) a datum in queue to mail
-  Return: 1 if receive succeed, 0 if failed
-  *************************************************/
-  int wzRecv(QueueDataType &data);
+    /************************************************* 
+    Function: wzRecv
+    Description: read a frame from shared memory queue
+    InputParameter: 
+      frame: pop(memcpy) a datum in queue to mail
+    Return: 1 if receive succeed, 0 if failed
+    *************************************************/
+    int Recv(QueueDataType &data);
 
-  /************************************************* 
-  Function: wzSend
-  Description: write a frame to shared memory queue
-  InputParameter: 
-    frame: the datum to push(memcpy) into queue
-  Return: 1 if send succeed, 0 if failed
-  *************************************************/
-  int wzSend(QueueDataType &data);
+    /************************************************* 
+    Function: wzSend
+    Description: write a frame to shared memory queue
+    InputParameter: 
+      frame: the datum to push(memcpy) into queue
+    Return: 1 if send succeed, 0 if failed
+    *************************************************/
+    int Send(QueueDataType &data);
 };
 ```
 
@@ -101,31 +100,30 @@ struct QueueManager
 [MemInfo]
 # key of the shared memory, better not to use 0
 key=12
-
 ```
 
-#### Include .h and .hpp file in folder WZUtils/WZPiper/inc/util/wzmem_inc/, remember to copy them to your include folder:
+#### Include .h and .hpp file in folder WZUtils/WZPiper/inc/util/wzmem_inc/, or remember to copy them to your include folder:
 
 ```
-MemEngine.h
-MemQueue.hpp
+memengine.h
+memqueue.hpp
 ```
 
-#### No need to link .so file(for use class template):
+#### no need to link .so file!!!
+
 
 #### The CmakeLists.txt should add following statements:
 
 ```
 SET(UTILS_SO iniparser logger glog)
 
-// INC_FOLDER_PATH should contains the .h and .hpp files above
-INCLUDE_DIRECTORIES(${INC_FOLDER_PATH})
+INCLUDE_DIRECTORIES(${INC_FOLDER_PATH}) # the include folder contains two h&hpp file above
 
 LINK_DIRECTORIES(${LIB_FOLDER_PATH})
 
 ADD_EXECUTABLE(main main.cpp)
 
-// link UTILS_SO!!!
+// link UTILS_SO before link MEM_FILE!!!
 TARGET_LINK_LIBRARIES(main ${UTILS_SO})
 ```
 
@@ -137,11 +135,11 @@ TARGET_LINK_LIBRARIES(main ${UTILS_SO})
 // declare
 WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memServer;
 
-// new a memServer object using parameter WZ_PIPER_SERVER
-memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_SERVER);
+// new a memServer object
+memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
 
-// read configuer file and create the shared memory
-memServer -> init(filePath);
+// read configuer file and create the shared memory, set as WZ_PIPER_SERVER
+memServer -> init(filePath, WZ_PIPER_SERVER);
 
 // receive message
 int rtn = memServer -> wzRecv(recvFrame);
@@ -164,10 +162,10 @@ sendFrame.length = 1;
 // send message
 int rtn = memServer -> wzSend(sendFrame);
 if(rtn == -1) {
-	printf("write failed\n");
+  printf("write failed\n");
 }
 else if (rtn == 0) {
-	printf("write succeed\n");
+  printf("write succeed\n");
 }
 
 
@@ -182,11 +180,11 @@ delete memServer;
 // declare
 WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient;
 
-// new a memClient object using parameter WZ_PIPER_CLIENT
-memClient = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > (WZ_PIPER_CLIENT);
+// new a memClient object 
+memClient = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
 
-// read configuer file and create the shared memory
-memClient -> init(filePath);
+// read configuer file and create the shared memory, set as WZ_PIPER_CLIENT
+memClient -> init(filePath, WZ_PIPER_CLIENT);
 
 // write message
 Frame sendFrame;
@@ -232,8 +230,3 @@ delete memClient;
   - **public 继承：**基类的public，protected成员在子类中访问属性不变，子类新增的成员函数可以直接访问，但是对于基类的private成员依然是基类的私有，子类无法直接进行访问。
   - **private 继承：**基类的public，protected成员转变为子类的private成员，子类新增的成员函数可以进行访问，对于基类的private成员依然是基类的私有，子类无法直接进行访问。
   - **protected 继承：**基类的public，protected成员转变为子类的protected成员，子类新增的成员函数可以进行访问，对于基类的private成员依然是基类的私有，子类无法直接进行访问。
-
-
-
-
-
