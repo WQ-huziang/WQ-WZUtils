@@ -37,10 +37,7 @@ class WZPiper{
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: 
 			file_path: the path of the configure file
-			piperMode: the flag to mark server or client, 
-				0 or WZ_PIPER_SERVER as server,
-				1 or WZ_PIPER_CLIENT as client
-		Return: positive if init succeed, -1 if failed
+		Return: true if create succeed, false if failed
 		*************************************************/
 		int init(char file_path[256], int piperMode);
 
