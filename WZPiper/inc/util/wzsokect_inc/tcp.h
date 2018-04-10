@@ -11,9 +11,11 @@
 class TcpSocket: public WZSocket
 {
 public:
-	int init(char file_path[256]);
-	int wzBind();
-	int wzConnect();
+	TcpSocket();
+	~TcpSocket();
+	int init(char file_path[256], int piperMode);
+	int Bind();
+	int Connect();
 private:
 
 };
