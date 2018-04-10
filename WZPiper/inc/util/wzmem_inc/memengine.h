@@ -184,6 +184,8 @@ public:
     *************************************************/
     bool detachMemory(const int & m_shmid, char*& m_memory_addr);
 
+    
+
 private:
     QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> *queue_manager;// pointer point to the queue manager in shared memory address
     int reader_index; 			    // reader index
