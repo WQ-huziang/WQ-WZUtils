@@ -19,10 +19,7 @@ class WZPiper{
 		/************************************************* 
 		Function: WZPiper
 		Description: Constructor, calls the constructor of T
-		InputParameter: 
-			piperMode: the flag to mark server or client, 
-				0 or WZ_PIPER_SERVER as server,
-				1 or WZ_PIPER_CLIENT as client
+		InputParameter: none
 		Return: none
 		*************************************************/
 		WZPiper(int piperMode);
@@ -85,8 +82,8 @@ class WZPiper{
 
 
 template<typename T>
-WZPiper<T>::WZPiper(int server_client_flag){
-	t = new T(server_client_flag);
+WZPiper<T>::WZPiper(){
+	t = new T();
 }
 
 
@@ -96,6 +93,7 @@ WZPiper<T>::~WZPiper(){
 }
 
 template<typename T>
+<<<<<<< HEAD
 bool WZPiper<T>::init(char file_path[256]){
 	return t->init(file_path);
 }
@@ -118,6 +116,30 @@ int WZPiper<T>::wzRecv(Frame &frame){
 template<typename T>
 int WZPiper<T>::wzSend(Frame &frame){
 	return t->wzSend(frame);
+=======
+int WZPiper<T>::init(char file_path[256], int piperMode){
+	return t->init(file_path, piperMode);
+}
+
+template<typename T>
+int WZPiper<T>::Bind(){
+	return t->Bind();
+}
+
+template<typename T>
+int WZPiper<T>::Connect(){
+	return t->Connect();
+}
+
+template<typename T>
+int WZPiper<T>::Recv(Frame &frame){
+	return t->Recv(frame);
+}
+
+template<typename T>
+int WZPiper<T>::Send(Frame &frame){
+	return t->Send(frame);
+>>>>>>> f52455414ccdedac964699b8490ac0b74fa9e6dd
 }
 
 ///////////////////////////////////
