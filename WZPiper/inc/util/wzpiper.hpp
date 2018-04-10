@@ -20,7 +20,6 @@ class WZPiper{
 		Function: WZPiper
 		Description: Constructor, calls the constructor of T
 		InputParameter: none
-
 		Return: none
 		*************************************************/
 		WZPiper();
@@ -86,8 +85,8 @@ class WZPiper{
 
 
 template<typename T>
-WZPiper<T>::WZPiper(int server_client_flag){
-	t = new T(server_client_flag);
+WZPiper<T>::WZPiper(){
+	t = new T();
 }
 
 
@@ -97,28 +96,28 @@ WZPiper<T>::~WZPiper(){
 }
 
 template<typename T>
-int WZPiper<T>::init(char file_path[256]){
-	return t->init(file_path);
+int WZPiper<T>::init(char file_path[256], int piperMode){
+	return t->init(file_path, piperMode);
 }
 
 template<typename T>
 int WZPiper<T>::Bind(){
-	return t->wzBind();
+	return t->Bind();
 }
 
 template<typename T>
 int WZPiper<T>::Connect(){
-	return t->wzConnect();
+	return t->Connect();
 }
 
 template<typename T>
 int WZPiper<T>::Recv(Frame &frame){
-	return t->wzRecv(frame);
+	return t->Recv(frame);
 }
 
 template<typename T>
 int WZPiper<T>::Send(Frame &frame){
-	return t->wzSend(frame);
+	return t->Send(frame);
 }
 
 ///////////////////////////////////
