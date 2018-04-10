@@ -40,25 +40,25 @@ class WZPiper{
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: 
 			file_path: the path of the configure file
-		Return: true if create succeed, false if failed
+		Return: positive if init succeed, -1 if failed
 		*************************************************/
-		bool init(char file_path[256]);
+		int init(char file_path[256]);
 
 		/************************************************* 
 		Function: wzBind
 		Description: do what???
 		InputParameter: none
-		Return: true if bind succeed, false if failed
+		Return: positive if bind succeed, -1 if failed
 		*************************************************/		
-		bool wzBind();
+		int wzBind();
 
 		/************************************************* 
 		Function: wzConnect
 		Description: do what???
 		InputParameter: none
-		Return: true if connect succeed, false if failed
+		Return: positive if connect succeed, -1 if failed
 		*************************************************/
-		bool wzConnect();
+		int wzConnect();
 
 		/************************************************* 
 		Function: wzRecv
@@ -96,17 +96,17 @@ WZPiper<T>::~WZPiper(){
 }
 
 template<typename T>
-bool WZPiper<T>::init(char file_path[256]){
+int WZPiper<T>::init(char file_path[256]){
 	return t->init(file_path);
 }
 
 template<typename T>
-bool WZPiper<T>::wzBind(){
+int WZPiper<T>::wzBind(){
 	return t->wzBind();
 }
 
 template<typename T>
-bool WZPiper<T>::wzConnect(){
+int WZPiper<T>::wzConnect(){
 	return t->wzConnect();
 }
 

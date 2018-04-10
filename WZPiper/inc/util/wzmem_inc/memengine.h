@@ -113,9 +113,9 @@ public:
     Description: read configure file and init as server or client,
       server will create the shared memory and init the QueueManager
     InputParameter: none
-    Return: true if create succeed, false if failed
+    Return: positive if create succeed, -1 if failed
     *************************************************/
-    bool init(char file_path[256]);
+    int init(char file_path[256]);
 
     /************************************************* 
     Function: wzRecv
@@ -331,13 +331,13 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::detachMemory(const 
 
 // initialize the client shared memory address pointer
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
-bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[256]){
+int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[256]){
     // read key and size from configure file 
     CIni ini;
     if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR){
        sprintf(logger_buf, "INI_OPENFILE_ERROR");
        logger -> Info(logger_buf);
-       return false;
+       return -1;
     }
    this -> m_key = ini.GetInt("MemInfo","key");
    this -> m_size = ini.GetInt("MemInfo", "memorysize");
@@ -370,9 +370,9 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path
       sprintf(logger_buf, "attach memory successfully");
       logger -> Info(logger_buf);
 
-      return true;
+      return 0;
    }
-   return false;
+   return -1;
 }
 
 // read from the shared memory
