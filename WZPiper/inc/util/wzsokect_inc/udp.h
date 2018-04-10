@@ -11,9 +11,12 @@
 class UdpSocket: public WZSocket
 {
 public:
-	int init(char file_path[256]);
-	int wzBind();
-	int wzConnect();
+	UdpSocket();
+	~UdpSocket();
+
+	int init(char file_path[256], int piperMode);
+	int Bind();
+	int Connect();
 private:
 
 };
