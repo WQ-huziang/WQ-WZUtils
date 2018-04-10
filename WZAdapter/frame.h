@@ -24,27 +24,18 @@ struct Frame{
 };
 
 ///////////////////////////////////
-// source: 数据来源
+// source, dest: 数据来源 & 数据去向
 ///////////////////////////////////
 //ctp
-#define WZ_SOURCE_CTP          0
+#define WZ_ID_CTP          0
 //xtp
-#define WZ_SOURCE_XTP          1
-//其他index
-
-
-typedef short WZSourceType;
-
-///////////////////////////////////
-// source: 数据去向
-///////////////////////////////////
-//ctp
-#define WZ_DEST_CTP          0
-//xtp
-#define WZ_DEST_XTP          1
-//其他index
-
-typedef short WZDestType;
+#define WZ_ID_XTP          1
+//Strategy
+#define WZ_ID_S0          100
+#define WZ_ID_S1          101
+#define WZ_ID_S2          102
+#define WZ_ID_S3          103
+typedef short WZProcessID;
 
 ///////////////////////////////////
 // msg_type: 数据类型
