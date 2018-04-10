@@ -40,7 +40,7 @@ class WZPiper{
 		Return: true if create succeed, false if failed
 		*************************************************/
 		int init(char file_path[256], int piperMode);
-
+		
 		/************************************************* 
 		Function: wzRecv
 		Description: read configure file and init the IPC according to server_client_flag
