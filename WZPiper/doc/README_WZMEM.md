@@ -142,7 +142,7 @@ memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
 memServer -> init(filePath, WZ_PIPER_SERVER);
 
 // receive message
-int rtn = memServer -> wzRecv(recvFrame);
+int rtn = memServer -> Recv(recvFrame);
 if(rtn == -1) {
   printf("read failed\n");
 }
@@ -160,7 +160,7 @@ sendFrame.length = 1;
 
 
 // send message
-int rtn = memServer -> wzSend(sendFrame);
+int rtn = memServer -> Send(sendFrame);
 if(rtn == -1) {
   printf("write failed\n");
 }
@@ -196,7 +196,7 @@ sendFrame.length = 1;
 
 
 // send message
-int rtn = memClient -> wzSend(sendFrame);
+int rtn = memClient -> Send(sendFrame);
 if(rtn == -1) {
   printf("write failed\n");
 }
@@ -205,7 +205,7 @@ else if (rtn == 0) {
 }
 
 // receive message
-int rtn = memClient -> wzRecv(recvFrame);
+int rtn = memClient -> Recv(recvFrame);
 if(rtn == -1) {
   printf("read failed\n");
 }
