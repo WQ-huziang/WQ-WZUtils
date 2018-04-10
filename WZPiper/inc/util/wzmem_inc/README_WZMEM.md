@@ -105,7 +105,7 @@ key=12
 #### Include .h and .hpp file in folder WZUtils/WZPiper/inc/util/wzmem_inc/, or remember to copy them to your include folder:
 
 ```
-memengine.h
+memengine.hpp
 memqueue.hpp
 ```
 

@@ -402,8 +402,8 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Recv(QueueDataType &
       return -1;
     }
   }
-
-  return 0;
+  //printf("sizeof(data)%lu\n", sizeof(data));
+  return sizeof(data);
 }
 
 // write from the shared memory
