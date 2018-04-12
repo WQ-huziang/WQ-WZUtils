@@ -9,7 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <map>
-#include "transportstruct.h"
+#include "tsdatastruct.h"
 using std::vector;
 using std::string;
 using std::map;
@@ -55,6 +55,9 @@ class DataEngine {
 
   // set index
   virtual int set_index(string, bool isascending = true) = 0;
+
+  // get max value
+  virtual int get_max_item(map<string, string> &, const string &) = 0;
 
  protected:
   DataEngine() {}

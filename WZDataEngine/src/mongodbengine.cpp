@@ -3,14 +3,16 @@
 // Author : huziang
 // this is a cpp file complete mongodb interface in c++
 
-#include "MongodbEngine.h"
+#include "mongodbengine.h"
 #include <bsoncxx/json.hpp>
 #include <mongocxx/instance.hpp>
-#include "ToDocuments.h"
-#include "DataParse.h"
+#include "todocuments.h"
+#include "dataparse.h"
 
 using mongocxx::cursor;
 using bsoncxx::builder::stream::finalize;
+using bsoncxx::builder::basic::kvp;
+using bsoncxx::builder::basic::make_document;
 
 MongodbEngine::MongodbEngine() {
 }
@@ -161,4 +163,24 @@ int MongodbEngine::set_index(string index, bool isascending) {
   coll.create_index(std::move(index_specification));
 
   return 0;
+}
+
+int MongodbEngine::get_max_item(map<string, string> &md, const string &condition) {
+  // sort & limit
+  document doc {};
+  mongocxx::database db = conn.database(libname);
+  mongocxx::collection coll = db[tablename];
+
+  mongocxx::options::find opts;
+  opts.sort(make_document(kvp(condition, -1)));
+  opts.limit(1);
+
+  auto result = coll.find({}, opts);
+  for (auto &&doc : result)
+  {
+    string json = bsoncxx::to_json(doc);
+    parseTo(md, json);
+    return 0;
+  }
+  return -1;
 }

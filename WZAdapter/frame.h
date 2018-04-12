@@ -5,7 +5,7 @@
 #ifndef STRATEGY_FRAME_H
 #define STRATEGY_FRAME_H
 
-#include "transportstruct.h"
+#include "tsdatastruct.h"
 
 struct Frame{
     short source;

@@ -8,7 +8,9 @@
 
 #include <mongocxx/client.hpp>
 #include <bsoncxx/builder/stream/document.hpp>
-#include "DataEngine.h"
+#include <mongocxx/options/find.hpp>
+#include <bsoncxx/builder/basic/kvp.hpp>
+#include "dataengine.h"
 
 using bsoncxx::builder::stream::document;
 
@@ -30,6 +32,10 @@ class MongodbEngine : public DataEngine {
 
   // set index
   int set_index(string, bool isascending = true);
+
+  // get max value
+  int get_max_item(map<string, string> &, const string &);
+
 
  protected:
   MongodbEngine();

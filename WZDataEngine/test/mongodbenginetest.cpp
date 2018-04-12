@@ -5,18 +5,20 @@
 // test function:
 //   insert_one
 //   insert_many
+//   update_one
+//   update_many
 //   find_one
 //   find_many
 
 #include <iostream>
-#include <cmath>
 #include <map>
 #include <gtest/gtest.h>
 #include "mongodbengine.h"
+#include <bsoncxx/json.hpp>
+#include <mongocxx/instance.hpp>
 #include "dataparse.h"
+#include <vector>
 using namespace std;
-
-#define ASSERT_DOUBLE(a, b) ASSERT_TRUE(abs(a - b) < 0.00001)
 
 DataEngine *db = NULL;
 FILE *fp = NULL;
@@ -26,6 +28,11 @@ mongocxx::client conn;
 mongocxx::collection collection;
 
 map<string, string> ts;
+//map<KeyValue> kv;
+
+void find_all() {
+
+}
 
 class TestMongodbEngine : public testing::Test
 {
@@ -37,10 +44,14 @@ class TestMongodbEngine : public testing::Test
     db->setLibname("test");
     db->setTablename("TSMarketDataField");
 
-    pDepthMarketData = new TSMarketDataField();
     conn = mongocxx::client(mongocxx::uri("mongodb://localhost:27017"));
     collection = conn["test"]["TSMarketDataField"];
-    collection.delete_many({});
+    // fp = fopen("../test/data.csv", "r");
+    // if (fp == NULL) {
+    //   perror("no file");
+    //   exit(1);
+    // }
+    pDepthMarketData = new TSMarketDataField();
   }
   static void TearDownTestCase()
   {
@@ -49,47 +60,41 @@ class TestMongodbEngine : public testing::Test
   }
   virtual void SetUp()
   {
-    fp = fopen("../test/data.csv", "r");
-    if (fp == NULL) {
-      perror("no file");
-      exit(1);
-    }
   }
   virtual void TearDown()
   {
-    //delete pDepthMarketData;
+    delete pDepthMarketData;
     ts.clear();
+    //kv.clear();
   }
 };
 
 TEST_F(TestMongodbEngine, insert_one)
 {
   //fread(pDepthMarketData, sizeof(TSMarketDataField), 1, fp);
-  for (int i=0; i<10; i++){
-    ts.clear();
-    memset(pDepthMarketData, 0, sizeof(TSMarketDataField));
-    pDepthMarketData->Volume = i;
-    parseFrom(ts, *pDepthMarketData);
-    db->insert_one(ts);
+  for (int i=0; i<100; i++){
+    //memset(pDepthMarketData, 0, sizeof(TSMarketDataField));
+    // pDepthMarketData->Volume = i;
+    // parseFrom(ts, *pDepthMarketData);
+    //db->insert_one(ts);
   }
 }
 
-TEST_F(TestMongodbEngine, insert_many)
+/*TEST_F(TestMongodbEngine, insert_many)
 {
   //fread(pDepthMarketData, sizeof(TSMarketDataField), 1, fp);
   TSMarketDataField temp[100];
   vector<map<string, string>> my_map;
-  for (int i=0; i<10; i++){
-    ts.clear();
+  for (int i=100; i<200; i++){
     memset(&temp[i], 0, sizeof(temp[i]));
-    temp[i].Volume = i+10;
+    temp[i].Volume = i;
     parseFrom(ts, temp[i]);
     my_map.push_back(ts);
   }
   db->insert_many(my_map);
-}
+}*/
 
-TEST_F(TestMongodbEngine, update_many)
+/*TEST_F(TestMongodbEngine, update_many)
 {
   //fread(pDepthMarketData, sizeof(TSMarketDataField), 1, fp);
   KeyValue my_key_value;
@@ -103,9 +108,9 @@ TEST_F(TestMongodbEngine, update_many)
   my_vector.push_back(my_key_value_update);
 
   db->update_many(my_key_value, my_vector);
-}
+}*/
 
-TEST_F(TestMongodbEngine, find_many)
+/*TEST_F(TestMongodbEngine, find_many)
 {
   //fread(pDepthMarketData, sizeof(TSMarketDataField), 1, fp);
 
@@ -118,14 +123,7 @@ TEST_F(TestMongodbEngine, find_many)
   my_vector.push_back(my_key_value_update);
 
   db->find_many(my_map, my_vector);
-
-  for (auto &it : my_map) {
-    for (auto &map_it : it){
-      cout << map_it.first << " " << map_it.second << endl;
-    }
-  }
-}
-
+}*/
 
 int main(int argc,char *argv[])
 {

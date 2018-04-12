@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-PROJECT(DataEngine)
+PROJECT(DATAENGINE)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")
 
@@ -14,6 +14,8 @@ MESSAGE(STATUS "This is LIBRARY dir " ${LIBRARY_OUTPUT_PATH})
 
 # add local include dir
 INCLUDE_DIRECTORIES(inc)
+INCLUDE_DIRECTORIES(../WZAdapter)
+INCLUDE_DIRECTORIES(../WZConfigReader)
 
 # add mongocxx and bson include dir
 SET(SHARE_LIB_PREFIX /usr/local)
