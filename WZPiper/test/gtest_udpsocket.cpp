@@ -46,11 +46,11 @@ protected:
 };
 
 TEST_F(UdpTest, InitServer){
-	EXPECT_NE(-1, pip.init("../doc/config.ini", WZ_PIPER_SERVER));
+	EXPECT_NE(-1, pip.init("../doc/config.ini", WZ_PIPER_SERVER, WZ_PIPER_BLOCK));
 }
 
 TEST_F(UdpTest, InitClient){
-	EXPECT_NE(-1, pip.init("../doc/config.ini", WZ_PIPER_CLIENT));
+	EXPECT_NE(-1, pip.init("../doc/config.ini", WZ_PIPER_CLIENT, WZ_PIPER_BLOCK));
 }
 
 TEST_F(UdpTest, Send)

@@ -3,14 +3,14 @@
 
 #include <iostream>
 #include "wzpiper.hpp"
-#include "wzsokect_inc/udp.h"
+#include "wzsocket_inc/udp.h"
 
 using namespace std;
 
 int main()
 {
   WZPiper<UdpSocket> pip;
-  pip.init("../doc/config.ini", WZ_PIPER_SERVER);
+  pip.init("../doc/config.ini", WZ_PIPER_SERVER, WZ_PIPER_BLOCK);
 
   Frame my_frame;
   while(1)

@@ -1,4 +1,4 @@
-SET(CLASS_FILE wzsocket tcp udp)
+SET(CLASS_FILE tcp udp)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  
 

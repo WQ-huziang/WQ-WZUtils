@@ -48,14 +48,14 @@ protected:
 
 void *server_thread(void *ptr)
 {
- 	int dest = pip.init("../doc/config.ini", WZ_PIPER_SERVER);
+ 	int dest = pip.init("../doc/config.ini", WZ_PIPER_SERVER, WZ_PIPER_BLOCK);
 	pip.Recv(recv_frame);
     return 0;
 }
 
 void *client_thread(void *ptr)
 {
- 	int dest = pip.init("../doc/config.ini", WZ_PIPER_CLIENT);
+ 	int dest = pip.init("../doc/config.ini", WZ_PIPER_CLIENT, WZ_PIPER_BLOCK);
 	send_frame.dest = dest;
 	pip.Send(send_frame);
 	return 0;

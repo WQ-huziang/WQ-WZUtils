@@ -39,7 +39,7 @@ class WZPiper{
 			file_path: the path of the configure file
 		Return: positive if create succeed, -1 if failed
 		*************************************************/
-		int init(char file_path[256], int piperMode);
+		int init(char file_path[256], int piperMode, int blockMode);
 		
 		/************************************************* 
 		Function: Recv
@@ -76,8 +76,8 @@ WZPiper<T>::~WZPiper(){
 }
 
 template<typename T>
-int WZPiper<T>::init(char file_path[256], int piperMode){
-	return t->init(file_path, piperMode);
+int WZPiper<T>::init(char file_path[256], int piperMode, int blockMode){
+	return t->init(file_path, piperMode, blockMode);
 }
 
 template<typename T>
@@ -99,5 +99,15 @@ int WZPiper<T>::Send(Frame &frame){
 //client 
 #define WZ_PIPER_CLIENT          1
 typedef short WZPiperMode;
+
+///////////////////////////////////
+// The mode of blocking 
+// (blocking or nonblocking)
+///////////////////////////////////
+//blocking
+#define WZ_PIPER_BLOCK           0
+//nonblocking
+#define WZ_PIPER_NBLOCK			 1
+typedef short WZBlockMode;
 
 #endif
