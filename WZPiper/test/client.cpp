@@ -1,5 +1,5 @@
 
-#include "wzsokect_inc/udp.h"
+#include "wzsocket_inc/udp.h"
 #include "wzpiper.hpp"
 #include <iostream>
 
@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
   WZPiper<UdpSocket> pip;
-  int servfd = pip.init("../doc/config.ini", WZ_PIPER_CLIENT);
+  int servfd = pip.init("../doc/config.ini", WZ_PIPER_CLIENT, WZ_PIPER_BLOCK);
 
   Frame my_frame;
   memset(&my_frame, 0, sizeof(my_frame));

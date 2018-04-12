@@ -105,7 +105,7 @@ int TcpSocket::Recv(Frame &md)
             int eventfd = events[i].data.fd;
             if (eventfd == tcpfd)
             {
-                if(sockAccept(eventfd) == 0)  continue;
+                if(sockAccept() == 0)  continue;
             }
             else
             {
@@ -180,7 +180,7 @@ int TcpSocket::addEvent(int sockfd, int state)
     return 0;
 }
 
-int TcpSocket::sockAccept(int eventfd)
+int TcpSocket::sockAccept()
 {
     struct sockaddr_in cliaddr;
     socklen_t socklen = sizeof(struct sockaddr_in);
