@@ -1,8 +1,8 @@
 /*
- * @Author: w2w 
- * @Date: 2018-02-28 10:58:13 
- * @Last Modified by:   w2w 
- * @Last Modified time: 2018-02-28 10:58:13 
+ * @Author: w2w
+ * @Date: 2018-02-28 10:58:13
+ * @Last Modified by:   w2w
+ * @Last Modified time: 2018-02-28 10:58:13
  */
 
 #ifndef WZ_CONSTANT_H
@@ -22,6 +22,18 @@ const char EXCHANGE_SSE[] = "SSE"; //上海证券交易所
 //const char* EXCHANGE_SSE = "SSE"; //上海证券交易所
 //char * a = "aaaa"
 //char a[] = "aaa";
+
+typedef char char_19[19];
+typedef char char_21[21];
+typedef char char_64[64];
+typedef char char_7[7];
+typedef char char_9[9];
+typedef char char_30[30];
+typedef char char_31[31];
+typedef char char_16[16];
+typedef char char_13[13];
+typedef char char_2[2];
+typedef char char_11[11];
 
 
 ///////////////////////////////////
@@ -369,5 +381,17 @@ typedef char WZYsSideTypeType;
 #define WZ_CHAR_YsFOK           '4'
 
 typedef char WZYsTimeConditionType;
+
+///////////////////////////////////
+// warning type
+///////////////////////////////////
+// price limit up
+#define WZ_CHAR_LimitUp         '0'
+// price limit down
+#define WZ_CHAR_LimitDown       '1'
+// price fall 4% percent compare 5 min ago
+#define WZ_CHAR_FallFPercent    '2'
+// price rise 4% percent compare 5 min ago
+#define WZ_CHAR_RiseFPercent    '3'
 
 #endif
