@@ -15,15 +15,14 @@
 #include "rapidjson/stringbuffer.h"
 
 #include "wzdatastruct.h"
-#include "transportstruct.h"
+#include "tsdatastruct.h"
 
 using namespace rapidjson;
 using std::map;
-using std::vector;
 using std::string;
 using std::pair;
 
-inline int parseTo(map<string, string> &my_map, string &json)
+inline void parseTo(map<string, string> &my_map, string &json)
 {
   Document doc;
   doc.Parse((char*)json.c_str());
@@ -38,12 +37,10 @@ inline int parseTo(map<string, string> &my_map, string &json)
       tmp.second = it->value.GetString();
       my_map.insert(tmp);
     }
-
   }
-  return 0;
 }
 
-inline int parseFrom(map<string, string> &my_map, TSMarketDataField &res)
+inline void parseFrom(map<string, string> &my_map, TSMarketDataField &res)
 {
   char num_value[1024];
 
@@ -70,11 +67,7 @@ inline int parseFrom(map<string, string> &my_map, TSMarketDataField &res)
   my_map.insert(pair<string, string>("Turnover", num_value));
   sprintf(num_value, "%lf", res.OpenInterest);
   my_map.insert(pair<string, string>("OpenInterest", num_value));
-  sprintf(num_value, "%lf", res.ClosePrice);
-  my_map.insert(pair<string, string>("ClosePrice", num_value));
 
-  sprintf(num_value, "%lf", res.SettlementPrice);
-  my_map.insert(pair<string, string>("SettlementPrice", num_value));
   sprintf(num_value, "%lf", res.UpperLimitPrice);
   my_map.insert(pair<string, string>("UpperLimitPrice", num_value));
   sprintf(num_value, "%lf", res.LowerLimitPrice);
@@ -91,10 +84,9 @@ inline int parseFrom(map<string, string> &my_map, TSMarketDataField &res)
   my_map.insert(pair<string, string>("AskPrice1", num_value));
   sprintf(num_value, "%d", res.AskVolume1);
   my_map.insert(pair<string, string>("AskVolume1", num_value));
-  return 0;
 }
 
-inline int parseFrom(map<string, string> &my_map, WZRtnOrderField &res)
+inline void parseFrom(map<string, string> &my_map, WZRtnOrderField &res)
 {
   char num_value[1024];
 
@@ -131,11 +123,9 @@ inline int parseFrom(map<string, string> &my_map, WZRtnOrderField &res)
   my_map.insert(pair<string, string> ("OrderStatus", num_value));
   sprintf(num_value, "%d", res.RequestID);
   my_map.insert(pair<string, string> ("RequestID", num_value));
-
-  return 0;
 }
 
-inline int parseFrom(map<string, string> &my_map, TSRtnOrderField &res)
+inline void parseFrom(map<string, string> &my_map, TSRtnOrderField &res)
 {
   char num_value[1024];
   my_map.insert(pair<string, string> ("InstrumentID", res.InstrumentID));
@@ -156,11 +146,9 @@ inline int parseFrom(map<string, string> &my_map, TSRtnOrderField &res)
   my_map.insert(pair<string, string> ("OffsetFlag", num_value));
   sprintf(num_value, "%c", res.OrderStatus);
   my_map.insert(pair<string, string> ("OrderStatus", num_value));
-
-  return 0;
 }
 
-inline int parseFrom(map<string, string> &my_map, WZRtnTradeField &res)
+inline void parseFrom(map<string, string> &my_map, WZRtnTradeField &res)
 {
   char num_value[1024];
 
@@ -190,11 +178,9 @@ inline int parseFrom(map<string, string> &my_map, WZRtnTradeField &res)
   my_map.insert(pair<string, string> ("OffsetFlag", num_value));
   sprintf(num_value, "%c", res.HedgeFlag);
   my_map.insert(pair<string, string> ("HedgeFlag", num_value));
-
-  return 0;
 }
 
-inline int parseFrom(map<string, string> &my_map, TSRtnTradeField &res)
+inline void parseFrom(map<string, string> &my_map, TSRtnTradeField &res)
 {
   char num_value[1024];
 
@@ -214,8 +200,6 @@ inline int parseFrom(map<string, string> &my_map, TSRtnTradeField &res)
   my_map.insert(pair<string, string> ("Direction", num_value));
   sprintf(num_value, "%c", res.OffsetFlag);
   my_map.insert(pair<string, string> ("OffsetFlag", num_value));
-
-  return 0;
 }
 
 #endif

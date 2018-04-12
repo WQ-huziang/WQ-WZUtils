@@ -13,8 +13,8 @@
 #include <iostream>
 #include <map>
 #include <gtest/gtest.h>
-#include "MongodbEngine.h"
-#include "DataParse.h"
+#include "mongodbengine.h"
+#include "dataparse.h"
 using namespace std;
 
 DataEngine *db = NULL;

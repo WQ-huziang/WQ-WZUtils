@@ -27,16 +27,16 @@
   DataParse.h
   ToDocuments.h
   transportstruct.h
-  DataEngine.h
-  MongodbEngine.h
+  WZDataEngine.h
+  WZMongodbEngine.h
   ~~~
 
   链接库文件在lib文件夹中，使用时，将如下文件复制到使用者库文件目录下：
 
   ~~~bash
-  libMongodbEngine.a (static)
+  libWZMongodbEngine.a (static)
   or
-  libMongodbEngine.so.1.x (dynamic, x is newest version)
+  libWZMongodbEngine.so.1.x (dynamic, x is newest version)
   ~~~
 
 - CMakeLists.txt中写法：
@@ -50,7 +50,7 @@
   INCLUDE_DIRECTORIES(${SHARE_LIB_PREFIX}/include/libbson-1.0)
 
   # add libs
-  SET(DATAENGINE_LIBS MongodbEngine mongocxx bsoncxx)
+  SET(DATAENGINE_LIBS WZMongodbEngine mongocxx bsoncxx)
   ADD_EXECUTABLE(main main.cpp)
   TARGET_LINK_LIBRARIES(main ${DATAENGINE_LIBS} your_libs)
   ```
