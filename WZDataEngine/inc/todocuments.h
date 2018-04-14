@@ -35,7 +35,7 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include "DataEngine.h"
+#include "dataengine.h"
 using std::map;
 using std::vector;
 using bsoncxx::builder::stream::document;
@@ -105,5 +105,8 @@ void toDocument(const KeyValue &find, const vector<KeyValue> & value, document &
   }
 }
 
+void toDocument(const char ID[20], document &doc){
+  doc << "InstrumentID" << ID;
+}
 
 #endif  // WZUTIL_TODOCUMENT_H_

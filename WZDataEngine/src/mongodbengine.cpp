@@ -3,16 +3,20 @@
 // Author : huziang
 // this is a cpp file complete mongodb interface in c++
 
-#include "MongodbEngine.h"
+#include "mongodbengine.h"
 #include <bsoncxx/json.hpp>
 #include <mongocxx/instance.hpp>
-#include "ToDocuments.h"
-#include "DataParse.h"
+#include "todocuments.h"
+#include "dataparse.h"
 
 using mongocxx::cursor;
 using bsoncxx::builder::stream::finalize;
+using bsoncxx::builder::basic::kvp;
+using bsoncxx::builder::basic::make_document;
 
 MongodbEngine::MongodbEngine() {
+  isWriting = 0;
+  isReading = 0;
 }
 
 DataEngine* MongodbEngine::getInstance() {
@@ -28,6 +32,11 @@ void MongodbEngine::init() {
 }
 
 int MongodbEngine::insert_one(const map<string, string> &md) {
+  if (isWriting || isReading)
+    return -1;   // set write flag
+  else
+    isWriting = 1;
+
   // get document
   document doc;
   toDocument(md, doc);
@@ -36,10 +45,19 @@ int MongodbEngine::insert_one(const map<string, string> &md) {
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   auto result = coll.insert_one(doc << finalize);
+
+  // reset write flag
+  isWriting = 0;
+  
   return (bool)result;
 }
 
 int MongodbEngine::insert_many(const vector<map<string, string>> &mds) {
+  if (isWriting || isReading)
+    return -1;
+  else 
+    isWriting = 1;
+
   // get document
   vector<bsoncxx::document::value> docvs;
   toDocument(mds, docvs);
@@ -48,10 +66,19 @@ int MongodbEngine::insert_many(const vector<map<string, string>> &mds) {
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   auto result = coll.insert_many(docvs);
+
+  // reset write flag
+  isWriting = 0;
+
   return result->inserted_count();
 }
 
 int MongodbEngine::update_one(const KeyValue &filter, const vector<KeyValue> &update) {
+  if (isWriting || isReading)
+    return -1;
+  else
+    isWriting = 1;
+
   // get document
   document filterdoc {};
   document updatedoc {};
@@ -61,10 +88,19 @@ int MongodbEngine::update_one(const KeyValue &filter, const vector<KeyValue> &up
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   auto result = coll.update_one(filterdoc << finalize, updatedoc << finalize);
+
+  // reset write flag
+  isWriting = 0;
+
   return (bool)result;
 }
 
 int MongodbEngine::update_many(const KeyValue &filter, const vector<KeyValue> &update) {
+  if (isWriting || isReading)
+    return -1;
+  else
+    isWriting = 1;
+
   // get document
   document filterdoc {};
   document updatedoc {};
@@ -74,10 +110,19 @@ int MongodbEngine::update_many(const KeyValue &filter, const vector<KeyValue> &u
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   auto result = coll.update_many(filterdoc << finalize, updatedoc << finalize);
+
+  // reset write flag
+  isWriting = 0;
+
   return result->modified_count();
 }
 
 int MongodbEngine::find_one(map<string, string> &md, const vector<KeyValue> &condition, const char ID[20]) {
+  if (isWriting)
+    return -1;
+  else 
+    isReading++; // add reader
+
   // get document
   document doc {};
   toDocument(condition, ID, doc);
@@ -86,6 +131,9 @@ int MongodbEngine::find_one(map<string, string> &md, const vector<KeyValue> &con
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   auto result = coll.find_one(doc << finalize);
+
+  isReading--; // sub reader
+
   if (result) {
     string json = bsoncxx::to_json(*result);
     parseTo(md, json);
@@ -96,6 +144,11 @@ int MongodbEngine::find_one(map<string, string> &md, const vector<KeyValue> &con
 }
 
 int MongodbEngine::find_many(vector<map<string, string>> &mds, const vector<KeyValue> &condition, const char ID[20]) {
+  if (isWriting)
+    return -1;
+  else
+    isReading++; // add reader
+
   // get document
   document doc {};
   toDocument(condition, ID, doc);
@@ -105,6 +158,8 @@ int MongodbEngine::find_many(vector<map<string, string>> &mds, const vector<KeyV
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   mongocxx::cursor cursor = coll.find(doc << finalize);
+
+  isReading--; // sub reader
 
   // go through all answer
   int num = 0;
@@ -122,6 +177,11 @@ int MongodbEngine::find_many(vector<map<string, string>> &mds, const vector<KeyV
 }
 
 int MongodbEngine::delete_one(const vector<KeyValue> &condition, const char ID[20]) {
+  if (isWriting || isReading)
+    return -1;
+  else 
+    isWriting = 1;
+
   // get document
   document doc {};
   toDocument(condition, ID, doc);
@@ -130,10 +190,19 @@ int MongodbEngine::delete_one(const vector<KeyValue> &condition, const char ID[2
   mongocxx::database db = conn.database(libname);
   mongocxx::collection coll = db[tablename];
   auto result = coll.delete_one(doc << finalize);
+
+  // reset write flag
+  isWriting = 0;
+
   return (bool)result;
 }
 
 int MongodbEngine::delete_many(const vector<KeyValue> &condition, const char ID[20]) {
+  if (isWriting || isReading)
+    return -1;
+  else
+    isWriting = 1;
+
   // get document
   document doc {};
   toDocument(condition, ID, doc);
@@ -145,6 +214,10 @@ int MongodbEngine::delete_many(const vector<KeyValue> &condition, const char ID[
   if (result) {
     return result->deleted_count();
   }
+  
+  // reset write flag
+  isWriting = 0;
+
   return 0;
 }
 
@@ -160,5 +233,64 @@ int MongodbEngine::set_index(string index, bool isascending) {
   // create index
   coll.create_index(std::move(index_specification));
 
+  return 0;
+}
+
+int MongodbEngine::get_max_item(map<string, string> &md, const string &condition) {
+  if (isWriting)
+    return -1;
+  else
+    isReading++; // add reader
+
+  // sort & limit
+  document doc {};
+  mongocxx::database db = conn.database(libname);
+  mongocxx::collection coll = db[tablename];
+
+  mongocxx::options::find opts;
+  opts.sort(make_document(kvp(condition, -1)));
+  opts.limit(1);
+
+  auto result = coll.find({}, opts);
+
+  isReading--; // sub reader
+
+  for (auto &&doc : result)
+  {
+    string json = bsoncxx::to_json(doc);
+    parseTo(md, json);
+    return 0;
+  }
+  return -1;
+}
+
+int MongodbEngine::get_latest_item(vector<map<string, string>> &mds, const char ID[20], int num){
+  if (isWriting)
+    return -1;
+  else
+    isReading++; // add reader
+
+  document doc {};
+  mongocxx::database db = conn.database(libname);
+  mongocxx::collection coll = db[tablename];
+
+  toDocument(ID, doc);
+
+  mongocxx::options::find opts;
+  opts.sort(make_document(kvp(TradingDay, -1), kvp(UpdateTime, -1)));
+  opts.limit(num);
+
+  auto cursor = coll.find(doc << finalize, opts);
+
+  isReading--; // sub reader
+
+  map<string, string> result;
+  string json;
+  for(auto &cur : cursor){
+    json = bsoncxx::to_json(cur);
+    parseTo(result, json);
+    mds.push_back(result);
+    result.clear();
+  }
   return 0;
 }

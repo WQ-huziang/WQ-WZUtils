@@ -6,7 +6,7 @@ Description: MemEngine reads data from shared memory(pop data from the MemQueue)
 Date: 2018-04-09
 ***************************************************************************/
 
-// #include "memengine.h"
+#include "wzmem_inc/memengine.h"
 #include "iniparser.h"
 #include "logger.h"
 
@@ -16,7 +16,7 @@ extern Logger *logger;
 // logger buffer
 char logger_buf[1024];
 
-// server:piperMode = 0  client:piperMode = 1; 
+// server:piperMode = 0  client:piperMode = 1;
 MemEngine::MemEngine(int piperMode){
    this->m_flag = 3 ;
    this->m_key  = 0 ;
@@ -39,7 +39,7 @@ bool MemEngine::createMemory(const int &m_key, const int &m_size, const int &m_f
    // call shmget and use return value to initialize shared memory address pointer
    m_shmid = shmget(m_key, m_size, m_flag);
 
-   if ( m_shmid == -1 ) {  
+   if ( m_shmid == -1 ) {
       sprintf(logger_buf, "shared memory create failed");
       logger -> Error(logger_buf);
       return false;
@@ -68,7 +68,7 @@ bool MemEngine::destroyMemory(int & shmid, char* & m_memory_addr) {
       logger -> Error(logger_buf);
       return false;
    }
-   
+
    if (m_memory_addr != NULL) {
       if (shmdt(m_memory_addr) != 0) {
          sprintf(logger_buf, "call shmdt failed");
@@ -84,7 +84,7 @@ bool MemEngine::destroyMemory(int & shmid, char* & m_memory_addr) {
       logger -> Error(logger_buf);
       return false;
    }
-   
+
    shmid = -1;
    m_memory_addr = NULL;
    sprintf(logger_buf, "destroy memory succeed");
@@ -133,7 +133,7 @@ bool MemEngine::detachMemory(const int & m_shmid, char*& m_memory_addr) {
          m_memory_addr = NULL;
          sprintf(logger_buf, "*Already shmdt*");
          logger -> Info(logger_buf);
-         return true;  
+         return true;
      }
      return false;
    }
@@ -145,7 +145,7 @@ bool MemEngine::detachMemory(const int & m_shmid, char*& m_memory_addr) {
 
 // initialize the client shared memory address pointer
 bool MemEngine::init(char file_path[256]){
-    // read key and size from configure file 
+    // read key and size from configure file
     CIni ini;
     if (ini.OpenFile(file_path, "r") == INI_OPENFILE_ERROR){
        sprintf(logger_buf, "INI_OPENFILE_ERROR");
@@ -157,7 +157,7 @@ bool MemEngine::init(char file_path[256]){
 
    sprintf(logger_buf, "Config read MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
    logger -> Info(logger_buf);
-   
+
    // init the queue_manager
    // if(createMemory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
    if(createMemory(this -> m_key, sizeof(QueueManager<QueueDataType, DataQueueSize, MaxReaderSize>), this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {

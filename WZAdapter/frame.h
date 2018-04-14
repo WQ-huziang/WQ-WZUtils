@@ -5,7 +5,7 @@
 #ifndef STRATEGY_FRAME_H
 #define STRATEGY_FRAME_H
 
-#include "wzadapter/transportstruct.h"
+#include "tsdatastruct.h"
 
 struct Frame{
     short source;
@@ -20,6 +20,7 @@ struct Frame{
         TSRtnOrderField order;
         TSRtnTradeField trade;
         TSMarketDataField market;
+        TSAlertField alert;
     } data;
 };
 

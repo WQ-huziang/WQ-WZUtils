@@ -1,9 +1,10 @@
 SET(HU_FILE hu_gtest)
 SET(LI_FILE li_gtest)
 SET(LUO_FILE luo_gtest)
+SET(TTT sort_test)
 SET(GTEST_LIB gtest gflags pthread gtest_main)
 SET(TEST_LIBS
-  MongodbEngine
+  mongodbengine
   mongocxx
   bsoncxx
 )
@@ -20,3 +21,5 @@ TARGET_LINK_LIBRARIES(${LI_FILE} ${GTEST_LIB} ${TEST_LIBS})
 ADD_EXECUTABLE(${LUO_FILE} ${LUO_FILE}.cpp)
 TARGET_LINK_LIBRARIES(${LUO_FILE} ${GTEST_LIB} ${TEST_LIBS})
 
+ADD_EXECUTABLE(${TTT} ${TTT}.cpp)
+TARGET_LINK_LIBRARIES(${TTT} ${GTEST_LIB} ${TEST_LIBS})

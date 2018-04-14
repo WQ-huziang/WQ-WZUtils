@@ -5,7 +5,7 @@ Description: simple gtest for the module MemClient and MemServer
 Date: 2018-04-2
 ***************************************************************************/
 
-#include "memengine.hpp"
+#include "wzmem_inc/memengine.hpp"
 #include "wzpiper.hpp"
 #include "logger.h"
 #include "gtest/gtest.h"
@@ -84,7 +84,6 @@ TEST_F(ServerClientTest, Simple){
 }
 
 TEST_F(ServerClientTest, WriteAndReadWorks){
-
 	// test write
 	Frame sendFrame;
 	for (int i = 0; i<QueueSize ; i++ ) {
@@ -168,8 +167,8 @@ TEST_F(ServerClientTest, AddReaderDown){
 }
 
 int main(int argc, char* argv[]){
-	logger = new Logger(argv[0]);
-	testing::InitGoogleTest(&argc, argv);
-	
-	return RUN_ALL_TESTS();
+  logger = new Logger(argv[0]);
+  testing::InitGoogleTest(&argc, argv);
+
+  return RUN_ALL_TESTS();
 }

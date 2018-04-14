@@ -1,7 +1,7 @@
-SET(SOCKET_FILE tcp wzsocket udp)
+SET(SOCKET_FILE tcp udp)
 SET(TCP_FILE client)
 SET(UDP_FILE server)
-SET(GTEST_SO gtest gflags pthread gtest_main)
+SET(GTEST_SO pthread)
 SET(UTILS_SO iniparser logger glog)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")  

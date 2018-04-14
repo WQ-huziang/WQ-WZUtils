@@ -13,8 +13,8 @@
 #include <cmath>
 #include <map>
 #include <gtest/gtest.h>
-#include "MongodbEngine.h"
-#include "DataParse.h"
+#include "mongodbengine.h"
+#include "dataparse.h"
 using namespace std;
 
 #define ASSERT_DOUBLE(a, b) ASSERT_TRUE(abs(a - b) < 0.000001)

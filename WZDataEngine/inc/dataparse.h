@@ -19,7 +19,6 @@
 
 using namespace rapidjson;
 using std::map;
-using std::vector;
 using std::string;
 using std::pair;
 
@@ -38,7 +37,6 @@ inline int parseTo(map<string, string> &my_map, string &json)
       tmp.second = it->value.GetString();
       my_map.insert(tmp);
     }
-
   }
   return 0;
 }

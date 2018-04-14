@@ -1,4 +1,4 @@
-#include "util/iniparser.h"
+#include "iniparser.h"
 
 CIni::CIni( )
 {
