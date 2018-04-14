@@ -155,7 +155,7 @@ inline void parseFrom(struct WZRtnOrderField &res, const struct CThostFtdcOrderF
   res.RequestID = ori.RequestID;
 }
 
-inline void parseFrom(struct WZRtnTradeField &res, const struct CThostFtdcTradeField& ori)
+inline void parseFrom(struct WZRtnTradeField &res, const struct CThostFtdcTradeField &ori)
 {
   memcpy(res.BrokerID, ori.BrokerID, 11);
   memcpy(res.UserID, ori.UserID, 16);
