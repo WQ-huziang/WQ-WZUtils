@@ -50,7 +50,7 @@ Date: 2018-04-09
 extern Logger *logger;
 
 // logger buffer
-char logger_buf[1024];
+extern char logger_buf[1024];
 
 /***************************************************************************
 Description: QueueManager manage the MemQueue used in shared memory
@@ -184,11 +184,11 @@ public:
     *************************************************/
     bool detachMemory(const int & m_shmid, char*& m_memory_addr);
 
-    
+    int getReaderId(){return reader_id;};
 
 private:
     QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> *queue_manager;// pointer point to the queue manager in shared memory address
-    int reader_index; 			    // reader index
+    int reader_id; 			    // reader index
     int m_key;					        // shared memory key
     int m_size;					        // shared memory size
     int m_flag;					        // shared memory flag
@@ -205,7 +205,7 @@ MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::MemEngine(){
   this->m_size = 0 ;
   this->m_flag = SHM_FLAG ;
   this->m_shmid  = -1;
-  this->reader_index = 0;
+  this->reader_id = 0;
   this->queue_manager = NULL;
 }
 
@@ -213,6 +213,14 @@ template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::~MemEngine(){
   if(this->m_memory_addr != NULL) {
     detachMemory(this -> m_shmid, this -> m_memory_addr);
+  }
+  if(this->piperMode == 0) { // server
+    // add as a reader of the frame_req_queue and get the reader_id
+    this -> queue_manager -> frame_req_queue.hangReader(reader_id);
+  }
+  else if(this->piperMode == 1){ // client
+    // add as a reader of the frame_rec_queue and get the reader_id
+    this -> queue_manager -> frame_rec_queue.hangReader(reader_id);
   }
 }
 
@@ -309,7 +317,7 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::detachMemory(const 
   // is private variable address valid
   if (m_shmid == -1 || m_memory_addr == NULL) {
     // not valid
-    return true;
+    return false;
   }
 
   // call detach and return to nCode
@@ -345,13 +353,13 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[
      return -1;
   }
   this -> m_key = ini.GetInt("MemInfo","key");
+  this -> m_size = ini.GetInt("MemInfo","size");
 
   sprintf(logger_buf, "Config read MemInfo key = %d, MemInfo size = %d\n", this->m_key, this->m_size);
   logger -> Info(logger_buf);
 
   // init the queue_manager
-  // if(createMemory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
-  if(createMemory(this -> m_key, sizeof(QueueManager<QueueDataType, DataQueueSize, MaxReaderSize>), this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
+  if(createMemory(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid, this -> m_memory_addr) ) {
     // assign queue_manager to the first address of shared memory
     this -> queue_manager = reinterpret_cast<QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> * > (this -> m_memory_addr);
 
@@ -361,22 +369,24 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[
         return -1;
       }
       // add as a reader of the frame_req_queue and get the reader_id
-      this -> reader_index = this -> queue_manager -> frame_req_queue.addReader();
-      if(this -> reader_index == -1) {
+      this -> reader_id = this -> queue_manager -> frame_req_queue.addReader();
+      printf("reader_id = %d\n", this -> reader_id);
+      if(this -> reader_id == -1) {
         return -1;
       }
     }
     else if(this->piperMode == 1){ // client
       // add as a reader of the frame_rec_queue and get the reader_id
-      this -> reader_index = this -> queue_manager -> frame_rec_queue.addReader();
-      if(this -> reader_index == -1) {
+      this -> reader_id = this -> queue_manager -> frame_rec_queue.addReader();
+      printf("reader_id = %d\n", this -> reader_id);
+      if(this -> reader_id == -1) {
         return -1;
       }
     }
 
     //printf("sizeof queue_manager:%ld\n", sizeof(*queue_manager) );
 
-    sprintf(logger_buf, "Reader id is:%d", this -> reader_index);
+    sprintf(logger_buf, "Reader id is:%d", this -> reader_id);
     logger -> Info(logger_buf);
 
     sprintf(logger_buf, "attach memory successfully");
@@ -393,17 +403,16 @@ template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Recv(QueueDataType &data) {
 
   if(this->piperMode == 1 ) { // client
-    if(!this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_index)) {
+    if(!this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_id)) {
       return -1;
     }
   } 
   else if(this->piperMode == 0 ){ // server
-    if(!this -> queue_manager -> frame_req_queue.pop(data,this -> reader_index)) {
+    if(!this -> queue_manager -> frame_req_queue.pop(data,this -> reader_id)) {
       return -1;
     }
   }
-  //printf("sizeof(data)%lu\n", sizeof(data));
-  return sizeof(data);
+  return sizeof(Frame);
 }
 
 // write from the shared memory

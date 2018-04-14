@@ -21,14 +21,16 @@ Date: 2018-04-2
 #endif
 
 #ifndef QueueSize
-#define QueueSize 2048
+#define QueueSize 1024
 #endif
 
 #ifndef MaxReaderSize
-#define MaxReaderSize 2
+#define MaxReaderSize 4
 #endif
 
 Logger * logger;
+
+char logger_buf[1024];
 
 class ServerClientTest : public ::testing::Test{
 protected:
@@ -53,10 +55,33 @@ protected:
 	}
 	virtual void TearDown(){
 		delete memServer;
-		delete memClient1;
-		delete memClient2;
 	}
 };
+
+TEST_F(ServerClientTest, Simple){
+
+	// test write
+	Frame sendFrame;
+	sendFrame.source = 1;
+	sendFrame.msg_type = 2;
+	sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
+	sendFrame.rtn_type = 3;
+	sendFrame.length = 4;
+	EXPECT_EQ(0 ,memServer -> Send(sendFrame));
+	EXPECT_EQ(0,memClient1 -> Send(sendFrame));
+	EXPECT_EQ(0,memClient2 -> Send(sendFrame));
+
+	// test queue receive
+	Frame recvFrame;
+	EXPECT_EQ(sizeof(Frame),memClient1 -> Recv(recvFrame));
+	EXPECT_EQ(1,recvFrame.source);
+	EXPECT_EQ(2,recvFrame.msg_type );
+	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+	EXPECT_EQ(3,recvFrame.rtn_type);
+	EXPECT_EQ(4,recvFrame.length);
+	EXPECT_EQ(-1,memClient1 -> Recv(recvFrame));
+
+}
 
 TEST_F(ServerClientTest, WriteAndReadWorks){
 
@@ -82,7 +107,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 	Frame recvFrame;
 
 	for (int i = 0; i<QueueSize ; i++ ) {
-		EXPECT_EQ(sizeof(sendFrame),memClient1 -> Recv(recvFrame));
+		EXPECT_EQ(sizeof(Frame),memClient1 -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -90,7 +115,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 		EXPECT_EQ(i,recvFrame.length);
 
 
-		EXPECT_EQ(sizeof(sendFrame),memServer -> Recv(recvFrame));
+		EXPECT_EQ(sizeof(Frame),memServer -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -109,7 +134,7 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 
 	// test Reader2
 	for (int i = 0; i<QueueSize ; i++ ) {
-		EXPECT_EQ(sizeof(sendFrame),memClient2 -> Recv(recvFrame));
+		EXPECT_EQ(sizeof(Frame),memClient2 -> Recv(recvFrame));
 		EXPECT_EQ(i,recvFrame.source);
 		EXPECT_EQ(i,recvFrame.msg_type );
 		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -127,6 +152,18 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 
 	// test write
 	EXPECT_EQ(0,memServer -> Send(sendFrame));
+
+}
+
+TEST_F(ServerClientTest, AddReaderDown){
+	char file[] = "../doc/config.ini";
+	delete memClient1;
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient3;
+	memClient3 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+	memClient3 -> init(file, WZ_PIPER_CLIENT);
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient4;
+	memClient4 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+	memClient4 -> init(file, WZ_PIPER_CLIENT);
 
 }
 

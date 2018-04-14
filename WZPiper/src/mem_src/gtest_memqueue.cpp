@@ -14,6 +14,11 @@ Date: 2018-03-30
 #define PRT(...)
 #endif
 
+
+
+// logger buffer
+char logger_buf[1024];
+
 class QueueTest : public ::testing::Test{
 protected:
 
@@ -22,6 +27,8 @@ protected:
 	int intReader1;
 	int intReader2;
 	int intReader3;
+	int intReader4;
+	int intReader5;
 	int douReader1;
 
 	int int_x;
@@ -349,7 +356,10 @@ TEST_F(QueueTest, ReaderBeyondReaderWorks){
 
 }
 
-
+TEST_F(QueueTest, AddReaderDown){
+	EXPECT_EQ(2,qI.addReader());
+	EXPECT_EQ(-1,qI.addReader());
+}
 
 int main(int argc, char* argv[]){
 	testing::InitGoogleTest(&argc, argv);

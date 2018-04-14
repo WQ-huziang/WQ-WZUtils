@@ -12,6 +12,7 @@ Date: 2018-03-30
 #include <sched.h>
 #include <assert.h>
 #include <string.h>
+#include "logger.h"
 
 // #ifndef PRT
 // #define PRT(...) printf(__VA_ARGS__)
@@ -65,10 +66,11 @@ public:
 
     /************************************************* 
     Function: hangReader
-    Description: when a reader proccess stop, call it
-    InputParameter: reader proccess's reader id
+    Description: when a reader proccess down, call it
+    InputParameter: 
+        reader_id: reader proccess's reader id
     Return: if succeed return positive, else return -1
-    *************************************************/ 
+    *************************************************/
     int hangReader(int reader_id);
 
     /************************************************* 
@@ -149,13 +151,14 @@ public:
     *************************************************/ 
     unsigned int getReadTime(int index = 0);
 
+    unsigned int getReadIndex(int index = 0);
 
 private:
     // each reader's readIndex
     unsigned int m_readIndex_arr[reader_size];
 
     // which reader index can be used
-    bool reader_able_arr[reader_size];
+    bool reader_ocpy_arr[reader_size];
 
     // the total number of reader start from 1
     volatile std::atomic<int> reader_num;
@@ -175,7 +178,7 @@ private:
     // the every slot read time
     volatile std::atomic<unsigned int> read_time[queue_size];
 
-    // transform the count number to real index of theQueue
+    // transform the a_count number to real index of theQueue
     unsigned int countToIndex(unsigned int a_count);
 
     // max size of the reader list
@@ -211,7 +214,6 @@ template <typename ELEM_T, int queue_size, int reader_size>
 MemQueue <ELEM_T, queue_size, reader_size>::~MemQueue() {
     // delete[] m_data_queue;
     // delete[] m_readIndex_arr;
-    // delete[] read_time;
 }
 
 // initialize the queue
@@ -230,7 +232,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::initQueue(){
     // set every readIndex as the zero value
     memset(m_readIndex_arr, 0, sizeof(m_readIndex_arr));
 
-    memset(reader_able_arr, 0, sizeof(reader_able_arr));
+    memset(reader_ocpy_arr, 0, sizeof(reader_ocpy_arr));
 
     for (int i = 0; i < queue_size; i++) {
         *(read_time + i) = 0;
@@ -278,8 +280,7 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
 
     unsigned int cur_readIndex, cur_max_readIndex, cur_read_time, nxt_read_time;
 
-    // the reader is not exist
-    if ( reader_id == -1 || reader_id >= reader_num) {
+    if ( reader_id == -1) {
         return false;
     }
 
@@ -307,9 +308,9 @@ bool MemQueue<ELEM_T, queue_size, reader_size>::pop(ELEM_T &a_datum, int &reader
         if(m_min_read_index == cur_readIndex) {
 
             // if every reader have read the slot
-            if(cur_read_time + 1 == reader_num) {
+            if(cur_read_time + 1 >= reader_num) {
 
-                // read_time[countToIndex(cur_readIndex)] = 0 has atomic problem?
+                // reset read_time[countToIndex(cur_readIndex)] = 0 has atomic problem?
                 atomic_store(&read_time[countToIndex(cur_readIndex)],(unsigned int) 0);
 
                 // pop --count has atomic problem?
@@ -340,34 +341,78 @@ int MemQueue<ELEM_T, queue_size, reader_size>::addReader(){
 
     // add reader, reader num + 1, 
     // has atomic problem?
-    int cur_reader_num;
-    do{
-        // add, get the right to add read time
-        cur_reader_num = atomic_load(&reader_num);
-    }while(!atomic_compare_exchange_weak(&reader_num, &cur_reader_num, (cur_reader_num + 1)));
+    // int cur_reader_num;
+    // do{
+    //     // add, get the right to add read time
+    //     cur_reader_num = atomic_load(&reader_num);
+    // }while(!atomic_compare_exchange_weak(&reader_num, &cur_reader_num, (cur_reader_num + 1)));
 
-    if(cur_reader_num >= MAX_READER_SIZE) {
-        return -1;
+    // if(cur_reader_num >= MAX_READER_SIZE) {
+    //     return -1;
+    // }
+
+    // // reader added start reading from current min_read_index
+    // m_readIndex_arr[cur_reader_num] = m_min_read_index;
+
+    // // reader_num start from 0, use cur_reader_num  as id
+    // return cur_reader_num;
+
+    for (int i = 0; i < reader_size; i++) {
+        if(!reader_ocpy_arr[i]) {
+            // ++reader_num has atomic problem?
+            atomic_fetch_add(&reader_num, 1);
+
+            // reader_ocpy_arr[i] = 1 has atomic problem?
+            reader_ocpy_arr[i] = 1;
+
+            // reader added start reading from current min_read_index
+            m_readIndex_arr[i] = m_min_read_index;
+
+            // 
+            return i;
+        }
     }
-
-    // reader added start reading from current min_read_index
-    m_readIndex_arr[cur_reader_num] = m_min_read_index;
-    // reader added start reading from 0
-    // m_readIndex_arr[cur_reader_num] = 0;
-
-    // reader_num start from 0, use cur_reader_num  as id
-    return cur_reader_num;
+    return -1;
 }
 
-// when a reader proccess stop, call it
+// when a reader proccess down or quit, call it, reset the m_min_read_index
 template <typename ELEM_T, int queue_size, int reader_size>
 int MemQueue<ELEM_T, queue_size, reader_size>::hangReader(int reader_id){
+    unsigned int sec_min;
 
-    // reader proccess stopped set the index as max value
-    m_readIndex_arr[reader_id] = -1;
+    // the slowest reader
+    if(m_readIndex_arr[reader_id] == m_min_read_index){
+        sec_min = -1;
+        // find the second minimum reader index
+        for(int i = 0; i < reader_size; i++){
+            if(m_readIndex_arr[i] < sec_min && i != reader_id && reader_ocpy_arr[i] != 0){
+                sec_min = m_readIndex_arr[i];
+            }
+        }
+        LOG(INFO)  << "reader_id:" << reader_id << "sec_min:" << sec_min;
 
-    // reader_num start from 0, use cur_reader_num  as id
-    return 0;
+        // reset readtime[m_min_read_index] to readtime[sec_min] as 0
+        for(unsigned int i = m_min_read_index; i < sec_min ; i++){
+            atomic_store(&read_time[countToIndex(i)],(unsigned int) 0);
+        }
+
+        // reset m_min_read_index as sec_min
+        atomic_store(&m_min_read_index, (unsigned int ) sec_min);
+        reader_ocpy_arr[reader_id] = 0;
+        // ++reader_num has atomic problem?
+        atomic_fetch_sub(&reader_num, 1);
+        return 0;
+    }
+    else if(m_readIndex_arr[reader_id] > m_min_read_index){
+        for(unsigned int i = m_min_read_index; i < m_readIndex_arr[reader_id]; i++){
+            atomic_fetch_sub(&read_time[countToIndex(i)], (unsigned int ) 1);
+        }
+        reader_ocpy_arr[reader_id] = 0;
+        // ++reader_num has atomic problem?
+        atomic_fetch_sub(&reader_num, 1);
+        return 0;
+    }
+    return -1;
 }
 
 // when a reader proccess reload, call it
@@ -410,5 +455,12 @@ unsigned int MemQueue<ELEM_T, queue_size, reader_size>::getReadTime(int index) {
     return -1;
 }
 
+// get the read index of slot[index]
+template <typename ELEM_T, int queue_size, int reader_size>
+unsigned int MemQueue<ELEM_T, queue_size, reader_size>::getReadIndex(int index) {
+    if(index >= 0 && index < reader_size)
+        return m_readIndex_arr[index];
+    return -1;
+}
 
 #endif// MEMQUEUE_H_
