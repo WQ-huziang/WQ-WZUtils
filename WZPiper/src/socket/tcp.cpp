@@ -78,8 +78,12 @@ int TcpSocket::init(char file_path[256], int piperMode, int blockMode)
     else{
         return -1;
     }
-    // LOG(INFO) << "Tcp Socket Init Success, IP = " << ip
-    //           << " PORT = " << port << " isClient = " << isClient;
+    
+    #ifdef LOGGER
+    LOG(INFO) << "Tcp Socket Init Success, IP = " << ip
+              << " PORT = " << port << " isClient = " << isClient;
+    #endif
+    
     return tcpfd;
 }
 
@@ -90,6 +94,9 @@ int TcpSocket::Recv(Frame &md)
         int ret = read(tcpfd, &md, sizeof(Frame));
         if (ret == 0)
         {
+            #ifdef LOGGER
+            LOG(ERROR) << "Server Close.";
+            #endif
             // connection break;
         }
         return ret;
@@ -116,6 +123,11 @@ int TcpSocket::Recv(Frame &md)
                 
                 if (ret == 0)
                 {
+                    #ifdef LOGGER
+                    LOG(ERROR) << "Client Close.";
+                    #endif
+                    deleteEvent(eventfd, EPOLLIN);
+                    close(eventfd);
                     // connection break, delete fd;
                 }
                 return ret;
@@ -139,7 +151,10 @@ int TcpSocket::Send(Frame &md)
         if (key != sock_map.end())
         {
             sockfd = key->second;
-            // LOG(INFO) << "Send a frame to SOURCE: "<<md.dest << " Fd: "<<sockfd;
+
+            #ifdef LOGGER
+            LOG(INFO) << "Send a frame to SOURCE: "<<md.dest << " Fd: "<<sockfd;
+            #endif
         }
         else
         {
@@ -180,6 +195,16 @@ int TcpSocket::addEvent(int sockfd, int state)
     return 0;
 }
 
+int TcpSocket::deleteEvent(int sockfd, int state)
+{
+    struct epoll_event ev;
+    ev.events = state | EPOLLET;
+    ev.data.fd = sockfd;
+    if (epoll_ctl(epollfd, EPOLL_CTL_DEL, sockfd, &ev) == -1)
+        return -1;
+    return 0;
+}
+
 int TcpSocket::sockAccept()
 {
     struct sockaddr_in cliaddr;
@@ -200,8 +225,12 @@ int TcpSocket::sockAccept()
     // add event
     if (addEvent(clifd, EPOLLIN) == -1)
         return -1;
-    // LOG(INFO) << "Build a new link from: "<< inet_ntoa(cliaddr.sin_addr) << " PORT: " << cliaddr.sin_port
-    //         << " Fd = " << clifd;
+
+    #ifdef LOGGER
+    LOG(INFO) << "Build a new link from: "<< inet_ntoa(cliaddr.sin_addr) 
+            << " PORT: " << cliaddr.sin_port
+            << " Fd = " << clifd;
+    #endif
 
     return 0;
 }
