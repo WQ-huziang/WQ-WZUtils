@@ -21,112 +21,148 @@ Date: 2018-04-2
 #endif
 
 #ifndef QueueSize
-#define QueueSize 2048
+#define QueueSize 1024
 #endif
 
 #ifndef MaxReaderSize
-#define MaxReaderSize 2
+#define MaxReaderSize 4
 #endif
 
 Logger * logger;
 
+char logger_buf[1024];
+
 class ServerClientTest : public ::testing::Test{
 protected:
+	
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memServer;
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient1;
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient2;
 
-  WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memServer;
-  WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient1;
-  WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient2;
+	virtual void SetUp(){
+		// init all
+		char file[] = "../doc/config.ini";
+		logger -> ParseConfigInfo(file);
 
-  virtual void SetUp(){
-    // init all
-    char file[] = "../doc/config.ini";
-    logger -> ParseConfigInfo(file);
+		memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memServer -> init(file, WZ_PIPER_SERVER);
 
-    memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-    memServer -> init(file, WZ_PIPER_SERVER);
+		memClient1 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memClient1 -> init(file, WZ_PIPER_CLIENT);
 
-    memClient1 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-    memClient1 -> init(file, WZ_PIPER_CLIENT);
-
-    memClient2 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-    memClient2 -> init(file, WZ_PIPER_CLIENT);
-  }
-  virtual void TearDown(){
-    delete memServer;
-    delete memClient1;
-    delete memClient2;
-  }
+		memClient2 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memClient2 -> init(file, WZ_PIPER_CLIENT);
+	}
+	virtual void TearDown(){
+		delete memServer;
+	}
 };
 
+TEST_F(ServerClientTest, Simple){
+
+	// test write
+	Frame sendFrame;
+	sendFrame.source = 1;
+	sendFrame.msg_type = 2;
+	sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
+	sendFrame.rtn_type = 3;
+	sendFrame.length = 4;
+	EXPECT_EQ(0 ,memServer -> Send(sendFrame));
+	EXPECT_EQ(0,memClient1 -> Send(sendFrame));
+	EXPECT_EQ(0,memClient2 -> Send(sendFrame));
+
+	// test queue receive
+	Frame recvFrame;
+	EXPECT_EQ(sizeof(Frame),memClient1 -> Recv(recvFrame));
+	EXPECT_EQ(1,recvFrame.source);
+	EXPECT_EQ(2,recvFrame.msg_type );
+	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+	EXPECT_EQ(3,recvFrame.rtn_type);
+	EXPECT_EQ(4,recvFrame.length);
+	EXPECT_EQ(-1,memClient1 -> Recv(recvFrame));
+
+}
+
 TEST_F(ServerClientTest, WriteAndReadWorks){
+	// test write
+	Frame sendFrame;
+	for (int i = 0; i<QueueSize ; i++ ) {
+		sendFrame.source = i;
+		sendFrame.msg_type = i;
+		sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
+		sendFrame.rtn_type = i;
+		sendFrame.length = i;
+		EXPECT_EQ(0 ,memServer -> Send(sendFrame));
+		if(i<(QueueSize/2)) 	EXPECT_EQ(0,memClient1 -> Send(sendFrame));
+		else 	EXPECT_EQ(0,memClient2 -> Send(sendFrame));
+	}
 
-  // test write
-  Frame sendFrame;
-  for (int i = 0; i<QueueSize ; i++ ) {
-    sendFrame.source = i;
-    sendFrame.msg_type = i;
-    sendFrame.error_id = WZ_ERROR_ID_SUCCESS;
-    sendFrame.rtn_type = i;
-    sendFrame.length = i;
-    EXPECT_EQ(0 ,memServer -> Send(sendFrame));
-    if(i<(QueueSize/2))   EXPECT_EQ(0,memClient1 -> Send(sendFrame));
-    else  EXPECT_EQ(0,memClient2 -> Send(sendFrame));
-  }
+	// test queue full
+	EXPECT_EQ(-1,memServer -> Send(sendFrame));
+	EXPECT_EQ(-1,memClient1 -> Send(sendFrame));
+	EXPECT_EQ(-1,memClient2 -> Send(sendFrame));
+	
+	// test Reader1
+	Frame recvFrame;
 
-  // test queue full
-  EXPECT_EQ(-1,memServer -> Send(sendFrame));
-  EXPECT_EQ(-1,memClient1 -> Send(sendFrame));
-  EXPECT_EQ(-1,memClient2 -> Send(sendFrame));
-
-  // test Reader1
-  Frame recvFrame;
-
-  for (int i = 0; i<QueueSize ; i++ ) {
-    EXPECT_EQ(sizeof(sendFrame),memClient1 -> Recv(recvFrame));
-    EXPECT_EQ(i,recvFrame.source);
-    EXPECT_EQ(i,recvFrame.msg_type );
-    EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-    EXPECT_EQ(i,recvFrame.rtn_type);
-    EXPECT_EQ(i,recvFrame.length);
+	for (int i = 0; i<QueueSize ; i++ ) {
+		EXPECT_EQ(sizeof(Frame),memClient1 -> Recv(recvFrame));
+		EXPECT_EQ(i,recvFrame.source);
+		EXPECT_EQ(i,recvFrame.msg_type );
+		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+		EXPECT_EQ(i,recvFrame.rtn_type);
+		EXPECT_EQ(i,recvFrame.length);
 
 
-    EXPECT_EQ(sizeof(sendFrame),memServer -> Recv(recvFrame));
-    EXPECT_EQ(i,recvFrame.source);
-    EXPECT_EQ(i,recvFrame.msg_type );
-    EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-    EXPECT_EQ(i,recvFrame.rtn_type);
-    EXPECT_EQ(i,recvFrame.length);
-  }
+		EXPECT_EQ(sizeof(Frame),memServer -> Recv(recvFrame));
+		EXPECT_EQ(i,recvFrame.source);
+		EXPECT_EQ(i,recvFrame.msg_type );
+		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+		EXPECT_EQ(i,recvFrame.rtn_type);
+		EXPECT_EQ(i,recvFrame.length);
+	}
+	
+	// test catch Writer
+	EXPECT_EQ(-1,memClient1 -> Recv(recvFrame));
+	EXPECT_EQ(QueueSize - 1,recvFrame.source);
+	EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
+	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+	EXPECT_EQ(QueueSize - 1,recvFrame.rtn_type);
+	EXPECT_EQ(QueueSize - 1,recvFrame.length);
+	EXPECT_EQ(-1,memServer -> Send(sendFrame));
 
-  // test catch Writer
-  EXPECT_EQ(-1,memClient1 -> Recv(recvFrame));
-  EXPECT_EQ(QueueSize - 1,recvFrame.source);
-  EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
-  EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-  EXPECT_EQ(QueueSize - 1,recvFrame.rtn_type);
-  EXPECT_EQ(QueueSize - 1,recvFrame.length);
-  EXPECT_EQ(-1,memServer -> Send(sendFrame));
+	// test Reader2
+	for (int i = 0; i<QueueSize ; i++ ) {
+		EXPECT_EQ(sizeof(Frame),memClient2 -> Recv(recvFrame));
+		EXPECT_EQ(i,recvFrame.source);
+		EXPECT_EQ(i,recvFrame.msg_type );
+		EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+		EXPECT_EQ(i,recvFrame.rtn_type);
+		EXPECT_EQ(i,recvFrame.length);
+	}
 
-  // test Reader2
-  for (int i = 0; i<QueueSize ; i++ ) {
-    EXPECT_EQ(sizeof(sendFrame),memClient2 -> Recv(recvFrame));
-    EXPECT_EQ(i,recvFrame.source);
-    EXPECT_EQ(i,recvFrame.msg_type );
-    EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-    EXPECT_EQ(i,recvFrame.rtn_type);
-    EXPECT_EQ(i,recvFrame.length);
-  }
+	// test catch Writer
+	EXPECT_EQ(-1,memClient2 -> Recv(recvFrame));
+	EXPECT_EQ(QueueSize - 1,recvFrame.source);
+	EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
+	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
+	EXPECT_EQ(QueueSize - 1,recvFrame.rtn_type);
+	EXPECT_EQ(QueueSize - 1,recvFrame.length);
 
-  // test catch Writer
-  EXPECT_EQ(-1,memClient2 -> Recv(recvFrame));
-  EXPECT_EQ(QueueSize - 1,recvFrame.source);
-  EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
-  EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
-  EXPECT_EQ(QueueSize - 1,recvFrame.rtn_type);
-  EXPECT_EQ(QueueSize - 1,recvFrame.length);
+	// test write
+	EXPECT_EQ(0,memServer -> Send(sendFrame));
 
-  // test write
-  EXPECT_EQ(0,memServer -> Send(sendFrame));
+}
+
+TEST_F(ServerClientTest, AddReaderDown){
+	char file[] = "../doc/config.ini";
+	delete memClient1;
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient3;
+	memClient3 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+	memClient3 -> init(file, WZ_PIPER_CLIENT);
+	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient4;
+	memClient4 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+	memClient4 -> init(file, WZ_PIPER_CLIENT);
 
 }
 
