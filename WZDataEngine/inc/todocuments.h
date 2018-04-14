@@ -105,5 +105,8 @@ void toDocument(const KeyValue &find, const vector<KeyValue> & value, document &
   }
 }
 
+void toDocument(const char ID[20], document &doc){
+  doc << "InstrumentID" << ID;
+}
 
 #endif  // WZUTIL_TODOCUMENT_H_
