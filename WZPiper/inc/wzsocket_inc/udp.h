@@ -20,6 +20,12 @@
 #define MAXEPOLLSIZE 10
 #define MAXLISTENQUEUE 10
 
+#define LOGGER
+
+#ifdef LOGGER
+#include <glog/logging.h>
+#endif
+
 class UdpSocket
 {
 public:

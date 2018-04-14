@@ -74,8 +74,12 @@ int UdpSocket::init(char file_path[256], int piperMode, int blockMode)
         if (Connect() == -1)
             return -1;
     }
-    // LOG(INFO) << "Udp Socket Init Success, IP = " << ip
-    //           << " PORT = " << port << " isClient = " << isClient;
+
+    #ifdef LOGGER
+    LOG(INFO) << "Udp Socket Init Success, IP = " << ip
+              << " PORT = " << port << " isClient = " << isClient;
+    #endif
+
     return udpfd;
 }
 
@@ -90,7 +94,11 @@ int UdpSocket::Recv(Frame &md)
             struct sockaddr_in cliaddr;
             socklen_t socklen = sizeof(struct sockaddr_in);
             int ret = recvfrom(udpfd, &md, sizeof(Frame), 0, (struct sockaddr* )&cliaddr, &socklen);
-            // LOG(INFO) << "Receive a frame from SOURCE: "<<md.source;
+
+            #ifdef LOGGER
+            LOG(INFO) << "Receive a frame from SOURCE: "<<md.source;
+            #endif
+
             return ret;
         }
     }

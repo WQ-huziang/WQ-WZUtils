@@ -24,6 +24,13 @@ using std::map;
 #define MAXEPOLLSIZE 10
 #define MAXLISTENQUEUE 10
 
+#define LOGGER
+
+#ifdef LOGGER
+#include <glog/logging.h>
+#endif
+
+
 class TcpSocket
 {
 public:
@@ -94,6 +101,17 @@ private:
 	Return: 0 if send succeed, -1 if failed
 	*************************************************/
 	int sockAccept();
+
+
+	/************************************************* 
+	Function: deleteEvent
+	Description: call epoll_ctl to delete socket_fd from listen_queue
+	InputParameter: 
+		sockfd: the socket_fd to be deleted
+		state: event state
+	Return: 0 if send succeed, -1 if failed
+	*************************************************/
+	int deleteEvent(int sockfd, int state);
 
 private:
 	char ip[256];
