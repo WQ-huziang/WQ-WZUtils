@@ -109,18 +109,20 @@ public:
     InputParameter:
       file_path: the path of the configure file
       piperMode: the flag to mark server or client,
-        0 or WZ_PIPER_SERVER as server,
-        1 or WZ_PIPER_CLIENT as client
+            0 or WZ_PIPER_SERVER as server,
+            1 or WZ_PIPER_CLIENT as client
+      blockMode: WZ_PIPER_BLOCK for Recv and Send block the proccess
+                 WZ_PIPER_NBLOCK for Recv and Send return without block
     Return: positive if create succeed, -1 if failed
     *************************************************/
-    int init(char file_path[256], int piperMode);
+    int init(char file_path[256], int piperMode, int blockMode);
 
     /*************************************************
     Function: Recv
     Description: read a frame from shared memory queue
     InputParameter:
       frame: pop(memcpy) a datum in queue to mail
-    Return: 1 if receive succeed, 0 if failed
+    Return: size of receive data(positive) if receive succeed, -1 if failed
     *************************************************/
     int Recv(QueueDataType &data);
 
@@ -194,6 +196,7 @@ private:
     int m_shmid;				        // shared memory descriptor
     char *m_memory_addr;		    // shared memory address pointer
     int piperMode;              // the flag to mark server or client, 0 as server, 1 as client
+    int blockMode;              // the flag to set the Recv and Send blocking or non-blocking 
 };
 
 // server:piperMode = 0  client:piperMode = 1;
@@ -339,10 +342,10 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::detachMemory(const 
 
 // initialize the client shared memory address pointer
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
-int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[256], int piperMode) {
+int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[256], int piperMode, int blockMode) {
 
-  // set server or client mode
   this->piperMode = piperMode;
+  this->blockMode = blockMode;
 
   // read key and size from configure file
   CIni ini;
@@ -400,36 +403,55 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[
 // read from the shared memory
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Recv(QueueDataType &data) {
-
-  if(this->piperMode == 1 ) { // client
-    if(!this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_id)) {
-      return -1;
+  while(1){
+    if(this->piperMode == 1 ) { // client
+      if(this -> queue_manager -> frame_rec_queue.pop(data,this -> reader_id)) {
+        return sizeof(QueueDataType);
+      }
+      else{
+        if(blockMode == WZ_PIPER_NBLOCK){
+          return -1;
+        }
+      }
+    }
+    else if(this->piperMode == 0 ){ // server
+      if(this -> queue_manager -> frame_req_queue.pop(data,this -> reader_id)) {
+        return sizeof(QueueDataType);
+      }
+      else{
+        if(blockMode == WZ_PIPER_NBLOCK){
+          return -1;
+        }
+      }
     }
   }
-  else if(this->piperMode == 0 ){ // server
-    if(!this -> queue_manager -> frame_req_queue.pop(data,this -> reader_id)) {
-      return -1;
-    }
-  }
-  return sizeof(Frame);
 }
 
 // write from the shared memory
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::Send(QueueDataType &data) {
-
-  if(this->piperMode == 1 ) {
-    if(this -> queue_manager -> frame_req_queue.push(data) == 1) {
-      return 0;
-    }
-  }// client
-  else if(this->piperMode == 0 ){
-    if(this -> queue_manager -> frame_rec_queue.push(data) == 1) {
-      return 0;
-    }
-  }// server
-
-  return -1;
+  while(1){
+    if(this->piperMode == 1 ) {
+      if(this -> queue_manager -> frame_req_queue.push(data) == 1) {
+        return 0;
+      }
+      else{
+        if(blockMode == WZ_PIPER_NBLOCK){
+          return -1;
+        }
+      }
+    }// client
+    else if(this->piperMode == 0 ){
+      if(this -> queue_manager -> frame_rec_queue.push(data) == 1) {
+        return 0;
+      }
+      else{
+        if(blockMode == WZ_PIPER_NBLOCK){
+          return -1;
+        }
+      }
+    }// server
+  }
 }
 
 #endif // MEMENGINE_H_

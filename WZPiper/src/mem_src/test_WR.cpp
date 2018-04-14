@@ -45,13 +45,13 @@ protected:
 		logger -> ParseConfigInfo(file);
 
 		memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-		memServer -> init(file, WZ_PIPER_SERVER);
+		memServer -> init(file, WZ_PIPER_SERVER, WZ_PIPER_NBLOCK);
 
 		memClient1 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-		memClient1 -> init(file, WZ_PIPER_CLIENT);
+		memClient1 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 
 		memClient2 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-		memClient2 -> init(file, WZ_PIPER_CLIENT);
+		memClient2 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 	}
 	virtual void TearDown(){
 		delete memServer;
@@ -142,7 +142,9 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 	}
 
 	// test catch Writer
+	LOG(INFO) << "before";
 	EXPECT_EQ(-1,memClient2 -> Recv(recvFrame));
+	LOG(INFO) << "end";
 	EXPECT_EQ(QueueSize - 1,recvFrame.source);
 	EXPECT_EQ(QueueSize - 1,recvFrame.msg_type );
 	EXPECT_EQ(WZ_ERROR_ID_SUCCESS,recvFrame.error_id);
@@ -159,10 +161,10 @@ TEST_F(ServerClientTest, AddReaderDown){
 	delete memClient1;
 	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient3;
 	memClient3 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-	memClient3 -> init(file, WZ_PIPER_CLIENT);
+	memClient3 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient4;
 	memClient4 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
-	memClient4 -> init(file, WZ_PIPER_CLIENT);
+	memClient4 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 
 }
 

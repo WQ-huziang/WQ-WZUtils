@@ -37,6 +37,11 @@ class WZPiper{
 		Description: read configure file and init the IPC according to server_client_flag
 		InputParameter: 
 			file_path: the path of the configure file
+			piperMode: the flag to mark server or client,
+						0 or WZ_PIPER_SERVER as server,
+						1 or WZ_PIPER_CLIENT as client
+			blockMode: WZ_PIPER_BLOCK for Recv and Send block the proccess
+					   WZ_PIPER_NBLOCK for Recv and Send return without block
 		Return: positive if create succeed, -1 if failed
 		*************************************************/
 		int init(char file_path[256], int piperMode, int blockMode);
@@ -44,7 +49,7 @@ class WZPiper{
 		/************************************************* 
 		Function: Recv
 		Description: read configure file and init the IPC according to server_client_flag
-		InputParameter: receive a frame from piper
+		InputParameter: 
 			frame: read receive datum from piper to frame
 		Return: size of receive data(positive) if receive succeed, -1 if failed
 		*************************************************/
@@ -53,7 +58,7 @@ class WZPiper{
 		/************************************************* 
 		Function: Send
 		Description: read configure file and init the IPC according to server_client_flag
-		InputParameter: send a frame to piper
+		InputParameter:
 			frame: the datum to send to piper
 		Return: 0 if send succeed, -1 if failed
 		*************************************************/
