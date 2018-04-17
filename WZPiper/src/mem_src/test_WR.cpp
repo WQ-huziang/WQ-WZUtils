@@ -5,11 +5,11 @@ Description: simple gtest for the module MemClient and MemServer
 Date: 2018-04-2
 ***************************************************************************/
 
+#include <bits/stdc++.h>
 #include "wzmem_inc/memengine.hpp"
 #include "wzpiper.hpp"
 #include "logger.h"
 #include "gtest/gtest.h"
-#include <bits/stdc++.h>
 
 #ifndef PRT
 #define PRT(...) printf(__VA_ARGS__)
@@ -165,12 +165,15 @@ TEST_F(ServerClientTest, AddReaderDown){
 	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient4;
 	memClient4 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
 	memClient4 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
+}
 
+TEST_F(ServerClientTest, Signal){
+	raise(SIGINT);
+	raise(SIGSEGV);
 }
 
 int main(int argc, char* argv[]){
   logger = new Logger(argv[0]);
   testing::InitGoogleTest(&argc, argv);
-
   return RUN_ALL_TESTS();
 }
