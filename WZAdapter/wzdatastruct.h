@@ -5,8 +5,8 @@
  * @Last Modified time: 2018-02-28 10:57:55
  */
 
-#ifndef BASE_DATA_STRUCT
-#define BASE_DATA_STRUCT
+#ifndef WZUTILS_WZDATASTRUCT_H
+#define WZUTILS_WZDATASTRUCT_H
 
 #include "wzconstant.h"
 
@@ -377,4 +377,4 @@ struct WZRspAccountField
   double    MarketValue;           //账户市值
 };
 
-#endif
+#endif // WZUTILS_WZDATASTRUCT_H
