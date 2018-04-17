@@ -1,8 +1,8 @@
 // Author : huziang
 // modify copy parse
 
-#ifndef CTPARSER_H_
-#define CTPARSER_H_
+#ifndef TS2CTPPARSER_H_
+#define TS2CTPPARSER_H_
 
 #include <cstdio>
 #include <cstring>
@@ -103,4 +103,4 @@ inline void parseTo(const CThostFtdcDepthMarketDataField &req, struct TSMarketDa
   rtn.AskVolume1 = req.AskVolume1;
 }
 
-#endif  // CTPARSER_H_
+#endif  // TS2CTPPARSER_H_

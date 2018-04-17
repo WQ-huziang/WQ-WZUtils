@@ -4,8 +4,8 @@
  * @Last Modified by: w2w
  * @Last Modified time: 2018-02-28 12:03:10
  */
-#ifndef CTP_WZ_ADAPTER_H
-#define CTP_WZ_ADAPTER_H
+#ifndef WZ2CTPPARSER_H
+#define WZ2CTPPARSER_H
 
 #include <string.h>
 #include "ThostFtdcUserApiStruct.h"
@@ -252,4 +252,4 @@ inline void parseFrom(struct WZRspAccountField &res, const struct CThostFtdcTrad
   res.Equity = ori.PreBalance - ori.PreCredit - ori.PreMortgage + ori.Mortgage - ori.Withdraw + ori.Deposit + ori.CloseProfit + ori.PositionProfit + ori.CashIn - ori.Commission ;
 }
 
-#endif
+#endif // WZ2CTPPARSER_H

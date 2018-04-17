@@ -3,8 +3,8 @@
 // Author : luojunbin
 //
 
-#ifndef DATAPARSE_H_
-#define DATAPARSE_H_
+#ifndef WZUTILS_DATAPARSE_H_
+#define WZUTILS_DATAPARSE_H_
 
 #include <iostream>
 #include <string>
@@ -15,7 +15,7 @@
 #include "rapidjson/stringbuffer.h"
 
 #include "wzdatastruct.h"
-#include "transportstruct.h"
+#include "tsdatastruct.h"
 
 using namespace rapidjson;
 using std::map;
@@ -216,4 +216,4 @@ inline int parseFrom(map<string, string> &my_map, TSRtnTradeField &res)
   return 0;
 }
 
-#endif
+#endif // WZUTILS_DATAPARSE_H_
