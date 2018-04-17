@@ -5,8 +5,8 @@
  * @Last Modified time: 2018-02-28 10:58:13
  */
 
-#ifndef WZ_CONSTANT_H
-#define WZ_CONSTANT_H
+#ifndef WZUTILS_WZCONSTANT_H
+#define WZUTILS_WZCONSTANT_H
 
 // Index for Sources
 const short SOURCE_CTP = 1;
@@ -394,4 +394,4 @@ typedef char WZYsTimeConditionType;
 // price rise 4% percent compare 5 min ago
 #define WZ_CHAR_RiseFPercent    '3'
 
-#endif
+#endif // WZUTILS_WZCONSTANT_H

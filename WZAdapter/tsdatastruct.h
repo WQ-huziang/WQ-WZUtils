@@ -2,8 +2,8 @@
 // Created by w2w on 18-3-19.
 //
 
-#ifndef STRATEGY_TRANSPORTSTRUCT_H
-#define STRATEGY_TRANSPORTSTRUCT_H
+#ifndef WZUTILS_TSDATASTRUCT_H
+#define WZUTILS_TSDATASTRUCT_H
 
 #include "wzconstant.h"
 
@@ -88,4 +88,4 @@ struct TSRtnTradeField
 
 
 
-#endif //STRATEGY_TRANSPORTSTRUCT_H
+#endif // WZUTILS_TSDATASTRUCT_H

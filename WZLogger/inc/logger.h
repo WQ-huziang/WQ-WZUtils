@@ -1,5 +1,5 @@
-#ifndef LOGGER_H_
-#define LOGGER_H_
+#ifndef WZUTILS_LOGGER_H_
+#define WZUTILS_LOGGER_H_
 
 #include "logging.h"
 #include "wzdatastruct.h"
@@ -36,4 +36,4 @@ public:
   void Info(TSRtnTradeField rtnTrade);
 };
 
-#endif
+#endif // WZUTILS_LOGGER_H_

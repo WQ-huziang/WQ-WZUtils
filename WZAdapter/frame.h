@@ -2,8 +2,8 @@
 // Created by w2w on 18-3-15.
 //
 
-#ifndef STRATEGY_FRAME_H
-#define STRATEGY_FRAME_H
+#ifndef WZUTILS_FRAME_H
+#define WZUTILS_FRAME_H
 
 #include "tsdatastruct.h"
 
@@ -71,4 +71,4 @@ typedef short WZErrorId;
 // 统一
 #define WZ_RTN_TYPE 0
 
-#endif //STRATEGY_FRAME_H
+#endif // WZUTILS_FRAME_H

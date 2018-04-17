@@ -3,13 +3,13 @@
 // Author : huziang
 // include class DataEngine and struct
 
-#ifndef WZUTIL_DATAENGINE_H_
-#define WZUTIL_DATAENGINE_H_
+#ifndef WZUTILS_DATAENGINE_H_
+#define WZUTILS_DATAENGINE_H_
 
 #include <cstring>
 #include <iostream>
 #include <map>
-#include "transportstruct.h"
+#include "tsdatastruct.h"
 using std::vector;
 using std::string;
 using std::map;
@@ -71,4 +71,4 @@ class DataEngine {
 
 DataEngine *DataEngine::instance = NULL;
 
-#endif  // WZUTIL_DATAENGINE_H_
+#endif  // WZUTILS_DATAENGINE_H_

@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef FM2TSPARSER_H
+#define FM2TSPARSER_H
 
 #include <string.h>
 #include "frame.h"
@@ -56,4 +56,4 @@ inline void parseTo(Frame &f, const TSRtnTradeField &req){
 }
 
 
-#endif
+#endif  // FM2TSPARSER_H
