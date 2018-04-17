@@ -13,7 +13,9 @@
     要提高精度可以将std::micro（微妙）改为 std::nano（纳秒）
 
     tpns time_point = Clock::now();  //获取时间
-    
+
+    time_point .time_since_epoch().count();  //获取double格式的当前时间
+
     dur time_span = std::chrono::duration_cast<dur>(time_point2-time_point1);  //获取时间差
 
     double time = time_span.count();  //double格式时间差
