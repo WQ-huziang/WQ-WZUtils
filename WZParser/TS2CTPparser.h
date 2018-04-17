@@ -77,8 +77,7 @@ inline void parseTo(const TSRtnOrderField& req, struct CThostFtdcOrderField &rtn
   rtn.OrderStatus = req.OrderStatus;
 }
 
-
-inline void parseTo(const CThostFtdcDepthMarketDataField &req, struct TSMarketDataField &rtn){
+inline void parseFrom(struct TSMarketDataField &rtn, const CThostFtdcDepthMarketDataField &req){
   strcpy(rtn.TradingDay, req.TradingDay);
   strcpy(rtn.InstrumentID, req.InstrumentID);
   rtn.LastPrice = req.LastPrice;
