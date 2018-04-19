@@ -7,6 +7,7 @@ int main(){
 	sh.listenSignal(SIGQUIT);
 	sh.listenSignal(SIGTERM);
 	while(1){
+		sh.addToMap(getpid(),1,2);
 		printf("going to sleep\n");
 		sleep(1);
 	}
