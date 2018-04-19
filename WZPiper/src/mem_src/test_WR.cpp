@@ -168,8 +168,7 @@ TEST_F(ServerClientTest, AddReaderDown){
 }
 
 TEST_F(ServerClientTest, Signal){
-	raise(SIGINT);
-	raise(SIGSEGV);
+
 }
 
 int main(int argc, char* argv[]){
