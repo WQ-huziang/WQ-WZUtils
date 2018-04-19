@@ -7,6 +7,7 @@ read -t 30 -p "Please input your project path (not inclue /) : " propath
 echo "Your project path is $propath"
 
 function initPro() {
+  rm -rf $propath/inc/WZUtils
   mkdir -p $propath/inc/WZUtils
   mkdir -p $propath/lib
 }
