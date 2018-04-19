@@ -57,17 +57,6 @@ extern char logger_buf[1024];
 
 
 /***************************************************************************
-Description: save pipeMode and readerId will be used when remove the reader
-****************************************************************************/
-struct SignalMapData
-{
-  int pipeMode;
-  int readerId;
-};
-
-static std::map<int, SignalMapData> signalMap;
-
-/***************************************************************************
 Description: QueueManager manage the MemQueue used in shared memory
 ****************************************************************************/
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
@@ -216,7 +205,6 @@ private:
 // server:piperMode = 0  client:piperMode = 1;
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
 MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::MemEngine(){
-  this->m_flag = 3 ;
   this->m_key  = 0 ;
   this->m_size = 0 ;
   this->m_flag = SHM_FLAG ;

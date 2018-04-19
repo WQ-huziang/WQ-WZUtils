@@ -22,6 +22,12 @@ Date: 2018-04-16
 #define MaxReaderSize 4
 #endif
 
+#ifndef SHM_FAILED
+#define SHM_FAILED -1
+#endif
+
+extern Logger *logger;
+
 /***************************************************************************
 Description: save pipeMode and readerId will be used when remove the reader
 ****************************************************************************/
@@ -33,7 +39,7 @@ struct SignalMapData
 
 static std::map<int, SignalMapData> signalMap;
 
-static QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> *signal_queue_manager;
+static QueueManager<DataType, QueueSize, MaxReaderSize> *signal_queue_manager;
 
 /***************************************************************************
 Description: catch the signal and handle it
@@ -54,7 +60,7 @@ public:
     *************************************************/
 	int listenSignal(int signalType);
 
-	static int initQueueManager();
+	static int initQueueManager(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr);
 
     /*************************************************
     Function: handleSignal
@@ -63,7 +69,7 @@ public:
        signalType: signal type (SIGABRT or SIGSEGV or SIGTERM or..).
     Return: none
     *************************************************/
-	static int handleSignal(int signalType);
+	static void handleSignal(int signalType);
 
 	static int addToMap(int pid,int pipeMode,int readerId);
 
@@ -75,15 +81,15 @@ private:
 
 
 SignalHandler::SignalHandler(){
-	
+	signalMap.clear();
 }
 
 SignalHandler::~SignalHandler(){
 
 }
 
-bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::createMemory(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr) {
-  // call shmget and use return value to initialize shared memory address pointer
+int SignalHandler::initQueueManager(const int &m_key, const int &m_size, const int &m_flag, int &m_shmid, char* & m_memory_addr){
+	// call shmget and use return value to initialize shared memory address pointer
   m_shmid = shmget(m_key, m_size, m_flag);
 
   if ( m_shmid == -1 ) {
@@ -94,21 +100,20 @@ bool MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::createMemory(const 
 
   // call shmat to attach shared memory
   m_memory_addr = reinterpret_cast<char*>(shmat(m_shmid, NULL, 0));
-
+  
   if ( m_memory_addr == (char*)SHM_FAILED ) {
     sprintf(logger_buf, "shared memory m_memory_addr attach failed");
     logger -> Error(logger_buf);
     return false;
   }
 
+  // init the signal_queue_manager
+  signal_queue_manager = reinterpret_cast<QueueManager<DataType, QueueSize, MaxReaderSize> * > (m_memory_addr);
+
   sprintf(logger_buf, "shared memory create succeed, key = %d, size = %d, shmid = %d", m_key, m_size, m_shmid);
   logger -> Info(logger_buf);
 
   return true;
-}
-
-int SignalHandler::initQueueManager(){
-
 }
 
 int SignalHandler::listenSignal(int signalType){
@@ -119,27 +124,38 @@ int SignalHandler::listenSignal(int signalType){
 }
 
 void SignalHandler::handleSignal(int signalType){
+	SignalMapData sd;
+	int pid = getpid();
+	sd = signalMap[pid];
+	LOG(INFO) << "pid = " << pid;
 	switch (signalType){
 		case SIGINT:
 			printf("Interrupt signal %d(SIGINT) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		case SIGFPE:
 			printf("Interrupt signal %d(SIGFPE) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		case SIGILL:
 			printf("Interrupt signal %d(SIGILL) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		case SIGABRT:
 			printf("Interrupt signal %d(SIGABRT) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		case SIGKILL:
 			printf("Interrupt signal %d(SIGKILL) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		case SIGTERM:
 			printf("Interrupt signal %d(SIGTERM) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		case SIGSEGV:
 			printf("Interrupt signal %d(SIGSEGV) received\n", signalType);
+			SignalHandler::releaseReader(signal_queue_manager,sd.pipeMode,sd.readerId);
 			break;
 		default:
 			printf("Unkown signal\n");
@@ -154,16 +170,16 @@ int SignalHandler::addToMap(int pid,int pipeMode,int readerId){
 	signalMap[pid] = sd;
 }
 
-int SignalHandler::releaseReader(QueueManager<DataType, QueueSize, MaxReaderSize> *queue_manager, int reader_id, int piperMode){
+int SignalHandler::releaseReader(QueueManager<DataType, QueueSize, MaxReaderSize> *queue_manager, int piperMode, int reader_id){
   if(piperMode == 0) { // server
     // hang reader of the frame_req_queue and release the reader_id
-    queue_manager -> frame_req_queue.removeReader(reader_id);
-    printf("call releaseReader()\n");
+    int result = queue_manager -> frame_req_queue.removeReader(reader_id);
+    printf("call releaseReader() as mode 0, result is:%d\n", result);
   }
   else if(piperMode == 1){ // client
     // hang reader of the frame_rec_queue and release the reader_id
-    queue_manager -> frame_rec_queue.removeReader(reader_id);
-    printf("call releaseReader()\n");
+    int result = queue_manager -> frame_rec_queue.removeReader(reader_id);
+    printf("call releaseReader() as mode 1, result is:%d\n", result);
   }
 }
 #endif //SIGNALHANDLER_HPP_
