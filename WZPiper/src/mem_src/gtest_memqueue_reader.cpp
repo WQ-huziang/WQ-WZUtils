@@ -48,7 +48,7 @@ TEST_F(QueueTest, AddHangReader1){
 	EXPECT_EQ(0,int_reader1);
 	EXPECT_EQ(1,int_reader2);
 	EXPECT_EQ(2,q_i.getReaderSize());
-	q_i.hangReader(int_reader2);
+	q_i.removeReader(int_reader2);
 	int_reader3 = q_i.addReader();
 	EXPECT_EQ(1,int_reader3);
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
@@ -63,7 +63,7 @@ TEST_F(QueueTest, AddHangReader1){
 	EXPECT_EQ(1,q_i.getReadTime(1));
 	EXPECT_EQ(1,q_i.getReadIndex(0));
 	EXPECT_EQ(2,q_i.getReadIndex(1));
-	q_i.hangReader(int_reader3);
+	q_i.removeReader(int_reader3);
 	EXPECT_EQ(0,q_i.getReadTime(0));
 	EXPECT_EQ(0,q_i.getReadTime(1));
 	EXPECT_EQ(1,q_i.getQueueSize());
@@ -73,7 +73,7 @@ TEST_F(QueueTest, AddHangReader2){
 	EXPECT_EQ(0,int_reader1);
 	EXPECT_EQ(1,int_reader2);
 	EXPECT_EQ(2,q_i.getReaderSize());
-	q_i.hangReader(int_reader2);
+	q_i.removeReader(int_reader2);
 	int_reader3 = q_i.addReader();
 	EXPECT_EQ(1,int_reader3);
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
@@ -92,7 +92,7 @@ TEST_F(QueueTest, AddHangReader2){
 	int_reader2 = q_i.addReader();
 	EXPECT_EQ(1,q_i.getReadIndex(2));
 
-	q_i.hangReader(int_reader3);
+	q_i.removeReader(int_reader3);
 	EXPECT_EQ(0,q_i.getReadTime(0));
 	EXPECT_EQ(0,q_i.getReadTime(1));
 	EXPECT_EQ(1,q_i.getQueueSize());
@@ -107,7 +107,7 @@ TEST_F(QueueTest, AddHangReader2){
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader2));
-	q_i.hangReader(int_reader2);
+	q_i.removeReader(int_reader2);
 	EXPECT_EQ(0,q_i.getReadTime(0));
 	EXPECT_EQ(1,q_i.getReadTime(1));
 	EXPECT_EQ(1,q_i.getReadTime(2));
@@ -121,7 +121,7 @@ TEST_F(QueueTest, AddHangReader3){
 	EXPECT_EQ(0,int_reader1);
 	EXPECT_EQ(1,int_reader2);
 	EXPECT_EQ(2,q_i.getReaderSize());
-	q_i.hangReader(int_reader2);
+	q_i.removeReader(int_reader2);
 	int_reader3 = q_i.addReader();
 	EXPECT_EQ(1,int_reader3);
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
@@ -140,7 +140,7 @@ TEST_F(QueueTest, AddHangReader3){
 	int_reader2 = q_i.addReader();
 	EXPECT_EQ(1,q_i.getReadIndex(2));
 
-	q_i.hangReader(int_reader3);
+	q_i.removeReader(int_reader3);
 	EXPECT_EQ(0,q_i.getReadTime(0));
 	EXPECT_EQ(0,q_i.getReadTime(1));
 	EXPECT_EQ(1,q_i.getQueueSize());
@@ -156,7 +156,7 @@ TEST_F(QueueTest, AddHangReader3){
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader3));
 	EXPECT_EQ(1,q_i.pop(int_x,int_reader2));
-	q_i.hangReader(int_reader1);
+	q_i.removeReader(int_reader1);
 	EXPECT_EQ(2,q_i.getMinReadIndex());
 	EXPECT_EQ(0,q_i.getReadTime(0));
 	EXPECT_EQ(0,q_i.getReadTime(1));
