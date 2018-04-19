@@ -26,7 +26,7 @@ std::time_t getTimeStamp()
  * 输入t1 为开始时间，t2为结束时间， 返回long为us数
  * 返回 time_t 实际上是个 long
  */
-long getDuration(time_t t1, time_t t2){
+long getDuration(std::time_t t1, std::time_t t2){
     auto mt1 = std::chrono::microseconds(t1);
     auto mt2 = std::chrono::microseconds(t2);
     dur time_span = std::chrono::duration_cast<dur>(mt2-mt1);
