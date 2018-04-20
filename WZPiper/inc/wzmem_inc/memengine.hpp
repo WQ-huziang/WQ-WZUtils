@@ -18,9 +18,9 @@ Date: 2018-04-09
 #include <unistd.h>
 #include <map>
 #include "wzpiper.hpp"
-#include "wzmem_inc/memqueue.hpp"
 #include "frame.h"
 #include "logger.h"
+#include "signalhandler.hpp"
 
 #ifndef PRT
 #define PRT(...) printf(__VA_ARGS__);
@@ -35,19 +35,6 @@ Date: 2018-04-09
 #define SHM_FLAG IPC_CREAT|0666
 #endif
 
-// #ifndef QueueDataType
-// #define QueueDataType Frame
-// #endif
-
-// #ifndef DataQueueSize
-// #define DataQueueSize 2048
-// #endif
-
-// #ifndef MaxReaderSize
-// #define MaxReaderSize 4
-// #endif
-
-
 
 // logger
 extern Logger *logger;
@@ -55,33 +42,6 @@ extern Logger *logger;
 // logger buffer
 extern char logger_buf[1024];
 
-
-/***************************************************************************
-Description: QueueManager manage the MemQueue used in shared memory
-****************************************************************************/
-template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
-struct QueueManager
-{
-
-    // the MemQueue<DataType, DataQueueSize(must be 2^n), MaxReaderSize>
-    MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_rec_queue;
-    MemQueue<QueueDataType, DataQueueSize, MaxReaderSize > frame_req_queue;
-
-    // Return: 1 if initManager succeed, 0 if failed
-    bool initManager(){
-
-        // call different queue's init
-        if (!frame_req_queue.initQueue()) {
-            return false;
-        }
-
-        if (!frame_rec_queue.initQueue()) {
-            return false;
-        }
-
-        return true;
-    }
-};
 
 /***************************************************************************
 Description: MemEngine reads data from shared memory(pop data from the MemQueue)
@@ -191,7 +151,7 @@ public:
 
 private:
     QueueManager<QueueDataType, DataQueueSize, MaxReaderSize> *queue_manager;// pointer point to the queue manager in shared memory address
-    int reader_id; 			    // reader index
+    int reader_id; 			        // reader index
     int m_key;					        // shared memory key
     int m_size;					        // shared memory size
     int m_flag;					        // shared memory flag
@@ -199,6 +159,7 @@ private:
     char *m_memory_addr;		    // shared memory address pointer
     int piperMode;              // the flag to mark server or client, 0 as server, 1 as client
     int blockMode;              // the flag to set the Recv and Send blocking or non-blocking 
+    SignalHandler signalhandler;// the signal handler listen and catch the signal
 };
 
 
@@ -211,6 +172,7 @@ MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::MemEngine(){
   this->m_shmid  = -1;
   this->reader_id = 0;
   this->queue_manager = NULL;
+
 }
 
 template <typename QueueDataType, int DataQueueSize, int MaxReaderSize>
@@ -383,11 +345,19 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[
     else if(this->piperMode == 1){ // client
       // add as a reader of the frame_rec_queue and get the reader_id
       this -> reader_id = this -> queue_manager -> frame_rec_queue.addReader();
-      // printf("reader_id = %d\n", this -> reader_id);
       if(this -> reader_id == -1) {
         return -1;
       }
     }
+
+    // initialize signal handler
+    int pid = getpid();
+    SignalHandler::initSignalQueueManager(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid , this -> m_memory_addr);
+    signalhandler.addToMap(pid, piperMode, this -> reader_id);
+    LOG(INFO) << "pid:" << pid;
+    signalhandler.listenSignal(SIGINT);
+    signalhandler.listenSignal(SIGTERM);
+    signalhandler.listenSignal(SIGSEGV);
 
     //printf("sizeof queue_manager:%ld\n", sizeof(*queue_manager) );
 

@@ -2,7 +2,7 @@
 Copyright(C) 2018, Wizard Quant
 Author: luoqingming
 Description: simple gtest for the module MemClient and MemServer
-Date: 2018-04-2
+Date: 2018-04-02
 ***************************************************************************/
 
 #include <bits/stdc++.h>
@@ -24,8 +24,8 @@ Date: 2018-04-2
 #define QueueSize 1024
 #endif
 
-#ifndef MaxReaderSize
-#define MaxReaderSize 4
+#ifndef ReaderSize
+#define ReaderSize 4
 #endif
 
 Logger * logger;
@@ -35,22 +35,22 @@ char logger_buf[1024];
 class ServerClientTest : public ::testing::Test{
 protected:
 	
-	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memServer;
-	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient1;
-	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient2;
+	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memServer;
+	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient1;
+	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient2;
 
 	virtual void SetUp(){
 		// init all
 		char file[] = "../doc/config.ini";
 		logger -> ParseConfigInfo(file);
 
-		memServer = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memServer = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
 		memServer -> init(file, WZ_PIPER_SERVER, WZ_PIPER_NBLOCK);
 
-		memClient1 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memClient1 = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
 		memClient1 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 
-		memClient2 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+		memClient2 = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
 		memClient2 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 	}
 	virtual void TearDown(){
@@ -159,16 +159,16 @@ TEST_F(ServerClientTest, WriteAndReadWorks){
 TEST_F(ServerClientTest, AddReaderDown){
 	char file[] = "../doc/config.ini";
 	delete memClient1;
-	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient3;
-	memClient3 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient3;
+	memClient3 = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
 	memClient3 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
-	WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient4;
-	memClient4 = new WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> > ();
+	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient4;
+	memClient4 = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
 	memClient4 -> init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 }
 
 TEST_F(ServerClientTest, Signal){
-
+	while(1){}
 }
 
 int main(int argc, char* argv[]){
