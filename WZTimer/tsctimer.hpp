@@ -16,17 +16,27 @@ Date: 2018-04-20
 #define TIME_INTERVAL 
 #endif
 
-unsigned long long getTimeByTSC(){
-	unsigned int high, low;
-	asm("cpuid");
-	__asm__ __volatile__ ("rdtsc" : "=a" (low));
-	__asm__ __volatile__ ("rdtsc" : "=d" (high));
-	unsigned long long stamp;
-	stamp = (((uint64_t) low) | ((uint64_t) high) << 32)
-	return stamp;
+int64_t readTSC(void) {
+	#if defined(__GNUC__)
+	#   if defined(__i386__)
+	    uint64_t x;
+	    __asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));
+	    return x;
+	#   elif defined(__x86_64__)
+	    uint32_t hi, lo;
+	    __asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
+	    return ((uint64_t)lo) | ((uint64_t)hi << 32);
+	#   else
+	#       error Unsupported architecture.
+	#   endif
+	#elif defined(_MSC_VER)
+	    __asm {
+	        return __rdtsc();
+	    }
+	#else
+	#   error Other compilers not supported...
+	#endif
 }
-
-
 
 unsigned long long getDurationByTSC(unsigned long long &start, unsigned long long &end){
 	return (end - start) /  TIME_INTERVAL;
