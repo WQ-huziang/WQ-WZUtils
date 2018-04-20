@@ -186,7 +186,7 @@ int TcpSocket::Connect()
 int TcpSocket::addEvent(int sockfd, int state)
 {
     struct epoll_event ev;
-    ev.events = state | EPOLLET;
+    ev.events = state;
     ev.data.fd = sockfd;
     if (epoll_ctl(epollfd, EPOLL_CTL_ADD, sockfd, &ev) == -1)
     {
@@ -198,7 +198,7 @@ int TcpSocket::addEvent(int sockfd, int state)
 int TcpSocket::deleteEvent(int sockfd, int state)
 {
     struct epoll_event ev;
-    ev.events = state | EPOLLET;
+    ev.events = state;
     ev.data.fd = sockfd;
     if (epoll_ctl(epollfd, EPOLL_CTL_DEL, sockfd, &ev) == -1)
         return -1;

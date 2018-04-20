@@ -93,6 +93,7 @@ int UdpSocket::Recv(Frame &md)
         {
             struct sockaddr_in cliaddr;
             socklen_t socklen = sizeof(struct sockaddr_in);
+
             int ret = recvfrom(udpfd, &md, sizeof(Frame), 0, (struct sockaddr* )&cliaddr, &socklen);
 
             #ifdef LOGGER
@@ -128,7 +129,7 @@ int UdpSocket::Connect()
 int UdpSocket::addEvent(int sockfd, int state)
 {
     struct epoll_event ev;
-    ev.events = state | EPOLLET;
+    ev.events = state;
     ev.data.fd = sockfd;
     if (epoll_ctl(epollfd, EPOLL_CTL_ADD, sockfd, &ev) == -1)
     {

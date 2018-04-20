@@ -104,6 +104,17 @@ int CIni::GetInt(const char* mAttr, const char* cAttr )
     return nRes;
 }
 
+double CIni::GetDouble(const char* mAttr, const char* cAttr )
+{
+    int nRes = 0;
+    memset( m_szKey,0,sizeof(m_szKey) );
+    if( INI_SUCCESS == GetKey( mAttr,cAttr,m_szKey ) )
+    {
+        nRes = atof( m_szKey );
+    }
+    return nRes;
+}
+
 char *CIni::GetStr(const char* mAttr, const char* cAttr )
 {
     memset( m_szKey,0,sizeof(m_szKey) );
