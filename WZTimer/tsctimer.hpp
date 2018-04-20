@@ -43,8 +43,6 @@ unsigned long long getTimeByTSC(){
     #endif
 }
 
-
-
 unsigned long long getDurationByTSC(unsigned long long &start, unsigned long long &end){
 	return (end - start) /  TIME_INTERVAL;
 }

@@ -20,7 +20,30 @@
     for(int i = 0; i < 1024; ++i)
 	fout<<time_points[i]<<'\t';
 
+### TSC计时
 
+        int64_t readtsc(void)
+        {
+        #if defined(__GNUC__)
+        #   if defined(__i386__)
+            uint64_t x;
+            __asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));
+            return x;
+        #   elif defined(__x86_64__)
+            uint32_t hi, lo;
+            __asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
+            return ((uint64_t)lo) | ((uint64_t)hi << 32);
+        #   else
+        #       error Unsupported architecture.
+        #   endif
+        #elif defined(_MSC_VER)
+            __asm {
+                return __rdtsc();
+            }
+        #else
+        #   error Other compilers not supported...
+        #endif
+        }
 
 
 
