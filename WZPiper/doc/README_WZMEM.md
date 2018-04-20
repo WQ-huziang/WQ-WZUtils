@@ -189,6 +189,19 @@ delete memServer;
 - If you are the client(which should run later) like strategy, follow the next step:
 
 ```
+// define the constants
+#ifndef DataType
+#define DataType Frame
+#endif
+
+#ifndef QueueSize
+#define QueueSize 1024
+#endif
+
+#ifndef MaxReaderSize
+#define MaxReaderSize 4
+#endif
+
 // declare
 WZPiper<MemEngine<DataType, QueueSize, MaxReaderSize> >  * memClient;
 

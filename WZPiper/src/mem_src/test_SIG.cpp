@@ -18,13 +18,17 @@ int main(){
 	int reader_id;
 
 	SignalHandler sh;
-	SignalHandler::initQueueManager(10,102400,SHM_FLAG,shmid,char_pointer);
+	SignalHandler::initSignalQueueManager(10,102400,SHM_FLAG,shmid,char_pointer);
+
 	signal_queue_manager->initManager();
 	reader_id = signal_queue_manager->frame_req_queue.addReader();
 	LOG(INFO) << "reader_id:" << reader_id;
 
 	int pid = getpid();
-	SignalHandler::addToMap(pid,0,reader_id);
+	sh.addToMap(pid,0,reader_id);
+
+	reader_id = signal_queue_manager->frame_rec_queue.addReader();
+	sh.addToMap(pid, 1, reader_id);
 	LOG(INFO) << "pid:" << pid;
 
 	sh.listenSignal(SIGINT);
