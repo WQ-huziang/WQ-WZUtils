@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/luoqingming/coding/WZUtils/WZPiper/src/mem_src/tsc.cpp
+tsctimer.hpp
+/home/luoqingming/coding/WZUtils/WZPiper/src/mem_src/tsctimer.hpp
+

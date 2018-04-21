@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -g -std=c++11 -g   CMakeFiles/tsc.dir/tsc.cpp.o  -o ../../../bin/tsc  -L/home/luoqingming/coding/WZUtils/WZPiper/lib  -L/home/luoqingming/coding/WZUtils/WZPiper/src/mem_src/../../../WZConfigReader  -L/home/luoqingming/coding/WZUtils/WZPiper/src/mem_src/../../../WZLogger/lib 

@@ -350,14 +350,14 @@ int MemEngine<QueueDataType, DataQueueSize, MaxReaderSize>::init(char file_path[
       }
     }
 
-    // initialize signal handler
-    int pid = getpid();
-    SignalHandler::initSignalQueueManager(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid , this -> m_memory_addr);
-    signalhandler.addToMap(pid, piperMode, this -> reader_id);
-    LOG(INFO) << "pid:" << pid;
-    signalhandler.listenSignal(SIGINT);
-    signalhandler.listenSignal(SIGTERM);
-    signalhandler.listenSignal(SIGSEGV);
+    // // initialize signal handler
+    // int pid = getpid();
+    // SignalHandler::initSignalQueueManager(this -> m_key, this -> m_size, this -> m_flag, this -> m_shmid , this -> m_memory_addr);
+    // signalhandler.addToMap(pid, piperMode, this -> reader_id);
+    // LOG(INFO) << "pid:" << pid;
+    // signalhandler.listenSignal(SIGINT);
+    // signalhandler.listenSignal(SIGTERM);
+    // signalhandler.listenSignal(SIGSEGV);
 
     //printf("sizeof queue_manager:%ld\n", sizeof(*queue_manager) );
 
