@@ -14,14 +14,18 @@ Date: 2018-04-20
 #include <iostream>
 #include "timer.h"
 
-#ifndef TIME_INTERVAL
-#define TIME_INTERVAL 10000
-#endif
-
 using std::cout;
 using std::endl;
 
-unsigned long long getTimeByTSC(){
+#define TESTCASE
+
+#ifdef TESTCASE
+#define PRT(...) printf(__VA_ARGS__)
+#endif
+
+static double circlePerUs = 0.0;
+
+inline unsigned long long getTimeByTSC(){
 	#if defined(__GNUC__)
     #   if defined(__i386__)
         uint64_t x;
@@ -43,38 +47,33 @@ unsigned long long getTimeByTSC(){
     #endif
 }
 
-unsigned long long getDurationByTSC(unsigned long long &start, unsigned long long &end){
-	return (end - start) /  TIME_INTERVAL;
+inline double getDurationByTSC(unsigned long long &start, unsigned long long &end){
+	return ((double)end - (double)start) / (circlePerUs) ;
 }
 
-unsigned long long getInterval(int cycle){
-	long start = getTimeStamp();
+inline unsigned long long getInterval(int cycle){
 	unsigned long long tsc_start = getTimeByTSC();
-	for (int i = 0; i< cycle; i++ ) {
-	}
+	usleep(cycle);
 	unsigned long long tsc_end = getTimeByTSC();
-	long end = getTimeStamp();
-	long interval = getDuration(start, end);
-	// cout << "(unsigned long long) interval:" << (unsigned long long) interval << "(long) interval:" << interval << " tsc_start:" << tsc_start << " tsc_end:" << tsc_end << " tsc duration:" << tsc_end - tsc_start <<endl;
-	
-	unsigned long long tsc_interval = (tsc_end - tsc_start) / ((unsigned long long) interval);
+	// cout << " (int) interval:" << cycle << " tsc_start:" << tsc_start << " tsc_end:" << tsc_end << " tsc duration:" << tsc_end - tsc_start <<endl;
+	unsigned long long tsc_interval = (tsc_end - tsc_start) / ((unsigned long long) cycle);
 	// TODO: tsc_interval = 
 
 	return tsc_interval;
 }
 
-double getFrequency(int me_cycle,int in_cycle){
+inline unsigned long long getFrequency(int me_cycle,int in_cycle){
 
 	unsigned long long mean;
 	mean = getInterval(in_cycle);
+	double meanDou = (double) mean;
 	for (int i =0; i < me_cycle; i++)
-		mean = (mean + getInterval(in_cycle)) / ((unsigned long long) 2);
+		meanDou = (meanDou + ((double) getInterval(in_cycle))) / ((double) 2);
 
-	double fre = ((double) mean / (double) 1000);
-	cout << "final mean = " << mean << " circle/us" << endl;
-	cout << "final frequence = " << fre << " GHz" << endl;
+	double freG = ((double) mean / (double) 1000);
 
-	return fre;
+	cout << "mean:" << mean << "circle/us " << "fre:" << freG << "GHz\n";
+	return mean;
 }
 
 #endif // TSCTIMER_HPP_
