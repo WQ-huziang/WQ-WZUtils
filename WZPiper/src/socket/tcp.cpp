@@ -152,9 +152,9 @@ int TcpSocket::Send(Frame &md)
         {
             sockfd = key->second;
 
-            #ifdef LOGGER
-            LOG(INFO) << "Send a frame to SOURCE: "<<md.dest << " Fd: "<<sockfd;
-            #endif
+            // #ifdef LOGGER
+            // LOG(INFO) << "Send a frame to SOURCE: "<<md.dest << " Fd: "<<sockfd;
+            // #endif
         }
         else
         {

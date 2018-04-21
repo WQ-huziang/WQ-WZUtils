@@ -96,9 +96,9 @@ int UdpSocket::Recv(Frame &md)
 
             int ret = recvfrom(udpfd, &md, sizeof(Frame), 0, (struct sockaddr* )&cliaddr, &socklen);
 
-            #ifdef LOGGER
-            LOG(INFO) << "Receive a frame from SOURCE: "<<md.source;
-            #endif
+            // #ifdef LOGGER
+            // LOG(INFO) << "Receive a frame from SOURCE: "<<md.source;
+            // #endif
 
             return ret;
         }
