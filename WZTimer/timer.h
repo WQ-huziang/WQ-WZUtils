@@ -77,7 +77,7 @@ inline long getDuration(time_t t1, time_t t2){
 
 
 inline double getDurationByTSC(unsigned long long &start, unsigned long long &end){
-    return (end - start) /  TIME_INTERVAL;
+    return (end - start) /  FREQUENCY;
 }
 
 inline double getInterval(){
