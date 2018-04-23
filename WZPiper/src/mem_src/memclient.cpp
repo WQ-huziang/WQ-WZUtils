@@ -18,16 +18,16 @@ Logger * logger;
 
 char logger_buf[1024];
 
+WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient1;
+
 int main(){
 	char file[] = "../doc/config.ini";
-	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient1;
+	
 	memClient1 = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
 	memClient1->init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
 	
-	WZPiper<MemEngine<DataType, QueueSize, ReaderSize> >  * memClient2;
-	memClient2 = new WZPiper<MemEngine<DataType, QueueSize, ReaderSize> > ();
-	memClient2->init(file, WZ_PIPER_CLIENT, WZ_PIPER_NBLOCK);
-	
+	// test write
+	Frame recvFrame;
 
 	// test write
 	Frame sendFrame;
@@ -38,7 +38,8 @@ int main(){
 	sendFrame.length = 4;
 
 	while(1){
-		printf("send result:%d\n",memClient1->Send(sendFrame));
+		printf("Send result:%d\n",memClient1->Send(sendFrame));
+		printf("Recv result:%d\n",memClient1->Recv(sendFrame));
 	}
 	return 0;
 }
