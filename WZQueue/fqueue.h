@@ -91,9 +91,9 @@ bool FQueue<ELEM_T>::pop(ELEM_T &a_data) {
             return false;
         }
 //        a_data = m_theQueue[countToIndex(currentReadIndex)];
-        memcpy(&a_data, &m_theQueue[countToIndex(currentReadIndex)], sizeof(a_data));
         if  (atomic_compare_exchange_weak(&m_readIndex, &currentReadIndex, (currentReadIndex + 1))){
             atomic_fetch_sub(&count, (unsigned int) 1);
+            memcpy(&a_data, &m_theQueue[countToIndex(currentReadIndex)], sizeof(a_data));
             return true;
         }
     }while(true);
