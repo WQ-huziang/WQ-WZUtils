@@ -17,4 +17,4 @@ INCLUDE_DIRECTORIES(../WZPiper/inc/wzmem_inc)
 INCLUDE_DIRECTORIES(../WZPiper/inc/wzsocket_inc)
 
 ADD_SUBDIRECTORY(src)
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
