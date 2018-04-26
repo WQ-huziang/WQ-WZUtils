@@ -39,9 +39,9 @@ void scanTS(TSMarketDataField *pDepthMarketData) {
      >> pDepthMarketData->LowestPrice
      >> pDepthMarketData->Volume
      >> pDepthMarketData->Turnover
-     >> pDepthMarketData->OpenInterest
-     >> pDepthMarketData->ClosePrice
-     >> pDepthMarketData->SettlementPrice
+     >> pDepthMarketData->OpenInterest;
+  double temp;
+  fin >> temp >> temp
      >> pDepthMarketData->UpperLimitPrice
      >> pDepthMarketData->LowerLimitPrice
      >> pDepthMarketData->UpdateTime
@@ -65,8 +65,8 @@ void printTS(TSMarketDataField *pDepthMarketData) {
        << pDepthMarketData->Volume << endl
        << pDepthMarketData->Turnover << endl
        << pDepthMarketData->OpenInterest << endl
-       << pDepthMarketData->ClosePrice << endl
-       << pDepthMarketData->SettlementPrice << endl
+       // << pDepthMarketData->ClosePrice << endl
+       // << pDepthMarketData->SettlementPrice << endl
        << pDepthMarketData->UpperLimitPrice << endl
        << pDepthMarketData->LowerLimitPrice << endl
        << pDepthMarketData->UpdateTime << endl
@@ -152,10 +152,10 @@ TEST_F(TestMongodbEngine, insert_one)
     ASSERT_DOUBLE(d, pDepthMarketData->Turnover);
     sscanf(md["OpenInterest"].c_str(), "%lf", &d);
     ASSERT_DOUBLE(d, pDepthMarketData->OpenInterest);
-    sscanf(md["ClosePrice"].c_str(), "%lf", &d);
-    ASSERT_DOUBLE(d, pDepthMarketData->ClosePrice);
-    sscanf(md["SettlementPrice"].c_str(), "%lf", &d);
-    ASSERT_DOUBLE(d, pDepthMarketData->SettlementPrice);
+    // sscanf(md["ClosePrice"].c_str(), "%lf", &d);
+    // ASSERT_DOUBLE(d, pDepthMarketData->ClosePrice);
+    // sscanf(md["SettlementPrice"].c_str(), "%lf", &d);
+    // ASSERT_DOUBLE(d, pDepthMarketData->SettlementPrice);
     sscanf(md["UpperLimitPrice"].c_str(), "%lf", &d);
     ASSERT_DOUBLE(d, pDepthMarketData->UpperLimitPrice);
     sscanf(md["LowerLimitPrice"].c_str(), "%lf", &d);
