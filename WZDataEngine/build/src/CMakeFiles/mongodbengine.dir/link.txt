@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -std=c++11 -g -pthread  -shared -Wl,-soname,libmongodbengine.so.1 -o ../../lib/libmongodbengine.so.1.6 CMakeFiles/mongodbengine.dir/mongodbengine.cpp.o 

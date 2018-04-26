@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -g -pthread   CMakeFiles/sort_test.dir/sort_test.cpp.o  -o ../../bin/sort_test  -L/home/luoqingming/coding/WZUtils/WZDataEngine/lib -Wl,-rpath,/home/luoqingming/coding/WZUtils/WZDataEngine/lib -lgtest -lgflags -lpthread -lgtest_main ../../lib/libmongodbengine.so.1.6 -lmongocxx -lbsoncxx 
