@@ -14,6 +14,7 @@ MESSAGE(STATUS "This is LIBRARY dir " ${LIBRARY_OUTPUT_PATH})
 
 # add local include dir
 INCLUDE_DIRECTORIES(inc)
+INCLUDE_DIRECTORIES(../WZAdapter)
 
 # add mongocxx and bson include dir
 SET(SHARE_LIB_PREFIX /usr/local)
