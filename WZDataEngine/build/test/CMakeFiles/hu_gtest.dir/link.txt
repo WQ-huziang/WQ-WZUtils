@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++11 -g -pthread   CMakeFiles/hu_gtest.dir/hu_gtest.cpp.o  -o ../../bin/hu_gtest  -L/home/luoqingming/coding/WZUtils/WZDataEngine/lib -Wl,-rpath,/home/luoqingming/coding/WZUtils/WZDataEngine/lib -lgtest -lgflags -lpthread -lgtest_main ../../lib/libmongodbengine.so.1.6 -lmongocxx -lbsoncxx 

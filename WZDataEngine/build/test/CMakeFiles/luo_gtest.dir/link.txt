@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++11 -g -pthread   CMakeFiles/luo_gtest.dir/luo_gtest.cpp.o  -o ../../bin/luo_gtest  -L/home/luoqingming/coding/WZUtils/WZDataEngine/lib -Wl,-rpath,/home/luoqingming/coding/WZUtils/WZDataEngine/lib -lgtest -lgflags -lpthread -lgtest_main ../../lib/libmongodbengine.so.1.6 -lmongocxx -lbsoncxx 
